@@ -1,5 +1,14 @@
 # Implementation status
 
+## Model workflow preference
+
+Before beginning any development-level implementation for the game—including edits
+to game code, assets, build configuration, tests, or deployment files—tell the user
+first so they can switch to GPT-6 Astra High if needed. Do not begin that
+implementation in the same turn as the reminder unless the user has already said
+they are using GPT-6 Astra High. Planning, design discussion, research, and review
+can continue on GPT-5.6 Sol Medium.
+
 Last checkpoint: **phone playtest revision 2 complete and locally verified**
 (2026-09-09). The first prototype is live on GitHub Pages. Revision 2 implements
 automatic absorption, faster/shorter jump, landing input buffer, faster movement
