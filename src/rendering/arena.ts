@@ -354,7 +354,7 @@ export class Arena {
         const progress = (battle.time - (note.hit - note.travel)) / note.travel;
         let group = this.noteMeshes.get(note.id);
         const visible =
-          progress >= -0.2 && progress < 1.17 && !battle.resolved.has(note.id);
+          progress >= 0 && progress < 1.17 && !battle.resolved.has(note.id);
         if (!visible) {
           if (group) group.visible = false;
           continue;

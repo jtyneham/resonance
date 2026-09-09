@@ -7,6 +7,10 @@ animation, shorter field, slower attacks, cleaner title, raised controls, subtle
 haptics, no active-lane marker, softer resonance-wave styling and a gently glowing
 charged button. These revision-2 edits are uncommitted and ready for user review.
 
+Follow-up: removed the stationary projectile pre-spawn interval after live-preview
+feedback. The dummy chart's variety/speed remains unvalidated by the human test and
+needs a dedicated chart pass before asking for another speed judgment.
+
 - [x] Save specification and continuation checklist.
 - [x] Scaffold dependencies, type checking, linting and Pages workflow.
 - [x] Implement deterministic chart and renderer-independent combat.

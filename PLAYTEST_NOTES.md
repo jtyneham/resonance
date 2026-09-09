@@ -44,6 +44,16 @@ Nuanced findings to reassess after revision 2:
   change this, so check clarity before adding a separate indicator.
 - Movement felt slightly delayed and a pre-landing press could be ignored. Recheck
   after faster interpolation and the 120 ms landing buffer.
+- The current dummy moveset did not provide enough evidence to judge whether the
+  attack speed is right. Treat speed and pattern variety as unvalidated; revise or
+  expand the authored chart before asking that question again.
+
+## Follow-up change
+
+- Removed the projectile pre-spawn preview. Attacks had been rendered for 20% of
+  their travel duration at a clamped zero-progress position, making them visibly
+  wait on the boss-side starting line. They now appear at progress zero and begin
+  moving immediately on their first visible frame.
 
 Not answered yet; retain for the next playtest:
 
