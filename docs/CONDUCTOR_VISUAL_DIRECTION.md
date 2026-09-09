@@ -30,7 +30,9 @@ reference or animation handoff.
 
 ## Still open
 
-- Universal and Conductor-specific attack silhouettes.
+- Exact attack artwork and animation frames. The universal attack alphabet and
+  The Conductor's broad expression of it are locked in
+  `docs/COMBAT_VISUAL_LANGUAGE.md`.
 - Exact arena architecture and background fragments.
 - Boss scale, resting pose, and use of the circular wrist opening.
 - Music, authored chart, phase structure, and Cadenza details.
