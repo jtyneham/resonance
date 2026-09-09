@@ -15,7 +15,7 @@ const app = document.querySelector<HTMLDivElement>('#app')!;
 app.innerHTML = `
 <main class="game" data-screen="title">
   <div class="edge-label" aria-hidden="true">R / 001 <span>THE BROKEN MACHINE</span></div>
-  <div id="arena"><div class="lane-numbers" aria-hidden="true"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span></div></div>
+  <div id="arena"></div>
   <header id="hud" hidden>
     <div class="boss-heading"><div><span class="eyebrow">TEST SUBJECT / 001</span><h2>DUMMY BOSS</h2></div><button id="pause" class="icon-button" aria-label="Pause battle">Ⅱ</button></div>
     <div class="boss-meter" role="progressbar" aria-label="Boss health" aria-valuemin="0" aria-valuemax="5"><i></i><i></i><i></i><i></i><i></i></div>
@@ -39,17 +39,17 @@ app.innerHTML = `
     <div class="panel options-panel"><span class="eyebrow lime">TUNE YOUR SIGNAL</span><h2>Options + controls.</h2>
     <label class="setting" for="volume"><span>Volume</span><output id="volume-value"></output></label><input id="volume" type="range" min="0" max="100" step="5" />
     <label class="setting toggle"><span>Reduced motion<small>Calmer rings and no impact particles.</small></span><input id="reduced-motion" type="checkbox" /></label>
-    <div class="legend"><div><span class="legend-wave dark"></span><p><strong>Coral / low wave</strong>Jump over it or change lanes.</p></div><div><span class="legend-wave resonant">◆</span><p><strong>Lime / resonant note</strong>Tap Resonate at the hit line. Stay grounded.</p></div><div><span class="legend-wall">╱╱</span><p><strong>Ivory / tall barrier</strong>Move aside. Blocks jumps and your shots.</p></div></div>
-    <p class="instructions">Two absorbs charge one shot. Tap <strong>Resonate</strong> again in an opening to fire. Absorbing takes priority if a note is in reach. Getting hit empties your charge.</p>
-    <div class="key-guide"><span>MOVE <kbd>←</kbd><kbd>→</kbd> / A D</span><span>JUMP <kbd>SPACE</kbd></span><span>RESONATE <kbd>J</kbd> / F</span><span>PAUSE <kbd>ESC</kbd></span></div>
-    <p class="small-note">Touch: left thumb moves, right thumb jumps and resonates. One lane change per jump. Tap each move; holding does not repeat. Use speaker audio or wired headphones for the tightest timing.</p>
+    <div class="legend"><div><span class="legend-wave dark"></span><p><strong>Coral / low wave</strong>Jump over it or change lanes.</p></div><div><span class="legend-wave resonant">◆</span><p><strong>Muted lime / resonance wave</strong>Stand grounded in its lane to absorb automatically.</p></div><div><span class="legend-wall">╱╱</span><p><strong>Ivory / tall barrier</strong>Move aside. Blocks jumps and your shots.</p></div></div>
+    <p class="instructions">Stand your ground to <strong>automatically absorb</strong> resonance waves. Two absorbs charge one shot. Tap <strong>Resonate</strong> in an opening to fire. Getting hit empties your charge.</p>
+    <div class="key-guide"><span>MOVE <kbd>←</kbd><kbd>→</kbd> / A D</span><span>JUMP <kbd>SPACE</kbd></span><span>FIRE <kbd>J</kbd> / F</span><span>PAUSE <kbd>ESC</kbd></span></div>
+    <p class="small-note">Touch: left thumb moves, right thumb jumps and fires stored resonance. One lane change per jump; a late second move is buffered for landing. Tap each move; holding does not repeat. Use speaker audio or wired headphones for the tightest timing.</p>
     <button class="primary" id="options-back">GOT IT <span>↗</span></button></div>
   </section>
 
   <section id="paused" class="screen center-screen scrim" aria-label="Paused" hidden><div class="panel"><span class="eyebrow lime">SIGNAL HELD</span><h2>Take a breath.</h2><p class="intro" id="pause-reason">Your place in the music is saved.</p><button class="primary" id="resume">RESUME <span>↗</span></button><div class="utility-row"><button class="secondary" id="pause-retry">RETRY</button><button class="secondary" data-home>TITLE</button></div></div></section>
   <section id="result" class="screen center-screen scrim" aria-label="Battle results" hidden><div class="panel"><span class="eyebrow" id="result-kicker">SIGNAL LOST</span><h2 id="result-title">Out of tune.</h2><p class="intro" id="result-description"></p><div class="result-score"><span class="eyebrow">SCORE</span><strong id="score">0</strong></div><div class="stats-grid" id="stats"></div><button class="primary" id="retry">TRY AGAIN <span>↗</span></button><button class="secondary full-width" id="result-select">ENCOUNTERS</button></div></section>
 
-  <footer id="combat-controls" hidden><div class="control-status"><span>HOLD YOUR GROUND</span><div id="charge-status"><i></i><i></i><span>0 / 2</span></div></div><div class="buttons"><div class="movement-controls"><button class="touch-button move" data-action="left" aria-label="Move left"><b>←</b><small>LEFT</small></button><button class="touch-button move" data-action="right" aria-label="Move right"><b>→</b><small>RIGHT</small></button></div><div class="action-controls"><button class="touch-button jump" data-action="jump" aria-label="Jump"><b>⌃</b><small>JUMP</small></button><button class="touch-button resonate" data-action="resonate" aria-label="Resonate: absorb or fire"><b>◇</b><small id="resonate-label">RESONATE</small></button></div></div></footer>
+  <footer id="combat-controls" hidden><div class="control-status"><span>ABSORB AUTOMATICALLY</span><div id="charge-status"><i></i><i></i><span>0 / 2</span></div></div><div class="buttons"><div class="movement-controls"><button class="touch-button move" data-action="left" aria-label="Move left"><b>←</b><small>LEFT</small></button><button class="touch-button move" data-action="right" aria-label="Move right"><b>→</b><small>RIGHT</small></button></div><div class="action-controls"><button class="touch-button jump" data-action="jump" aria-label="Jump"><b>⌃</b><small>JUMP</small></button><button class="touch-button resonate" data-action="resonate" aria-label="Fire stored resonance"><b>◇</b><small id="resonate-label">RESONATE</small></button></div></div></footer>
   <div id="rotate" role="dialog" aria-modal="true" aria-label="Rotate your device" hidden><div class="rotate-glyph">▯ ↻</div><span class="eyebrow lime">KEEP IT UPRIGHT</span><h2>One way to play.</h2><p>Rotate your device to portrait.<br>Your battle is paused.</p></div>
   <div id="toast" role="status"></div>
 </main>`;
@@ -239,6 +239,7 @@ for (const button of app.querySelectorAll<HTMLButtonElement>('[data-action]')) {
     pointers.add(e.pointerId);
     button.setPointerCapture(e.pointerId);
     button.classList.add('pressed');
+    if ('vibrate' in navigator) navigator.vibrate(7);
     action(button.dataset.action as Action);
   });
   const release = (e: PointerEvent) => {
@@ -458,12 +459,9 @@ function frame(ms: number) {
       battle.charge === 2 ? 'SHOT READY' : `${battle.charge} / 2`;
     $('.resonate').classList.toggle('ready', battle.charge === 2);
     $('#resonate-label').textContent =
-      battle.charge === 2 ? 'FIRE / ABSORB' : 'RESONATE';
+      battle.charge === 2 ? 'FIRE RESONANCE' : 'RESONATE';
     game.dataset.lane = String(battle.lane);
     game.dataset.airborne = String(battle.airborne());
-    app
-      .querySelectorAll('.lane-numbers span')
-      .forEach((el, i) => el.classList.toggle('active', i === battle!.lane));
     const fast = battle.chart.filter(
       (n) =>
         n.travel < BEAT * 2 &&

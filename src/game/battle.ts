@@ -43,6 +43,8 @@ export class Battle {
   charge = 0;
   jumpAt = -Infinity;
   airMoveUsed = false;
+  bufferedMove: -1 | 0 | 1 = 0;
+  bufferedMoveUntil = -Infinity;
   immuneUntil = -Infinity;
   lastAction = -Infinity;
   outcome: Outcome = 'playing';
@@ -80,27 +82,54 @@ export class Battle {
     if (this.outcome !== 'playing' || now < this.time) return;
     this.time = now;
     // Resolve chronological events even if a rendered frame was dropped.
-    const due: { time: number; note?: Note; shot?: Shot }[] = [];
+    const due: {
+      time: number;
+      note?: Note;
+      shot?: Shot;
+      bufferedMove?: -1 | 1;
+    }[] = [];
     for (const note of this.chart) {
-      const time =
-        note.hit + (note.kind === 'resonant' ? RULES.absorbWindow + 1e-7 : 0);
-      if (!this.resolved.has(note.id) && time <= now) due.push({ time, note });
+      if (!this.resolved.has(note.id) && note.hit <= now)
+        due.push({ time: note.hit, note });
     }
     for (const shot of this.shots)
       if (!shot.resolved && shot.ends <= now)
         due.push({ time: shot.ends, shot });
+    const landing = this.jumpAt + RULES.jumpDuration;
+    if (
+      this.bufferedMove &&
+      landing <= now &&
+      landing <= this.bufferedMoveUntil
+    )
+      due.push({ time: landing, bufferedMove: this.bufferedMove });
+    else if (this.bufferedMove && now > this.bufferedMoveUntil)
+      this.bufferedMove = 0;
     due.sort((a, b) => a.time - b.time);
     for (const event of due) {
       if (this.outcome !== 'playing') break;
       if (event.time > DURATION) break;
-      const { note, shot } = event;
+      const { note, shot, bufferedMove } = event;
+      if (bufferedMove) {
+        this.bufferedMove = 0;
+        this.applyMove(bufferedMove);
+      }
       if (note) {
         this.resolved.add(note.id);
-        if (
-          this.occupies(note) &&
-          (note.kind === 'barrier' || !this.clearsLow(note.hit))
-        )
-          this.damage(event.time);
+        if (this.occupies(note)) {
+          if (note.kind === 'resonant' && !this.airborne(note.hit)) {
+            this.charge = Math.min(2, this.charge + 1);
+            this.stats.absorbs++;
+            this.stats.combo++;
+            this.stats.bestCombo = Math.max(
+              this.stats.bestCombo,
+              this.stats.combo,
+            );
+            this.stats.score += 200;
+            this.emit('absorb');
+          } else if (note.kind === 'barrier' || !this.clearsLow(note.hit)) {
+            this.damage(event.time);
+          }
+        }
       }
       if (shot) {
         shot.resolved = true;
@@ -122,6 +151,15 @@ export class Battle {
     if (this.outcome === 'playing' && now >= DURATION) this.outcome = 'timeout';
   }
 
+  private applyMove(direction: -1 | 1, airborneMove = false) {
+    const next = Math.max(0, Math.min(RULES.lanes - 1, this.lane + direction));
+    if (next === this.lane) return false;
+    if (airborneMove) this.airMoveUsed = true;
+    this.lane = next;
+    this.emit('move');
+    return true;
+  }
+
   damage(at: number) {
     if (at < this.immuneUntil) return;
     this.hp--;
@@ -137,15 +175,17 @@ export class Battle {
     this.update(now);
     if (this.outcome !== 'playing') return;
     if (action === 'left' || action === 'right') {
-      if (this.airborne() && this.airMoveUsed) return;
-      const next = Math.max(
-        0,
-        Math.min(RULES.lanes - 1, this.lane + (action === 'left' ? -1 : 1)),
-      );
-      if (next === this.lane) return;
-      if (this.airborne()) this.airMoveUsed = true;
-      this.lane = next;
-      this.emit('move');
+      const direction = action === 'left' ? -1 : 1;
+      if (this.airborne() && this.airMoveUsed) {
+        const landing = this.jumpAt + RULES.jumpDuration;
+        if (landing - this.time <= RULES.landingInputBuffer) {
+          this.bufferedMove = direction;
+          this.bufferedMoveUntil = landing + RULES.landingInputBuffer;
+        }
+        return;
+      }
+      this.bufferedMove = 0;
+      this.applyMove(direction, this.airborne());
     } else if (action === 'jump') {
       if (this.airborne()) return;
       this.jumpAt = this.time;
@@ -154,28 +194,7 @@ export class Battle {
     } else {
       if (this.time - this.lastAction < RULES.actionCooldown) return;
       this.lastAction = this.time;
-      const target =
-        !this.airborne() &&
-        this.chart
-          .filter(
-            (n) =>
-              n.kind === 'resonant' &&
-              !this.resolved.has(n.id) &&
-              this.occupies(n) &&
-              Math.abs(n.hit - this.time) <= RULES.absorbWindow + 1e-8,
-          )
-          .sort(
-            (a, b) => Math.abs(a.hit - this.time) - Math.abs(b.hit - this.time),
-          )[0];
-      if (target) {
-        this.resolved.add(target.id);
-        this.charge = Math.min(2, this.charge + 1);
-        this.stats.absorbs++;
-        this.stats.combo++;
-        this.stats.bestCombo = Math.max(this.stats.bestCombo, this.stats.combo);
-        this.stats.score += 200;
-        this.emit('absorb');
-      } else if (this.charge === 2) {
+      if (this.charge === 2) {
         this.charge = 0;
         const shot: Shot = {
           born: this.time,

@@ -89,8 +89,7 @@ button {
   height: 100%;
 }
 [data-screen='title'] #arena {
-  top: calc(172px + env(safe-area-inset-top));
-  bottom: calc(158px + env(safe-area-inset-bottom));
+  display: none;
 }
 [data-screen='select'] #arena,
 [data-screen='options'] #arena {
@@ -114,6 +113,31 @@ button {
   left: 20px;
   right: 20px;
   text-align: center;
+}
+.title-screen::before {
+  content: '';
+  position: absolute;
+  top: 31%;
+  left: 50%;
+  width: min(62vw, 270px);
+  aspect-ratio: 1;
+  border: 1px solid #4b626b45;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 0 18px #2c444b18,
+    0 0 0 42px #2c444b0c;
+  pointer-events: none;
+}
+.title-screen::after {
+  content: '◇';
+  position: absolute;
+  top: 31%;
+  left: 50%;
+  color: #d8ff721c;
+  font-size: 88px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 .eyebrow {
   font:
@@ -145,7 +169,7 @@ h1 {
 }
 .title-actions {
   position: absolute;
-  bottom: max(20px, env(safe-area-inset-bottom));
+  top: 48%;
   left: 25px;
   right: 25px;
 }
@@ -504,24 +528,6 @@ kbd {
   width: 0;
   background: #58727d;
 }
-.lane-numbers {
-  position: absolute;
-  bottom: 0;
-  left: 6%;
-  right: 6%;
-  display: flex;
-  justify-content: space-around;
-  font:
-    9px Consolas,
-    monospace;
-  color: #738793;
-}
-.lane-numbers .active {
-  color: var(--lime);
-}
-[data-screen='title'] .lane-numbers {
-  display: none;
-}
 #feedback {
   position: absolute;
   top: 42%;
@@ -575,7 +581,7 @@ kbd {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 12px 18px max(16px, env(safe-area-inset-bottom));
+  padding: 12px 18px max(28px, calc(env(safe-area-inset-bottom) + 14px));
   background: linear-gradient(#0b101800, #0b1018 15%);
   z-index: 4;
   user-select: none;
@@ -670,9 +676,14 @@ kbd {
   border-color: #a5c7d7;
 }
 .touch-button.resonate.ready {
-  background: var(--lime);
-  color: #192614;
+  background: #2f4422;
+  color: #e6ffa7;
   border-color: var(--lime);
+  box-shadow:
+    0 0 0 1px #d8ff7235,
+    0 0 17px #d8ff722d,
+    inset 0 0 18px #d8ff7214;
+  animation: resonance-ready 1.15s ease-in-out infinite alternate;
 }
 .touch-button.resonate.pressed {
   background: #719a3b;
@@ -680,6 +691,14 @@ kbd {
 }
 .touch-button:disabled {
   opacity: 0.3;
+}
+@keyframes resonance-ready {
+  to {
+    box-shadow:
+      0 0 0 1px #d8ff7255,
+      0 0 24px #d8ff7240,
+      inset 0 0 24px #d8ff7222;
+  }
 }
 .scrim {
   background: #0b1018ed;
@@ -784,12 +803,8 @@ kbd {
   .title-copy h1 {
     margin-top: 8px;
   }
-  [data-screen='title'] #arena {
-    top: calc(168px + env(safe-area-inset-top));
-    bottom: calc(151px + env(safe-area-inset-bottom));
-  }
   .title-actions {
-    bottom: max(13px, env(safe-area-inset-bottom));
+    top: 43%;
   }
   .micro-line {
     margin-bottom: 11px;
@@ -826,7 +841,7 @@ kbd {
     min-height: 72px;
   }
   #arena {
-    bottom: calc(146px + env(safe-area-inset-bottom));
+    bottom: calc(158px + env(safe-area-inset-bottom));
   }
 }
 @media (max-width: 350px) {

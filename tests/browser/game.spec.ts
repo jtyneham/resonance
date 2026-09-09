@@ -7,7 +7,7 @@ test('portrait title, all five lanes, options and saved settings', async ({
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('./');
   await expect(page.getByRole('heading', { name: 'RESONANCE.' })).toBeVisible();
-  await expect(page.locator('#arena canvas')).toBeVisible();
+  await expect(page.locator('#arena')).toBeHidden();
   await page.screenshot({ path: 'test-results/title-phone.png' });
   await page.getByRole('button', { name: 'OPTIONS + CONTROLS' }).click();
   await page.locator('#volume').fill('35');
@@ -30,7 +30,7 @@ test('touch moves one lane; simultaneous jump/move; pause freezes; rotation requ
   await page.getByRole('button', { name: 'START', exact: false }).click();
   await page.getByRole('button', { name: 'ENTER BATTLE' }).click();
   await expect(page.locator('.game')).toHaveAttribute('data-screen', 'battle');
-  await expect(page.locator('.lane-numbers span')).toHaveCount(5);
+  await expect(page.locator('#telegraphs i')).toHaveCount(5);
   await page.getByRole('button', { name: 'Move left', exact: true }).tap();
   await expect(page.locator('.game')).toHaveAttribute('data-lane', '1');
   await page.getByRole('button', { name: 'Move right', exact: true }).tap();
@@ -178,8 +178,6 @@ test('real audio-clock battle can be won via the controls and saves a record', a
       inputs.push({ time: (beat * 60) / 160, code });
     for (let phrase = 0; phrase < 5; phrase++) {
       const b = phrase * 16;
-      add(b + 4, 'KeyJ');
-      add(b + 5, 'KeyJ');
       add(b + 5.5, 'KeyJ');
       const out = phrase % 2 ? 'ArrowLeft' : 'ArrowRight';
       const back = phrase % 2 ? 'ArrowRight' : 'ArrowLeft';

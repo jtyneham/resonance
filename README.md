@@ -3,7 +3,7 @@
 **Five lanes. One spark. Strike the rhythm back.**
 
 A playable, portrait-first browser combat prototype. Survive an authored,
-music-driven dummy encounter, absorb resonant notes, and land five counterattacks
+music-driven dummy encounter, automatically absorb resonance waves, and land five counterattacks
 before the 45-second track ends. Built with TypeScript, Three.js, Vite and Web Audio.
 
 The dummy proves the shared combat system. The Conductor, The Prism and The Silence
@@ -24,15 +24,15 @@ supported; a rejected request never blocks normal browser play.
 | -------------- | -------------- | ---------------------- |
 | Move one lane  | Left / Right   | ← / → or A / D         |
 | Jump           | Jump           | Space, W or ↑          |
-| Absorb / fire  | Resonate       | J, F or Enter          |
+| Fire resonance | Resonate       | J, F or Enter          |
 | Pause / resume | Pause / Resume | Escape (P also pauses) |
 
 - Coral low waves: jump or sidestep.
-- Lime diamond notes: tap Resonate at the hit line, within ±120 ms, while grounded.
+- Muted lime resonance waves: stay grounded in their lane to absorb automatically.
 - Ivory tall barriers: sidestep; they cannot be jumped or absorbed and block shots.
-- Two absorbs charge one shot. Tap Resonate away from an absorb opportunity to fire.
-  Absorbing takes priority if a note is in range, even when fully charged.
-- One lane change per jump. Holding movement does not repeat.
+- Two absorbs charge one shot. Tap Resonate in an opening to fire it.
+- One lane change per jump. A late second move is buffered until landing. Holding
+  movement does not repeat.
 - Three HP; damage empties charge. Five shots hitting the boss win; timeout loses.
 - Music and attacks pause together. Returning to the tab or portrait does not
   resume a battle until you press Resume.

@@ -7,6 +7,7 @@ const COLORS = {
   lime: 0xd8ff72,
   cyan: 0x77d6e5,
   dark: 0xf08279,
+  resonant: 0xa9c878,
   ivory: 0xe7e4d8,
   muted: 0x2f4556,
 };
@@ -20,7 +21,6 @@ export class Arena {
   private rings: THREE.Mesh[] = [];
   private spark = new THREE.Group();
   private shadow: THREE.Mesh;
-  private marker: THREE.Mesh;
   private h = 130;
   private noteMeshes = new Map<number, THREE.Group>();
   private shotMeshes: THREE.Mesh[] = [];
@@ -109,9 +109,6 @@ export class Arena {
     this.shadow = this.box(6, 0.35, COLORS.lime, 0.3);
     this.shadow.position.z = 4;
     this.scene.add(this.shadow);
-    this.marker = this.box(15.5, 1, COLORS.lime, 0.75);
-    this.marker.position.z = 4;
-    this.scene.add(this.marker);
     this.observer = new ResizeObserver(() => this.resize());
     this.observer.observe(host);
     this.resize();
@@ -135,7 +132,7 @@ export class Arena {
     const q = p * p;
     return {
       x: (lane - 2) * (6 + 11.6 * q),
-      y: this.h * 0.69 - (this.h * 0.69 - 14) * q,
+      y: this.h * 0.6 - (this.h * 0.6 - 16) * q,
       scale: 0.34 + 0.66 * q,
     };
   }
@@ -173,7 +170,7 @@ export class Arena {
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h);
     this.disposeGroup(this.field);
-    const far = this.h * 0.69;
+    const far = this.h * 0.6;
     for (let i = 0; i < 5; i++) {
       const left = i - 2.5,
         right = left + 1;
@@ -259,15 +256,19 @@ export class Arena {
         group.add(slash);
       }
     } else {
-      const color = note.kind === 'resonant' ? COLORS.lime : COLORS.dark;
+      const color = note.kind === 'resonant' ? COLORS.resonant : COLORS.dark;
       group.add(this.box(w, 2.5, color, 0.2));
       const stripe = this.box(w, 0.85, color);
       stripe.position.z = 2;
       group.add(stripe);
       if (note.kind === 'resonant') {
         const gem = new THREE.Mesh(
-          new THREE.OctahedronGeometry(2.1),
-          new THREE.MeshBasicMaterial({ color }),
+          new THREE.OctahedronGeometry(1.45),
+          new THREE.MeshBasicMaterial({
+            color,
+            transparent: true,
+            opacity: 0.85,
+          }),
         );
         gem.position.z = 3;
         group.add(gem);
@@ -327,7 +328,7 @@ export class Arena {
     const pulse = this.reduced
       ? 0
       : Math.max(0, 1 - ((Math.max(0, t) / BEAT) % 1) * 3);
-    this.boss.position.set(0, this.h * 0.83, 0);
+    this.boss.position.set(0, this.h * 0.81, 0);
     this.boss.scale.setScalar(0.9 + pulse * 0.025);
     this.rings.forEach((ring, i) => {
       ring.rotation.x = this.reduced ? 0.3 : Math.sin(t * 0.3 + i) * 0.5;
@@ -335,7 +336,7 @@ export class Arena {
       ring.rotation.z = this.reduced ? 0 : t * (i % 2 ? -0.2 : 0.15);
     });
     this.visualLane +=
-      ((battle?.lane ?? 2) - this.visualLane) * (1 - Math.exp(-dt * 35));
+      ((battle?.lane ?? 2) - this.visualLane) * (1 - Math.exp(-dt * 55));
     const player = this.position(this.visualLane, 1);
     const air = battle?.airborne()
       ? Math.sin(((battle.time - battle.jumpAt) / RULES.jumpDuration) * Math.PI)
@@ -348,7 +349,6 @@ export class Arena {
       battle.time >= battle.immuneUntil ||
       Math.floor(now * 12) % 2 === 0;
     this.shadow.position.set(player.x, player.y, 4);
-    this.marker.position.set(player.x, 9.5, 4);
     if (battle) {
       for (const note of battle.chart) {
         const progress = (battle.time - (note.hit - note.travel)) / note.travel;

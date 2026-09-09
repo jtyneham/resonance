@@ -1,9 +1,11 @@
 # Implementation status
 
-Last checkpoint: **prototype implementation and local verification complete**
-(2026-09-09). All requested work is saved in this working tree. The user will
-review, commit and push with GitHub Desktop. No remote deployment or git commit
-has been made.
+Last checkpoint: **phone playtest revision 2 complete and locally verified**
+(2026-09-09). The first prototype is live on GitHub Pages. Revision 2 implements
+automatic absorption, faster/shorter jump, landing input buffer, faster movement
+animation, shorter field, slower attacks, cleaner title, raised controls, subtle
+haptics, no active-lane marker, softer resonance-wave styling and a gently glowing
+charged button. These revision-2 edits are uncommitted and ready for user review.
 
 - [x] Save specification and continuation checklist.
 - [x] Scaffold dependencies, type checking, linting and Pages workflow.
@@ -16,7 +18,18 @@ has been made.
 
 ## Verified results
 
-- `npm run check`: ESLint, 22 Vitest combat tests, TypeScript and Vite build pass.
+- Revision 2: `npm run check`, formatting and `git diff --check` pass. The revised
+  Vitest suite has 21 focused tests, including automatic grounded absorption,
+  jumping a resonance wave, full-charge absorption, late landing input buffering,
+  revised travel values and a zero-damage winning route.
+- All seven Chrome browser scenarios completed successfully against the revision-2
+  production build. The key revised title/options/storage, touch/rotation and real
+  AudioContext victory scenarios were rerun together and exited cleanly (2 passed,
+  1.2 minutes for the final focused run). Revised screenshots were inspected.
+- Haptics use the optional Vibration API with a 7 ms pulse. Unsupported browsers
+  simply omit vibration; physical-phone feel remains a human playtest item.
+
+- The first deployed revision passed ESLint, 22 Vitest combat tests, TypeScript and Vite build.
 - `npm run format:check`: passes. `git diff --check`: passes.
 - Seven Playwright tests pass in installed Google Chrome against the production
   build at `/resonance/` (six flow tests together, plus the render test separately).
@@ -29,7 +42,7 @@ has been made.
 - Layouts checked at 320x568, 390x844, Pixel 7 portrait, 412x915 and 1440x900.
   Screenshots inspected for title, battle, defeat and wide-wave presentation.
 - Unit tests prove a zero-damage winning route through the main phrases and coda.
-  They cover absorb-window endpoints, absorb-over-fire priority, shot interception,
+  They covered the original manual absorb window and priority, shot interception,
   one airborne lane move, low/tall collisions, immunity, retry and timeout ordering.
 - Fixed a real async resume/rotation race caught by the browser suite, guarded
   pending transitions, and adjusted small-screen/title safe-area spacing.

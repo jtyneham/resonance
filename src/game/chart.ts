@@ -19,7 +19,7 @@ export function makeChart(): Note[] {
     lane: number,
     width = 1,
     kind: AttackKind = 'dark',
-    travel = 2,
+    travel = 2.5,
   ) => {
     notes.push({
       beat,
@@ -50,9 +50,9 @@ export function makeChart(): Note[] {
     // Tall two-lane wall: jump cannot solve it. Sideways escape is required.
     add(b + 11.5, lane(1, 2), 2, 'barrier');
     // Wide low sweep, then an offbeat return. Faster notes get extra warnings.
-    add(b + 13.5, lane(2, 3), 3, 'dark', phrase >= 4 ? 1.5 : 2);
+    add(b + 13.5, lane(2, 3), 3, 'dark', phrase >= 4 ? 2 : 2.5);
     add(b + 14.25, lane(0, 2), 2);
-    if (phrase >= 2) add(b + 15, lane(4), 1, 'dark', 1.25);
+    if (phrase >= 2) add(b + 15, lane(4), 1, 'dark', 1.75);
   }
   // Final phrase closes the arena in staggered, jumpable chords.
   add(113, 0, 2, 'barrier');

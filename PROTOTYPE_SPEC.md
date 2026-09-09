@@ -17,9 +17,10 @@ The latest conversation takes precedence over the original desktop handoff.
 
 - Exactly five channel bands, indexed 0–4, with six visible boundaries.
 - Left/right: one lane per touch-down or non-repeated key press.
-- Jump: 0.52 seconds; one lane change per jump; low attacks can be cleared.
-- Resonate: absorb a resonant low note within ±120 ms; otherwise fire if fully charged.
-- Absorb takes precedence over firing. Absorbing requires being grounded.
+- Jump: 0.40 seconds; one lane change per jump; low attacks can be cleared. A
+  second movement press in the final 120 ms is buffered until landing.
+- A grounded player automatically absorbs a resonant low wave on contact and takes no damage.
+- Resonate fires only when fully charged; absorbing does not require a button press.
 - Two absorbs charge one shot. One stored shot; no separate fire button.
 - One resonance color in the prototype. Dark waves and tall barriers cannot be absorbed.
 - Damage clears stored charge. Three player HP; brief invulnerability after damage.
@@ -32,7 +33,7 @@ The latest conversation takes precedence over the original desktop handoff.
 ## Controls
 
 - Four persistent bottom buttons: left, right, jump, Resonate.
-- Left thumb moves; right thumb jumps/absorbs/fires. Multitouch and pointer cancellation supported.
+- Left thumb moves; right thumb jumps/fires. Multitouch, subtle supported-device haptics and pointer cancellation are supported.
 - Keyboard: arrows/A/D move, Space/W/up jumps, J/F/Enter resonates, Escape/P pauses.
 - Controls never cover the battle travel area. Safe areas respected.
 
@@ -41,7 +42,7 @@ The latest conversation takes precedence over the original desktop handoff.
 Authored and deterministic, with one-, two-, and three-lane low waves, unjumpable
 tall formations, shield barriers, staggered bursts, outer-to-inner cascades,
 alternating attacks, uneven subdivisions, faster telegraphed notes, and reprise
-variations. Erratic but readable: two-beat baseline travel, explicit warning marks
+variations. Erratic but readable: 2.5-beat baseline travel, explicit warning marks
 for faster notes. Resonant pairs and shot openings are spread through the chart.
 Every chart formation must retain a viable dodge/jump response. A deterministic
 simulation test will prove at least one winning route through the full chart.
@@ -55,7 +56,7 @@ if browser storage is unavailable. No intense full-screen flashes.
 
 ## Verification
 
-Test movement bounds, jump behavior, absorb priority/window, damage, immunity,
+Test movement bounds, jump and landing input buffer, automatic absorption, damage, immunity,
 counterattack interception, victory/timeout, deterministic chart and winnability.
 Run lint, type checking, unit tests and production build. Exercise production
 subpath in a browser at phone sizes, multitouch, pause/resume, fullscreen,

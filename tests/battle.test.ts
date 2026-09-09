@@ -33,6 +33,15 @@ describe('movement and collision rules', () => {
     b.act('right', 0.8);
     expect(b.lane).toBe(3);
   });
+  it('buffers a late second airborne move and applies it on landing', () => {
+    const b = new Battle([]);
+    b.act('jump', 0);
+    b.act('left', 0.05);
+    b.act('left', RULES.jumpDuration - 0.08);
+    expect(b.lane).toBe(1);
+    b.update(RULES.jumpDuration);
+    expect(b.lane).toBe(0);
+  });
   it('an edge input does not consume the airborne movement', () => {
     const b = new Battle([]);
     b.lane = 0;
@@ -77,29 +86,27 @@ describe('movement and collision rules', () => {
 });
 
 describe('absorb and counterattack', () => {
-  it.each([-0.12, 0, 0.12])('absorbs at window offset %s', (offset) => {
+  it('automatically absorbs a resonant wave on contact while grounded', () => {
     const b = new Battle([note(0, 1)]);
-    b.act('resonate', 1 + offset);
+    b.update(1);
     expect(b.charge).toBe(1);
-    b.update(1.3);
     expect(b.hp).toBe(3);
+    expect(b.stats.absorbs).toBe(1);
   });
-  it('rejects an early absorb, dark notes and airborne attempts', () => {
-    const early = new Battle([note(0, 1)]);
-    early.act('resonate', 0.87);
-    expect(early.charge).toBe(0);
+  it('does not absorb dark notes or resonance jumped over', () => {
     const dark = new Battle([note(0, 1, 'dark')]);
-    dark.act('resonate', 0.99);
+    dark.update(1);
     expect(dark.charge).toBe(0);
     const air = new Battle([note(0, 1)]);
     air.act('jump', 0.85);
-    air.act('resonate', 1);
+    air.update(1);
     expect(air.charge).toBe(0);
+    expect(air.hp).toBe(3);
   });
-  it('prioritizes an in-range absorb over firing a ready shot', () => {
+  it('safely absorbs at full charge and fires only on an explicit action', () => {
     const b = new Battle([note(0, 1)]);
     b.charge = 2;
-    b.act('resonate', 1);
+    b.update(1);
     expect(b.stats.absorbs).toBe(1);
     expect(b.charge).toBe(2);
     expect(b.shots).toHaveLength(0);
@@ -109,10 +116,10 @@ describe('absorb and counterattack', () => {
   });
   it('requires two distinct notes and does not reuse an absorbed note', () => {
     const b = new Battle([note(0, 1), note(1, 2)]);
-    b.act('resonate', 1);
-    b.act('resonate', 1.1);
+    b.update(1);
+    b.update(1.1);
     expect(b.charge).toBe(1);
-    b.act('resonate', 2);
+    b.update(2);
     b.act('resonate', 2.2);
     b.update(3);
     expect(b.bossHp).toBe(4);
@@ -207,8 +214,6 @@ describe('authored chart', () => {
       input.push({ time: beat * BEAT, action });
     for (let phrase = 0; phrase < 7; phrase++) {
       const base = phrase * 16;
-      add(base + 4, 'resonate');
-      add(base + 5, 'resonate');
       // Save the final hit for the coda to exercise the entire chart before victory.
       if (phrase >= 3) add(base + 5.5, 'resonate');
       const out: Action = phrase % 2 ? 'left' : 'right';
@@ -219,8 +224,6 @@ describe('authored chart', () => {
       add(base + 14.7, back);
       add(base + 14.8, back);
     }
-    add(114, 'resonate');
-    add(115, 'resonate');
     add(115.5, 'resonate');
     add(116.6, 'jump');
     input.sort((a, b) => a.time - b.time);
