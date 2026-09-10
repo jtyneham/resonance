@@ -61,6 +61,16 @@ Git. Dependencies, build files and local test screenshots should not be committe
 
 ## Check the code
 
+### Isolated Conductor motion study
+
+Open `http://localhost:4173/resonance/conductor-lab.html` after building and
+starting the preview. This separate PixiJS study tests idle, Ictus and finger
+articulation with timing clicks, scrubbing and skipped-frame controls. It does
+not change the playable prototype or establish the final character art.
+See [scope, limits and phone checks](docs/bosses/conductor/rig-study.md).
+
+### Automated checks
+
 ```sh
 npm run check
 npm run format:check

@@ -9,7 +9,38 @@ implementation in the same turn as the reminder unless the user has already said
 they are using GPT-6 Astra High. Planning, design discussion, research, and review
 can continue on GPT-5.6 Sol Medium.
 
-Last checkpoint: **phone playtest revision 2 complete and locally verified**
+## Current checkpoint — Conductor motion study (2026-09-10)
+
+Implemented a separate `/resonance/conductor-lab.html` PixiJS 8 technical study.
+The existing Three.js game remains intact. It includes a temporary generated
+cutout hand with 15 nested finger joints, idle/Ictus/finger clips, an audio-clock
+pose sampler, timing clicks, scrubbing, pause, fullscreen and drawing diagnostics.
+See `docs/bosses/conductor/rig-study.md` for scope and remaining decision gates,
+and `rig-study-art.md` beside it for asset provenance and exact generation prompts.
+
+Build, ESLint, TypeScript, 26 unit tests, repository formatting and diff checks
+pass. All 11 Chrome browser scenarios passed together (2.6 minutes, exit 0):
+four study checks plus all seven existing game regressions, including a real
+audio-clock victory. Rendered Ictus and finger poses were visually inspected.
+The built study page and its atlas both return HTTP 200 under `/resonance/`.
+The first runner stalled during managed-server teardown after reporting its
+results; rerunning against a separately started preview completed cleanly.
+
+No PixiJS migration decision, production art approval or PixelOver/Aseprite
+pipeline validation is implied. Real-phone smoothness, perceived audio alignment
+and gesture readability still need the user's test after publishing. No commit,
+push or remote deployment has been performed by the agent.
+
+Suggested commit summary: `Add isolated Conductor animation study`.
+After push and a green Pages workflow, open
+<https://jtyneham.github.io/resonance/conductor-lab.html>.
+The existing workflow already builds and publishes both entries; no Pages
+settings change is required. Two older design documents received formatting-only
+cleanup so the existing CI formatting gate can pass; their prose is preserved.
+
+## Earlier prototype checkpoint
+
+Previous checkpoint: **phone playtest revision 2 complete and locally verified**
 (2026-09-09). The first prototype is live on GitHub Pages. Revision 2 implements
 automatic absorption, faster/shorter jump, landing input buffer, faster movement
 animation, shorter field, slower attacks, cleaner title, raised controls, subtle

@@ -28,6 +28,15 @@ mockups and playtesting.
   does not take damage from that compatible wave.
 - Its shape, motion, and sound must communicate absorbability without relying on
   color alone.
+- Resonance waves are never free or isolated recharge pickups. Bosses place them
+  inside active hostile formations so reaching the correct lane and remaining
+  grounded requires a deliberate risk.
+- Their difficulty varies. Some are moderately contestable and others are buried
+  inside dense sequences that demand fast dodging, lane changes, or precisely timed
+  jumps before absorption.
+- Earning charge must feel valuable and high-risk/high-reward. The route must still
+  be readable and mechanically possible; obscurity or unavoidable damage is not a
+  substitute for difficulty.
 
 ### Player counterattack
 
@@ -75,8 +84,9 @@ mockups and playtesting.
   and can block a counterattack. They share the low hazards' energy-stroke language
   rather than resembling physical components taken from The Conductor. The earlier
   generic spikes, ornate mechanical pipes, and long gothic openings are rejected.
-- Resonance waves feel deliberately offered or presented, as though The Conductor
-  is testing whether the player can hold the note.
+- Resonance waves are presented as deliberate temptations. The Conductor appears to
+  offer them while surrounding them with enough danger that accepting the offer is
+  an earned commitment.
 - Counterattack routes can be obstructed by The Conductor's dense mechanical
   barriers, making the firing opening part of the authored phrase.
 - The appearance of The Conductor counterattack projectile in the latest accepted

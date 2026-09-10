@@ -12,13 +12,13 @@ Design the sequence of decisions the player makes alongside the boss's performan
 
 All timestamps refer to elapsed time in the supplied files, including introductions, dialogue, and outros. They are approximate observation anchors, not exact chart event boundaries.
 
-| Local source | File duration | Source video |
-| --- | --- | --- |
-| `C:/Users/Haizara H5/Desktop/EH-FrogsWrath.mp4` | 08:59.26 | 1280 x 720, 60 fps |
-| `C:/Users/Haizara H5/Desktop/EH_Zigg.mp4` | 04:46.77 | 1280 x 720, 29.97 fps |
-| `C:/Users/Haizara H5/Desktop/EH_LightMan.mp4` | 02:40.80 | 1280 x 720, 30 fps |
-| `C:/Users/Haizara H5/Desktop/EH_gnomeBoss.mp4` | 04:26.61 | 1280 x 720, 60 fps |
-| `C:/Users/Haizara H5/Desktop/EH_shopkeeper.mp4` | 04:26.63 | 1280 x 720, 60 fps |
+| Local source                                    | File duration | Source video          |
+| ----------------------------------------------- | ------------- | --------------------- |
+| `C:/Users/Haizara H5/Desktop/EH-FrogsWrath.mp4` | 08:59.26      | 1280 x 720, 60 fps    |
+| `C:/Users/Haizara H5/Desktop/EH_Zigg.mp4`       | 04:46.77      | 1280 x 720, 29.97 fps |
+| `C:/Users/Haizara H5/Desktop/EH_LightMan.mp4`   | 02:40.80      | 1280 x 720, 30 fps    |
+| `C:/Users/Haizara H5/Desktop/EH_gnomeBoss.mp4`  | 04:26.61      | 1280 x 720, 60 fps    |
+| `C:/Users/Haizara H5/Desktop/EH_shopkeeper.mp4` | 04:26.63      | 1280 x 720, 60 fps    |
 
 Review method:
 
@@ -156,16 +156,16 @@ Compose a boss's emotional arc alongside its chart: assertion, escalation, an in
 
 ## What creates the erratic feel across these recordings
 
-| Ingredient | Evidence | Consequence for encounter design |
-| --- | --- | --- |
-| Staggered arrivals | Blue Zigg passages; early LightMan; late Frog | Players must track the next arrival, not only current occupied lanes. |
-| Repeated trains | Zigg's later fight; LightMan gold bursts | Lane occupation has duration and release. |
-| Overlapping formations | Frog around 01:55; Shopkeeper around 00:45 | Read a combined route through multiple demands. |
-| Contrasting phrases | LightMan scatter/stream alternation; Zigg dialogue break | Change the kind of attention demanded, not just the quantity. |
-| Scene transformation | Gnome around 02:18 and 03:20; Shopkeeper around 00:43.5 | Presentation participates in the encounter's structure. |
-| Expanded boss silhouette | Frog around 01:53; Shopkeeper's large form | Escalation is expressed through the character. |
-| Deliberate relief | Frog's blue-window passage; gnome ending | A reduction in pressure can make the next passage more consequential. |
-| Recognizable recurring shapes | Crescent low forms and upright forms across varied settings | Basic reading can survive substantial changes in presentation. |
+| Ingredient                    | Evidence                                                    | Consequence for encounter design                                      |
+| ----------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------- |
+| Staggered arrivals            | Blue Zigg passages; early LightMan; late Frog               | Players must track the next arrival, not only current occupied lanes. |
+| Repeated trains               | Zigg's later fight; LightMan gold bursts                    | Lane occupation has duration and release.                             |
+| Overlapping formations        | Frog around 01:55; Shopkeeper around 00:45                  | Read a combined route through multiple demands.                       |
+| Contrasting phrases           | LightMan scatter/stream alternation; Zigg dialogue break    | Change the kind of attention demanded, not just the quantity.         |
+| Scene transformation          | Gnome around 02:18 and 03:20; Shopkeeper around 00:43.5     | Presentation participates in the encounter's structure.               |
+| Expanded boss silhouette      | Frog around 01:53; Shopkeeper's large form                  | Escalation is expressed through the character.                        |
+| Deliberate relief             | Frog's blue-window passage; gnome ending                    | A reduction in pressure can make the next passage more consequential. |
+| Recognizable recurring shapes | Crescent low forms and upright forms across varied settings | Basic reading can survive substantial changes in presentation.        |
 
 The recordings suggest three separate quantities to consider when tuning a phrase:
 

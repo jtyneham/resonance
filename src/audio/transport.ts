@@ -3,6 +3,10 @@ import { BEAT, DURATION, RULES } from '../game/config';
 import type { EventKind } from '../game/battle';
 
 export class Transport {
+  // The isolated rig study uses this same clock/lifecycle with a simple click
+  // score. Default construction retains the prototype's original score.
+  constructor(private readonly previewBpm?: number) {}
+
   private context?: AudioContext;
   private master?: GainNode;
   private origin = 0;
@@ -49,6 +53,17 @@ export class Transport {
     this.stopVoices();
     this.origin = this.context!.currentTime + RULES.countInBeats * BEAT + 0.06;
     this.nextTick = -8;
+    this.schedule();
+  }
+
+  seek(seconds: number) {
+    if (!this.context) return;
+    this.stopVoices();
+    this.origin = this.context.currentTime - Math.max(0, seconds);
+    const beat = this.previewBpm ? 60 / this.previewBpm : BEAT;
+    this.nextTick = Math.ceil(
+      (Math.max(0, seconds) / beat) * (this.previewBpm ? 1 : 4),
+    );
     this.schedule();
   }
 
@@ -140,6 +155,25 @@ export class Transport {
   schedule() {
     const ctx = this.context;
     if (!ctx || ctx.state !== 'running') return;
+    if (this.previewBpm) {
+      const beat = 60 / this.previewBpm;
+      // Skip missed ticks after a main-thread stall rather than playing a burst.
+      this.nextTick = Math.max(this.nextTick, Math.ceil(this.time / beat));
+      while (this.origin + this.nextTick * beat < ctx.currentTime + 0.15) {
+        const tick = this.nextTick++;
+        const at = this.origin + tick * beat;
+        const local = ((tick % 24) + 24) % 24;
+        const ictus = [5, 7, 9, 11].includes(local);
+        this.tone(
+          ictus ? 330 : local % 4 === 0 ? 880 : 660,
+          at,
+          0.065,
+          ictus ? 0.25 : 0.1,
+          'triangle',
+        );
+      }
+      return;
+    }
     const ahead = ctx.currentTime + 0.12;
     while (
       this.origin + (this.nextTick * BEAT) / 4 < ahead &&

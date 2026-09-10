@@ -20,6 +20,9 @@ boss encounter.
   demanding patterns can be learned, recognized, and executed consistently.
 - Universal combat rules and silhouettes teach the player how to respond. A boss
   does not need to become a tutorial encounter in order to communicate those rules.
+- Absorbable resonance is never handed to the player in safety. Every boss embeds
+  it within hostile authored patterns, making charge acquisition a valuable
+  high-risk/high-reward choice rather than a routine pickup.
 
 ## Difficulty dimensions
 
@@ -27,4 +30,3 @@ Different bosses can emphasize different combinations of reaction speed, pattern
 recognition, rhythmic disruption, spatial judgment, memory, endurance, deceptive
 telegraphing, lane commitment, and counterattack timing. No single dimension is the
 game's universal measure of which boss is "later" or "harder."
-

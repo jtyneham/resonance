@@ -1,7 +1,8 @@
 # The Conductor — move-pool draft
 
-Status: proposal for discussion. Nothing in this document is authorized for
-implementation until accepted.
+Status: broadly accepted at the concept level on 2026-09-10. Individual visuals,
+timings, combinations, and names remain provisional; this is not authorization for
+implementation.
 
 ## Combat identity
 
@@ -93,19 +94,22 @@ Timing pressure created through deliberate suspension.
 
 ### 5. Resonant Invitation
 
-The boss deliberately gives the player something worth absorbing.
+The boss appears to offer the player something worth absorbing, but the invitation
+is baited with genuine danger.
 
 - **Gesture:** the fingers open and the baton is presented forward as a formal cue,
   invitation, or taunt.
-- **Attack:** hollow pale resonance waves enter selected lanes while damaging low
-  arcs or pipe barriers define the route around them.
-- **Player demand:** reach the offered lane and remain grounded to absorb instead of
-  reflexively jumping every visible object.
+- **Attack:** hollow pale resonance waves are embedded within damaging low arcs,
+  pipe barriers, or a rapidly changing route. They never arrive as isolated, safely
+  collected charge.
+- **Player demand:** dodge or jump through the surrounding formation, reach the
+  offered lane, and remain grounded at the correct moment to absorb. Pursuing the
+  wave is optional, valuable, and meaningfully more dangerous than declining it.
 - **Variations:** successive offerings change lane, a safe absorption lane becomes
   a poor counterattack lane because of an organ pipe, or the firing opening arrives
   after the next cutoff.
-- **Character:** even the player's power is something The Conductor appears to
-  grant on its own terms.
+- **Character:** The Conductor treats the player's power as something that must be
+  won by accepting its terms.
 
 ### 6. Cutoff and Re-entry
 
@@ -155,9 +159,9 @@ that failure feels attributable to the player rather than hidden information.
 ## Still needed before an authored chart
 
 - Accept, revise, or reject the six phrases and Cadenza structure.
-- Establish the composition's approximate duration, meter map, tempo regions, and
-  musical motif.
+- Develop the accepted mechanical-chamber-orchestra/deconstructed-club direction
+  into a composition brief: approximate duration, meter map, tempo regions,
+  instrumentation, and musical motif.
 - Decide exact telegraph lengths and projectile travel times through playtesting.
 - Arrange the accepted phrases into a scored encounter timeline with purposeful
   recurrence, contrast, and transformation.
-
