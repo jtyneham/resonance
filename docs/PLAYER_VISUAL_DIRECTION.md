@@ -46,6 +46,11 @@ materials, anatomy, or level of ornament.
 
 ## Counterattack requirement
 
-The final counterattack is still open. It must be visually distinct from the
-player character and remain readable while travelling toward the boss through a
-dense formation.
+Each boss encounter gives the counterattack a unique visual form. The Mote absorbs
+that boss's resonance and returns it in a form shaped by the encounter. Every
+counterattack must remain visually distinct from the player character and readable
+while travelling through a dense formation.
+
+The shared control, charge, collision, and damage behavior should remain consistent
+across bosses while the silhouette, animation, particles, and sound express the
+current boss.

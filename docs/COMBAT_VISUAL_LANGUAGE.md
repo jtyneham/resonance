@@ -35,6 +35,11 @@ mockups and playtesting.
 - It travels from the player toward the boss after the stored resonance is fired.
 - It must remain recognizable through dense formations and must not resemble the
   player character itself.
+- Its visual form is unique to each boss encounter because the player is returning
+  resonance absorbed from that boss.
+- The shared input, charge requirement, travel direction, collision behavior, and
+  damage rules remain consistent unless later playtesting establishes a strong
+  reason for a mechanical variation.
 
 ## Shared presentation rules
 
@@ -71,4 +76,5 @@ mockups and playtesting.
 - Rejected: the counterattack resembling the luminous player spark.
 - Selected player direction: the Broken Resonance Mote recorded in
   `docs/PLAYER_VISUAL_DIRECTION.md`.
-- Open: the counterattack design derived from the selected player direction.
+- Open: the individual counterattack design for each boss, beginning with The
+  Conductor.
