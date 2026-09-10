@@ -31,9 +31,10 @@ mockups and playtesting.
 
 ### Player counterattack
 
-- Uses a small, focused spark or note with a short directional tail.
+- Its final silhouette is open for redesign.
 - It travels from the player toward the boss after the stored resonance is fired.
-- Its concentrated silhouette must remain recognizable through dense formations.
+- It must remain recognizable through dense formations and must not resemble the
+  player character itself.
 
 ## Shared presentation rules
 
@@ -48,9 +49,13 @@ mockups and playtesting.
 
 ## The Conductor's expression
 
+- Normal attacks use abstract conducting and mechanical forms rather than literal
+  notes, rests, or clefs. Recognizable notation is reserved for rare special
+  moments such as Cadenza.
 - Low hazards resemble decisive horizontal baton strokes or slashes.
-- Tall barriers resemble solid downbeat spikes or mechanical bar lines driven
-  into the musical staff.
+- Tall barriers resemble theatrical pipe-organ pipes or small ranks of pipes. Their
+  upright, heavy silhouette communicates that they cannot be jumped and can block
+  a counterattack. The earlier generic downbeat-spike design is rejected.
 - Resonance waves feel deliberately offered or presented, as though The Conductor
   is testing whether the player can hold the note.
 - Counterattack routes can be obstructed by The Conductor's dense mechanical
@@ -58,3 +63,12 @@ mockups and playtesting.
 - Major attack releases correspond to readable finger movements, wrist snaps,
   baton cues, or broader conducting gestures.
 
+## Accepted and open visual decisions
+
+- Accepted for The Conductor: red horizontal baton-stroke arcs as low hazards.
+- Accepted for The Conductor: hollow pale rings as resonance waves.
+- Direction accepted, exact design open: pipe-organ tall barriers.
+- Rejected: the counterattack resembling the luminous player spark.
+- Selected player direction: the Broken Resonance Mote recorded in
+  `docs/PLAYER_VISUAL_DIRECTION.md`.
+- Open: the counterattack design derived from the selected player direction.

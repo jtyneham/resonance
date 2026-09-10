@@ -12,7 +12,7 @@ reference or animation handoff.
 - Sparse, faint crossbars recede toward the boss and suggest measures on a musical
   staff while providing depth information.
 - The lanes and rails remain restrained against the near-black field. Attacks, the
-  player spark, and the boss have greater visual contrast.
+  player character, and the boss have greater visual contrast.
 - The image-generation mockup produced on 2026-09-10 is the composition reference
   for this lane treatment, not a production asset or a pixel-exact layout.
 
@@ -30,9 +30,7 @@ reference or animation handoff.
 
 ## Still open
 
-- Exact attack artwork and animation frames. The universal attack alphabet and
-  The Conductor's broad expression of it are locked in
-  `docs/COMBAT_VISUAL_LANGUAGE.md`.
+- Exact pipe-organ barrier design and counterattack silhouette.
 - Exact arena architecture and background fragments.
 - Boss scale, resting pose, and use of the circular wrist opening.
 - Music, authored chart, phase structure, and Cadenza details.
