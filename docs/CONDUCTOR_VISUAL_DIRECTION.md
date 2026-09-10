@@ -18,7 +18,7 @@ reference or animation handoff.
 
 ## Locked Conductor direction
 
-- `C:/Users/Haizara H5/Desktop/Conductor_visual.png` is the canonical character
+- `docs/bosses/conductor/Conductor_visual.png` is the canonical character
   reference.
 - The Conductor is only the floating mechanical hand; it has no humanoid body.
 - Preserve the ivory, antique-gold, crimson, and near-black palette and the rough,
@@ -27,10 +27,28 @@ reference or animation handoff.
   barely visible and subordinate to gameplay and the boss.
 - Character animation communicates precision, authority, restraint, and increasing
   difficulty maintaining perfect timing under damage.
+- The Conductor's hand and baton animation is partly grounded in recognizable
+  real-world orchestral conducting technique. Authentic beat patterns,
+  preparatory/upbeat gestures, downbeats, cues, cutoffs, fermatas, subdivisions,
+  articulation, dynamics, and tempo changes form a physical vocabulary for its
+  attacks.
+- The animation is not limited to literal conducting. Supernatural and mechanical
+  motions may exaggerate, combine, or violate that vocabulary when doing so serves
+  the character, but the underlying hand mechanics should remain intentional rather
+  than generic baton waving.
+- Conducting gestures act as readable performance cues: preparation precedes the
+  corresponding attack release, while gesture size, sharpness, and flow help convey
+  force and articulation.
+- The counterattack projectile appearance shown in the latest accepted combat
+  mockup is approved. It travels from the player to The Conductor extremely fast,
+  creates strong impact feedback, and disappears without embedding or lingering.
+- The Conductor does not flinch or stop conducting when hit; its animation and
+  authored attack timeline continue uninterrupted.
 
 ## Still open
 
-- Exact counterattack silhouette.
+- Exact production-frame cleanup and final travel duration for the approved
+  counterattack projectile.
 - Exact arena architecture and background fragments.
 - Boss scale, resting pose, and use of the circular wrist opening.
 - Music, authored chart, phase structure, and Cadenza details.

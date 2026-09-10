@@ -48,9 +48,13 @@ materials, anatomy, or level of ornament.
 
 Each boss encounter gives the counterattack a unique visual form. The Mote absorbs
 that boss's resonance and returns it in a form shaped by the encounter. Every
-counterattack must remain visually distinct from the player character and readable
-while travelling through a dense formation.
+counterattack launches a projectile from the Mote that remains visually distinct
+from the player character and readable through a dense formation. The projectile
+crosses the lane extremely quickly: it should feel nearly immediate while remaining
+visible long enough to show its path or collision with a tall barrier.
 
 The shared control, charge, collision, and damage behavior should remain consistent
 across bosses while the silhouette, animation, particles, and sound express the
-current boss.
+current boss. A successful hit has forceful impact frames and feedback, but never
+stuns, staggers, flinches, displaces, or interrupts the boss. The boss animation and
+authored attack timeline continue underneath the hit presentation.

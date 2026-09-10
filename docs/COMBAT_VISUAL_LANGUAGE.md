@@ -31,12 +31,22 @@ mockups and playtesting.
 
 ### Player counterattack
 
-- Its final silhouette is open for redesign.
-- It travels from the player toward the boss after the stored resonance is fired.
+- Firing stored resonance launches a boss-specific counterattack projectile from
+  the player through the active lane.
+- The projectile crosses the arena extremely quickly, making release-to-impact
+  feel nearly immediate. It remains visible for enough frames to communicate its
+  direction and any collision with a tall barrier, but never reads as a slow or
+  lingering projectile.
 - It must remain recognizable through dense formations and must not resemble the
   player character itself.
 - Its visual form is unique to each boss encounter because the player is returning
   resonance absorbed from that boss.
+- A successful hit receives strong impact presentation, such as a sharp impact
+  frame, flash, particles, sound, and clear health loss.
+- The hit does **not** stagger, stun, flinch, displace, interrupt, or cancel the
+  boss. The boss's animation, attack sequence, and encounter timeline continue
+  through it without pausing or losing synchronization. A graphic impact frame
+  may briefly overdraw the action, but the underlying gameplay clock keeps moving.
 - The shared input, charge requirement, travel direction, collision behavior, and
   damage rules remain consistent unless later playtesting establishes a strong
   reason for a mechanical variation.
@@ -69,6 +79,12 @@ mockups and playtesting.
   is testing whether the player can hold the note.
 - Counterattack routes can be obstructed by The Conductor's dense mechanical
   barriers, making the firing opening part of the authored phrase.
+- The appearance of The Conductor counterattack projectile in the latest accepted
+  combat mockup is the approved visual direction. It strikes The Conductor very
+  quickly without embedding in or tethering to its wrist/core.
+- The Conductor receives the hit without recoiling or losing the beat. The impact
+  is forceful in presentation only; its conducting gesture and the authored attack
+  phrase continue uninterrupted.
 - Major attack releases correspond to readable finger movements, wrist snaps,
   baton cues, or broader conducting gestures.
 
@@ -79,7 +95,13 @@ mockups and playtesting.
 - Accepted for The Conductor: abstract flue-organ-pipe tall barriers, singly or in
   adjacent ranks.
 - Rejected: the counterattack resembling the luminous player spark.
+- Rejected: the projectile embedding in or tethering to the boss, or a hit reaction
+  that throws The Conductor's wrist, fingers, or baton out of synchronization.
 - Selected player direction: the Broken Resonance Mote recorded in
   `docs/PLAYER_VISUAL_DIRECTION.md`.
-- Open: the individual counterattack design for each boss, beginning with The
-  Conductor.
+- Locked universally: a very fast boss-specific counterattack projectile, strong
+  impact feedback, and no boss interruption.
+- Locked for The Conductor: the projectile appearance shown in the latest accepted
+  combat mockup.
+- Open: exact frame timing after the fast travel is tuned in playtesting, plus the
+  counterattack styling for later bosses.
