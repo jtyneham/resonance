@@ -30,7 +30,7 @@ reference or animation handoff.
 
 ## Still open
 
-- Exact pipe-organ barrier design and counterattack silhouette.
+- Exact counterattack silhouette.
 - Exact arena architecture and background fragments.
 - Boss scale, resting pose, and use of the circular wrist opening.
 - Music, authored chart, phase structure, and Cadenza details.

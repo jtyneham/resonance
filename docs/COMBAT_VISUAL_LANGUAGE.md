@@ -58,9 +58,13 @@ mockups and playtesting.
   notes, rests, or clefs. Recognizable notation is reserved for rare special
   moments such as Cadenza.
 - Low hazards resemble decisive horizontal baton strokes or slashes.
-- Tall barriers resemble theatrical pipe-organ pipes or small ranks of pipes. Their
-  upright, heavy silhouette communicates that they cannot be jumped and can block
-  a counterattack. The earlier generic downbeat-spike design is rejected.
+- Tall barriers are abstract flue-organ-pipe silhouettes or small ranks of pipes.
+  They use a long, dark, solid tube edged by rough crimson energy, a flat/open
+  circular crown, and a small horizontal mouth with a visible lower lip near the
+  lower portion. Their upright silhouette communicates that they cannot be jumped
+  and can block a counterattack. They share the low hazards' energy-stroke language
+  rather than resembling physical components taken from The Conductor. The earlier
+  generic spikes, ornate mechanical pipes, and long gothic openings are rejected.
 - Resonance waves feel deliberately offered or presented, as though The Conductor
   is testing whether the player can hold the note.
 - Counterattack routes can be obstructed by The Conductor's dense mechanical
@@ -72,7 +76,8 @@ mockups and playtesting.
 
 - Accepted for The Conductor: red horizontal baton-stroke arcs as low hazards.
 - Accepted for The Conductor: hollow pale rings as resonance waves.
-- Direction accepted, exact design open: pipe-organ tall barriers.
+- Accepted for The Conductor: abstract flue-organ-pipe tall barriers, singly or in
+  adjacent ranks.
 - Rejected: the counterattack resembling the luminous player spark.
 - Selected player direction: the Broken Resonance Mote recorded in
   `docs/PLAYER_VISUAL_DIRECTION.md`.
