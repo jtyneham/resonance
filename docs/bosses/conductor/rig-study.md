@@ -1,5 +1,19 @@
 # Conductor motion study — isolated technical spike
 
+## Evaluation outcome
+
+The procedural cutout/joint-rig direction was **rejected after phone review on
+2026-09-10**. The timing architecture worked, but the assembled boss read as a
+crab rather than a coherent hand; its palm was poorly centered, its Ictus appeared
+to be only a slight rotation, and its finger motion was too subtle. Do not extend
+this rig or reuse its generated atlas as production art.
+
+The replacement direction is documented in
+[animation-direction.md](animation-direction.md): complete authored hand frames,
+modular animation clips, shared transition poses, a fixed palm anchor and the same
+authoritative music-clock synchronization. This page remains a record of what the
+technical spike tested.
+
 ## Purpose and scope
 
 Test whether a 2D articulated hand can support an idle, an Ictus and independently
@@ -69,13 +83,12 @@ Browser emulation is not physical-phone validation. The diagnostic CPU p95
 measures synchronous pose/draw submission, not GPU completion or audio latency;
 draws/s and gaps are affected by intentional caps and pauses.
 
-Before deciding on migration, have the user try the published study on their
-phone and answer just these three questions:
+The user completed the relevant phone review. The recorded answers were:
 
-1. Do the Ictus and independent finger movements read clearly at phone size?
-2. Is playback smooth, and does the hand catch up cleanly after Skip drawing?
-3. Do the low clicks and attack releases feel aligned using speakers or wired
-   audio, including after pause/resume?
+1. The Ictus did not read as conducting; it appeared to be a slight hand rotation.
+2. Three fingers articulated, but only slightly.
+3. Timing clicks and the red release felt synchronized; the Ictus animation itself
+   remained unacceptable.
 
 Keep asset-fidelity approval separate. A smooth provisional rig is not approval
 of this hand's proportions, final art, encounter design or full-game UI.

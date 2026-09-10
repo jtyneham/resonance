@@ -66,8 +66,10 @@ Git. Dependencies, build files and local test screenshots should not be committe
 Open `http://localhost:4173/resonance/conductor-lab.html` after building and
 starting the preview. This separate PixiJS study tests idle, Ictus and finger
 articulation with timing clicks, scrubbing and skipped-frame controls. It does
-not change the playable prototype or establish the final character art.
-See [scope, limits and phone checks](docs/bosses/conductor/rig-study.md).
+not change the playable prototype. Its procedural hand was rejected after phone
+review; it remains a timing experiment, not the production animation direction.
+See the [study outcome](docs/bosses/conductor/rig-study.md) and the replacement
+[whole-hand clip direction](docs/bosses/conductor/animation-direction.md).
 
 ### Automated checks
 

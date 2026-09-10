@@ -38,8 +38,11 @@ not generic magical baton waving.
 
 The smallest and most reusable statement.
 
-- **Gesture:** a compact preparatory lift, exact downward baton stroke, crisp beat
-  point, and controlled rebound.
+- **Gesture:** a compact preparatory lift, exact downward baton stroke turning
+  into a forward aim toward the player/camera at the crisp beat point, then a
+  controlled upward withdrawal/rebound. The baton is foreshortened at impact;
+  it does not physically shorten. See `storyboards/ictus-v2-notes.md` for the
+  requested pose revision, which supersedes the lower-left storyboard strike.
 - **Attack:** a red low-hazard arc releases on the beat point in one lane.
 - **Player demand:** jump on time or make a single-lane escape.
 - **Variations:** displaced accents, closely spaced double strokes, or a broader
@@ -142,6 +145,10 @@ The difficulty is memory plus execution. The signaling must be readable enough
 that failure feels attributable to the player rather than hidden information.
 
 ## Shared choreography rules
+
+Production choreography uses complete authored hand-frame clips rather than a
+runtime-assembled palm/finger joint rig. See `animation-direction.md` for shared
+poses, transitions, anchoring, timing and export requirements.
 
 - Gesture preparation precedes the relevant attack by a musically meaningful
   interval; the beat point and gameplay release share the same transport clock.

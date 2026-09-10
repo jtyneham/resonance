@@ -11,6 +11,29 @@ can continue on GPT-5.6 Sol Medium.
 
 ## Current checkpoint — Conductor motion study (2026-09-10)
 
+Latest artifact: `docs/bosses/conductor/storyboards/ictus-poses-v4.png`, a five-pose
+storyboard created from `Conductor_visual_transparent.png` with built-in image
+generation. It is ready for gesture/silhouette review, not approved production
+frames. At the user's request, pose04 now aims toward the player/camera with a
+foreshortened baton; v1's lower-left strike is superseded. See
+`storyboards/ictus-v2-notes.md` for that revision. Pose05 now remains frontal with
+the baton vertically upward and passes immediately back toward01, with no hold.
+The user rejected v3's grip perspective. V4 redraws the thumb/index pinch around
+a separate vertical baton handle and restores all three free fingers.
+See `storyboards/ictus-v4-notes.md` for the latest edit prompts and review limits.
+`storyboards/README.md` records earlier prompts and remaining alignment/detail
+issues. No animation or game code changed in this storyboard pass. Resume with
+the user's review before producing the full Ictus animation and live preview.
+
+**Design decision after phone review:** the fully modular body-part rig is
+rejected. Restart Conductor production animation from the original canonical
+reference using complete authored hand-frame clips. Do not use the later idle WebP
+as an asset or starting point. Share neutral, raised-preparation and closed-cutoff
+poses instead of building every pairwise transition; ordinary clips include their
+own preparation and recovery. Preserve the proven audio-clock frame selection and
+release synchronization. See
+`docs/bosses/conductor/animation-direction.md` for the locked direction.
+
 Implemented a separate `/resonance/conductor-lab.html` PixiJS 8 technical study.
 The existing Three.js game remains intact. It includes a temporary generated
 cutout hand with 15 nested finger joints, idle/Ictus/finger clips, an audio-clock
@@ -27,9 +50,9 @@ The first runner stalled during managed-server teardown after reporting its
 results; rerunning against a separately started preview completed cleanly.
 
 No PixiJS migration decision, production art approval or PixelOver/Aseprite
-pipeline validation is implied. Real-phone smoothness, perceived audio alignment
-and gesture readability still need the user's test after publishing. No commit,
-push or remote deployment has been performed by the agent.
+pipeline validation is implied. Phone review found synchronized timing but rejected
+the rig's crab-like silhouette, off-center palm, weak Ictus and subtle fingers. No
+commit, push or remote deployment has been performed by the agent.
 
 Suggested commit summary: `Add isolated Conductor animation study`.
 After push and a green Pages workflow, open
