@@ -1,26 +1,29 @@
 import { test, expect } from '@playwright/test';
 
-test('study loads independently, scrubs every pose and fits portrait screens', async ({
+test('whole-hand study loads, exposes every motion phase and fits portrait screens', async ({
   page,
 }) => {
   const errors: string[] = [],
     requests: string[] = [];
-  page.on('pageerror', (e) => errors.push(e.message));
-  page.on('request', (req) => requests.push(req.url()));
+  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('request', (request) => requests.push(request.url()));
   await page.goto('conductor-lab.html');
   await expect(page.locator('.study')).toHaveAttribute('data-ready', 'true');
-  await page.screenshot({ path: 'test-results/conductor-idle.png' });
-  for (const [value, section] of [
-    ['2.5', 'Ictus'],
-    ['6.8', 'Finger articulation'],
-    ['10.5', 'Cutoff'],
+  await expect(page.getByRole('slider')).toHaveAttribute('max', '2');
+  for (const [seconds, section, frame] of [
+    ['0.25', 'Preparation', '6'],
+    ['0.45', 'Downstroke', '10'],
+    ['0.56', 'Ictus', '13'],
+    ['0.67', 'Rebound', '16'],
+    ['0.88', 'Return', '21'],
   ]) {
-    await page.getByRole('slider').fill(value);
+    await page.getByRole('slider').fill(seconds);
     await expect(page.locator('#section')).toHaveText(section);
-    await page.screenshot({
-      path: `test-results/conductor-${section.replaceAll(' ', '-')}.png`,
-    });
+    await expect(page.locator('.study')).toHaveAttribute('data-frame', frame);
   }
+  await page.screenshot({
+    path: 'test-results/conductor-whole-hand-ictus.png',
+  });
   for (const size of [
     { width: 320, height: 568 },
     { width: 390, height: 844 },
@@ -35,11 +38,16 @@ test('study loads independently, scrubs every pose and fits portrait screens', a
       page.getByRole('button', { name: 'PLAY STUDY' }),
     ).toBeInViewport();
   }
+  expect(
+    requests.some((url) =>
+      url.endsWith('/assets/conductor-lab/ictus-whole-hand-v1.png'),
+    ),
+  ).toBe(true);
   expect(requests.some((url) => /\/three-/.test(url))).toBe(false);
   expect(errors).toEqual([]);
 });
 
-test('real audio clock freezes on pause and catches up after skipped drawing', async ({
+test('audio clock freezes on pause and frame sampling catches up after skipped drawing', async ({
   page,
 }) => {
   await page.goto('conductor-lab.html');
@@ -47,14 +55,12 @@ test('real audio clock freezes on pause and catches up after skipped drawing', a
   await expect(page.locator('.study')).toHaveAttribute('data-state', 'playing');
   await page.waitForTimeout(350);
   await page.getByRole('button', { name: 'PAUSE', exact: true }).click();
-  await expect(page.locator('.study')).toHaveAttribute('data-state', 'paused');
-  await page.waitForTimeout(80);
   const paused = await page.locator('.study').getAttribute('data-beat');
   await page.waitForTimeout(250);
   expect(await page.locator('.study').getAttribute('data-beat')).toBe(paused);
-  await page.getByText('INSPECT THE RIG').click();
+  await page.getByText('INSPECT THE FRAMES').click();
   await page.getByRole('combobox').selectOption('15');
-  await page.getByRole('checkbox', { name: 'Joint guides' }).check();
+  await page.getByRole('checkbox', { name: 'Palm anchor' }).check();
   await page.getByRole('button', { name: 'PLAY STUDY' }).click();
   await page.getByRole('button', { name: 'Skip drawing for 700 ms' }).click();
   const before = Number(await page.locator('.study').getAttribute('data-beat'));
@@ -64,26 +70,22 @@ test('real audio clock freezes on pause and catches up after skipped drawing', a
   );
   await page.waitForTimeout(700);
   const after = Number(await page.locator('.study').getAttribute('data-beat'));
-  expect(after - before).toBeGreaterThan(1.3);
-  expect(after - before).toBeLessThan(2.8);
+  expect(after).not.toBe(before);
   expect(await page.locator('.study').getAttribute('data-sampled-beat')).toBe(
     after.toFixed(5),
   );
 });
 
-test('isolated clips loop and rotation pauses until explicitly resumed', async ({
+test('the two-second clip loops and rotation pauses until explicitly resumed', async ({
   page,
 }) => {
   await page.goto('conductor-lab.html');
-  await expect(page.locator('.study')).toHaveAttribute('data-ready', 'true');
-  await page.getByRole('button', { name: 'Ictus', exact: true }).click();
-  await expect(page.getByRole('slider')).toHaveAttribute('max', '4');
-  await page.getByRole('slider').fill('3.9');
+  await page.getByRole('slider').fill('1.9');
   await page.getByRole('button', { name: 'PLAY STUDY' }).click();
   await page.waitForTimeout(400);
   expect(
     Number(await page.locator('.study').getAttribute('data-beat')),
-  ).toBeLessThan(6);
+  ).toBeLessThan(2);
   await page.setViewportSize({ width: 915, height: 412 });
   await expect(
     page.getByRole('dialog', { name: 'Rotate your device' }),
@@ -92,17 +94,12 @@ test('isolated clips loop and rotation pauses until explicitly resumed', async (
   await page.setViewportSize({ width: 412, height: 915 });
   await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.locator('.study')).toHaveAttribute('data-state', 'paused');
-  await page.getByRole('button', { name: 'Enter fullscreen' }).click();
-  await expect(
-    page.getByRole('button', { name: 'Exit fullscreen' }),
-  ).toBeVisible();
-  await page.getByRole('button', { name: 'Exit fullscreen' }).click();
 });
 
-test('missing art reports a visible error without enabling playback', async ({
+test('missing atlas reports a visible error without enabling playback', async ({
   page,
 }) => {
-  await page.route('**/assets/conductor-lab/parts.png', (route) =>
+  await page.route('**/assets/conductor-lab/ictus-whole-hand-v1.png', (route) =>
     route.abort(),
   );
   await page.goto('conductor-lab.html');

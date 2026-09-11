@@ -1,38 +1,45 @@
 import './style.css';
 import { Transport } from '../audio/transport';
-import { CLIP_RANGES, LAB_BEAT, LAB_BPM, type Clip } from './score';
+import {
+  ATTACK_RELEASE_BEAT,
+  CLIP_RANGES,
+  LAB_BEAT,
+  LAB_BPM,
+  LOOP_BEATS,
+  type Clip,
+} from './score';
 import { StudyView } from './view';
 
 document.querySelector<HTMLDivElement>('#lab')!.innerHTML = `
 <main class="study" data-state="loading">
-  <header><a href="${import.meta.env.BASE_URL}" aria-label="Back to the game">RESONANCE <span>↗</span></a><span class="edition">MOTION STUDY · 01</span></header>
-  <div class="heading"><p class="eyebrow">AN ARTICULATED PERFORMANCE</p><h1>The Conductor<span>.</span></h1><p class="subtitle">Temporary art. Three gestures. One musical clock.</p></div>
+  <header><a href="${import.meta.env.BASE_URL}" aria-label="Back to the game">RESONANCE <span>↗</span></a><span class="edition">WHOLE-HAND STUDY · 02</span></header>
+  <div class="heading"><p class="eyebrow">AUTHORED FRAME ANIMATION</p><h1>The Conductor<span>.</span></h1><p class="subtitle">One complete Ictus. Twenty-four whole-hand drawings.</p></div>
   <section id="stage" aria-label="Conductor animation preview"><div id="loading" role="status">Preparing the hand…</div><div class="stage-caption"><span id="section">Idle</span><span id="beat-label">120 BPM</span></div></section>
   <div class="cue"><i id="beat-light"></i><span id="cue">Ready when you are.</span></div>
   <section class="controls" aria-label="Motion study controls">
-    <div class="clip-tabs" role="group" aria-label="Choose animation"><button data-clip="sequence" aria-pressed="true">All three</button><button data-clip="idle" aria-pressed="false">Idle</button><button data-clip="ictus" aria-pressed="false">Ictus</button><button data-clip="fingers" aria-pressed="false">Fingers</button></div>
-    <label class="scrub-label" for="scrub"><span>PHRASE POSITION</span><output id="position">0.00 / 12.00 s</output></label><input id="scrub" type="range" min="0" max="12" step="0.01" value="0" aria-label="Scrub animation" />
+    <div class="clip-tabs" role="group" aria-label="Choose animation"><button data-clip="ictus" aria-pressed="true">ICTUS · ACCENTED FORMATION</button></div>
+    <label class="scrub-label" for="scrub"><span>PHRASE POSITION</span><output id="position">0.00 / 2.00 s</output></label><input id="scrub" type="range" min="0" max="2" step="0.01" value="0" aria-label="Scrub animation" />
     <div class="actions"><button id="play" class="primary" disabled>PLAY STUDY <span>▶</span></button><button id="restart" disabled aria-label="Restart animation">↺</button><button id="fullscreen" aria-label="Enter fullscreen">⛶</button></div>
-    <p id="notice" role="status">Loading the temporary sprite atlas.</p>
-    <details id="diagnostics"><summary>INSPECT THE RIG <span>+</span></summary><div class="diagnostic-body">
-      <div class="toggles"><label><input type="checkbox" id="guides" /> Joint guides</label><label><input type="checkbox" id="mute" /> Mute clicks</label></div>
+    <p id="notice" role="status">Loading the whole-hand sprite atlas.</p>
+    <details id="diagnostics"><summary>INSPECT THE FRAMES <span>+</span></summary><div class="diagnostic-body">
+      <div class="toggles"><label><input type="checkbox" id="guides" /> Palm anchor</label><label><input type="checkbox" id="mute" /> Mute clicks</label></div>
       <label class="rate-label" for="fps">Display cadence<select id="fps"><option value="0">Native refresh</option><option value="30">30 FPS</option><option value="15">15 FPS</option></select></label>
       <button id="skip">Skip drawing for 700 ms</button>
       <p id="metrics">Waiting for playback.</p><p class="explanation">Skipping drawings leaves the audio running. The hand catches up to the current beat. This tests timing, not a stalled audio engine.</p>
     </div></details>
   </section>
-  <footer>PIXIJS / WEBGL<span>RIG STUDY · NOT FINAL CHARACTER ART</span></footer>
+  <footer>PIXIJS / WEBGL<span>FRAME STUDY · ART DRAFT</span></footer>
 </main>
 <div id="rotate" role="dialog" aria-modal="true" aria-label="Rotate your device" hidden><p class="eyebrow">PORTRAIT STUDY</p><h2>Turn it upright.</h2><p>The performance is paused.</p></div>`;
 
 const $ = <T extends HTMLElement = HTMLElement>(selector: string) =>
   document.querySelector<T>(selector)!;
 const view = new StudyView();
-const audio = new Transport(LAB_BPM);
+const audio = new Transport(LAB_BPM, [ATTACK_RELEASE_BEAT], LOOP_BEATS);
 const study = $('.study');
 const play = $<HTMLButtonElement>('#play');
 const scrub = $<HTMLInputElement>('#scrub');
-let clip: Clip = 'sequence';
+let clip: Clip = 'ictus';
 let playing = false;
 let ready = false;
 let busy = false;
@@ -266,6 +273,7 @@ function frame(now: number) {
   if (cpu.length > 120) cpu.shift();
   study.dataset.beat = beat.toFixed(5);
   study.dataset.sampledBeat = pose.beat.toFixed(5);
+  study.dataset.frame = String(pose.frame);
   study.dataset.clip = clip;
   $('#section').textContent = pose.section;
   $('#cue').textContent = pose.cue;

@@ -144,7 +144,7 @@ canvas {
 }
 .clip-tabs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr;
   gap: 4px;
   border-top: 1px solid #252328;
   padding-top: 13px;

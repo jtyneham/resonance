@@ -1,4 +1,4 @@
-# Ictus animation draft — not runtime-ready
+# Ictus animation draft — preview available
 
 2026-09-10. Generated using the built-in image-generation tool from the original
 transparent Conductor reference and approved `storyboards/ictus-poses-v4.png`.
@@ -6,13 +6,27 @@ transparent Conductor reference and approved `storyboards/ictus-poses-v4.png`.
 `ictus-sheet-v1-opaque.png` contains 24 drawings in a 6 × 4 grid, 256 px cells.
 It is RGB, NOT transparent. The checkerboard is painted into the image. A second
 background-extraction request also returned RGB. Neither output is production art.
-No runtime animation has been replaced, and no new live preview is ready yet.
+On 2026-09-11, local extraction (authorized by the user) produced actual RGBA.
+The script `scripts/prepare-conductor-atlas.py` removes the neutral matte including
+enclosed grip islands, exports 24 PNGs in `frames-v1/`, and writes a PNG/JSON atlas
+to `public/assets/conductor-lab/ictus-whole-hand-v1.*`. Warm ivory is retained;
+neutral highlights and edge pixels can be affected by matte recovery. Treat this
+as cleaned draft art, not a lossless production extraction.
 
-Next: obtain approval for local programmatic background extraction, or obtain a
-genuinely transparent export. Then register palms, inspect grip and continuity,
-and implement/test the isolated animation preview. The generated drawings still
-need motion review: the frontal strike-to-vertical rebound changes abruptly;
-24 drawings alone do not establish smoothness or production quality.
+After rerunning the extraction script, format the generated JSON with
+`npx prettier --write public/assets/conductor-lab/ictus-whole-hand-v1.json`
+before the repository formatting check.
+
+The isolated `/resonance/conductor-lab.html` preview now uses those complete
+drawings, sampled at 24 fps from the audio clock. One second of motion is followed
+by one second in ready pose. The first frontal frame (index13) releases the
+formation at 13/24 seconds. The vertical rebound has no added hold. Attacks and
+animation are functions of absolute time, so scrubbing does not accumulate attacks.
+
+Next: review the motion in the live preview. The frontal strike-to-vertical
+rebound changes abruptly, and generated detail varies across drawings; 24 frames
+alone do not establish smoothness or production quality. Refining that transition
+requires better in-between drawings, not merely a higher display refresh rate.
 
 ## Generation prompt (built-in mode)
 

@@ -1,64 +1,49 @@
 import { describe, expect, it } from 'vitest';
 import {
-  LAB_BEAT,
-  keyframes,
-  localBeat,
+  ATTACK_RELEASE_BEAT,
+  FRAME_COUNT,
+  LOOP_BEATS,
   samplePose,
   visibleWaves,
 } from '../src/lab/score';
 
-describe('Conductor pose timeline', () => {
-  it('seeks directly to the same pose after dropped frames or backward scrubbing', () => {
-    const expected = samplePose(14.25);
-    for (let time = 0; time < 14.25; time += 1 / 120) samplePose(time);
-    expect(samplePose(14.25)).toEqual(expected);
-    samplePose(20);
-    expect(samplePose(14.25)).toEqual(expected);
-    expect(samplePose(38.25)).toEqual(expected);
+describe('Conductor whole-hand timeline', () => {
+  it('selects all 24 authored drawings directly from absolute score time', () => {
+    const frames = Array.from(
+      { length: 24 },
+      (_, frame) => samplePose(frame / 12 + 0.0001).frame,
+    );
+    expect(frames).toEqual(Array.from({ length: FRAME_COUNT }, (_, i) => i));
+    expect(samplePose(LOOP_BEATS).frame).toBe(0);
   });
-  it('releases each arc on the downbeat and never shows an unborn wave', () => {
-    for (const release of [5, 7, 9, 11]) {
-      expect(
-        visibleWaves(release - 0.0001).some((w) => w.progress < 0.001),
-      ).toBe(false);
-      expect(visibleWaves(release).some((w) => w.progress === 0)).toBe(true);
-      expect(samplePose(release).cue).toBe('Ictus · release');
-    }
-    expect(visibleWaves(0)).toEqual([]);
-    expect(visibleWaves(15)).toEqual([]);
+
+  it('does not hold the frontal vertical rebound', () => {
+    expect(samplePose(13 / 12).section).toBe('Ictus');
+    expect(samplePose(15 / 12).section).toBe('Rebound');
+    expect(samplePose(20 / 12).section).toBe('Return');
   });
-  it('articulates three free fingers independently while keeping the grip unchanged', () => {
-    const pose = samplePose(13.2);
-    expect(pose.fingers[0]).toEqual([0, 0, 0]);
-    expect(pose.fingers[1]).toEqual([0, 0, 0]);
-    expect(pose.fingers[2]).not.toEqual(pose.fingers[3]);
-    expect(pose.fingers[3]).not.toEqual(pose.fingers[4]);
+
+  it('creates no visible attack before the camera-facing release', () => {
+    expect(visibleWaves(ATTACK_RELEASE_BEAT - 0.0001)).toEqual([]);
+    expect(visibleWaves(ATTACK_RELEASE_BEAT)).toEqual([
+      expect.objectContaining({ startLane: 0, width: 2, progress: 0 }),
+    ]);
   });
-  it('returns to the resting pose continuously across clip and loop boundaries', () => {
-    for (const b of [0, 4, 12, 20, 24]) {
-      const a = samplePose(b - 0.00001),
-        c = samplePose(b);
-      expect(a.wrist).toBeCloseTo(c.wrist, 4);
-      expect(a.lift).toBeCloseTo(c.lift, 4);
-      a.fingers
-        .flat()
-        .forEach((v, i) => expect(v).toBeCloseTo(c.fingers.flat()[i], 4));
-    }
+
+  it('builds the accented Ictus into a varied three-part formation', () => {
+    const phrase = visibleWaves(ATTACK_RELEASE_BEAT + 0.51);
+    expect(phrase.map(({ startLane, width }) => [startLane, width])).toEqual([
+      [0, 2],
+      [4, 1],
+      [1, 3],
+    ]);
+    expect(new Set(phrase.map((wave) => wave.progress)).size).toBe(3);
   });
-  it('maps isolated clips and holds keyframe endpoints without overshoot', () => {
-    expect(localBeat(8 * LAB_BEAT, 'ictus')).toBe(4);
-    expect(localBeat(0, 'fingers')).toBe(12);
-    expect(
-      keyframes(-1, [
-        [0, 2],
-        [1, 4],
-      ]),
-    ).toBe(2);
-    expect(
-      keyframes(5, [
-        [0, 2],
-        [1, 4],
-      ]),
-    ).toBe(4);
+
+  it('is deterministic after dropped frames and backward scrubbing', () => {
+    const expected = samplePose(1.42);
+    for (let beat = 0; beat < 1.42; beat += 1 / 120) samplePose(beat);
+    samplePose(3.9);
+    expect(samplePose(1.42)).toEqual(expected);
   });
 });

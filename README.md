@@ -64,10 +64,12 @@ Git. Dependencies, build files and local test screenshots should not be committe
 ### Isolated Conductor motion study
 
 Open `http://localhost:4173/resonance/conductor-lab.html` after building and
-starting the preview. This separate PixiJS study tests idle, Ictus and finger
-articulation with timing clicks, scrubbing and skipped-frame controls. It does
-not change the playable prototype. Its procedural hand was rejected after phone
-review; it remains a timing experiment, not the production animation direction.
+starting the preview. This separate PixiJS study plays a 24-frame whole-hand
+Ictus draft at 24 fps, followed by a ready interval in a two-second loop. A
+staggered red-arc formation releases with the forward strike. Timing clicks,
+scrubbing, palm registration guides and skipped-frame controls support review.
+The playable prototype is unchanged. The old procedural hand and its atlas were
+replaced; Git history retains them. The animation still needs visual approval.
 See the [study outcome](docs/bosses/conductor/rig-study.md) and the replacement
 [whole-hand clip direction](docs/bosses/conductor/animation-direction.md).
 

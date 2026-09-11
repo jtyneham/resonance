@@ -9,7 +9,31 @@ implementation in the same turn as the reminder unless the user has already said
 they are using GPT-6 Astra High. Planning, design discussion, research, and review
 can continue on GPT-5.6 Sol Medium.
 
-## Current checkpoint — Conductor motion study (2026-09-10)
+## Current checkpoint — whole-hand Ictus preview (2026-09-11)
+
+The approved v4 storyboard has a first animated draft in
+`/resonance/conductor-lab.html`. The user authorized local alpha recovery after
+two built-in image-generation attempts painted a checkerboard into RGB pixels.
+The recovered PNG/JSON atlas is `public/assets/conductor-lab/ictus-whole-hand-v1.*`;
+24 individual PNG frames and generation provenance are in
+`docs/bosses/conductor/animation-drafts/`. See its README for extraction limits.
+
+The complete hand is sampled at 24 fps for one second, then rests for one second.
+The forward strike releases a staggered 2-lane, 1-lane, 3-lane red-arc formation.
+Vertical rebound has no programmed hold. The clip uses the existing audio clock,
+pause/fullscreen/portrait lifecycle and scrub/dropped-draw inspection controls.
+The old `src/lab/rig.ts` and `parts.png` were removed; Git history retains them.
+The playable Three.js prototype is unchanged.
+
+ESLint, TypeScript, build, formatting and all 26 unit tests pass. Four updated
+Chrome study scenarios passed before final matte/CSS cleanup. Final 390x844
+screenshots confirm the grip opening is clear, the upright baton fits, and the
+clip remains playing across a loop. Main-game browser regressions were not rerun
+in this pass. This is a motion-review draft: grip detail varies and the frontal
+strike-to-vertical rebound needs visual review. No production art approval or
+remote deployment is implied. Suggested commit: `Add whole-hand Ictus animation preview`.
+
+## Historical checkpoint — Conductor motion study (2026-09-10)
 
 Latest artifact: `docs/bosses/conductor/storyboards/ictus-poses-v4.png`, a five-pose
 storyboard created from `Conductor_visual_transparent.png` with built-in image
