@@ -7,6 +7,7 @@ export default defineConfig({
       input: {
         game: 'index.html',
         conductorLab: 'conductor-lab.html',
+        wristLab: 'wrist-lab.html',
       },
       output: {
         manualChunks: (id) =>

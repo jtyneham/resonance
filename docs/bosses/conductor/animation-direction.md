@@ -22,6 +22,13 @@ approach / 0.80 s recovery is provisional, pending review of coherent drawings.
 
 ## Source of truth
 
+Latest pose decision (2026-09-11): the accepted
+`key-poses/ictus-rebound-review-01.png`, with the baton vertically upright, is now
+the resting idle reference. Ictus begins in that pose and recovers to it. The
+earlier instruction to avoid a held vertical rebound meant no interruption while
+recovering; it does not prohibit resting in the newly chosen upright idle after
+the gesture is complete. Original artwork remains the character/style reference.
+
 - Start the production animation work from zero using
   `Conductor_visual_transparent.png` as the canonical production reference.
   This is the user's transparent version of the original `Conductor_visual.png`,

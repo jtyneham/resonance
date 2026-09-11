@@ -61,14 +61,15 @@ Git. Dependencies, build files and local test screenshots should not be committe
 
 ## Check the code
 
-### Isolated Conductor reference
+### Isolated Conductor Ictus study
 
 Open `http://localhost:4173/resonance/conductor-lab.html` after building and
-starting the preview. This page displays the original transparent Conductor
-artwork, centered around the palm, with fullscreen and full-size viewing.
-The generated animation was rejected after visual review and has been removed
-from playback. The next step is individual key-pose approval and a short
-transition study. The playable prototype is unchanged; Git retains earlier code.
+starting the preview. This page plays the complete upright idle → preparation →
+fast strike → recovery → upright idle gesture. Nine drawings span one second,
+with the strike cue at 0.2 seconds. Play once, inspect at quarter speed, or scrub;
+the original artwork remains available through a toggle. This is a sparse motion
+study requiring visual review, not the finished smooth attack animation.
+The playable prototype is unchanged; Git retains earlier code.
 See the [study outcome](docs/bosses/conductor/rig-study.md) and the replacement
 [whole-hand clip direction](docs/bosses/conductor/animation-direction.md).
 

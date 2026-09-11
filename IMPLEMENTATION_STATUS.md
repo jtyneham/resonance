@@ -9,7 +9,121 @@ implementation in the same turn as the reminder unless the user has already said
 they are using GPT-6 Astra High. Planning, design discussion, research, and review
 can continue on GPT-5.6 Sol Medium.
 
-## Current checkpoint — original-reference reset (2026-09-11)
+## Current checkpoint — low-detail wrist motion test
+
+Latest: user approved styled strike `ictus-styled-grip-review-01.png`, with the
+baton-tip effect to be separate. Created `ictus-styled-strike-clean-01.png` and
+`ictus-styled-windup-review-01.png` in conductor/key-poses. Tip sparkle absent,
+wrist-core light retained. Wind-up awaiting review; see `ictus-clean-windup-notes.md`
+for exact prompts and limits. No motion/preview changes and no tip effect code yet.
+
+UPDATE: User approved `ictus-grip-construction-01.png` anatomy/grip. A single
+styled review frame is now `docs/bosses/conductor/key-poses/ictus-styled-grip-review-01.png`
+(exact prompt and notes in adjacent `.md`). Ivory/brass/crimson styling applied
+over the approved construction; awaiting styled-frame approval. Do not assume
+this approves final animation or that generated frames are registered consistently.
+Approved wrist motion/timing and active previews unchanged.
+
+Latest artwork review: `docs/bosses/conductor/key-poses/ictus-grip-construction-01.png`
+is a simplified cel-shaded anatomy study from the approved player/side strike
+captures, without ornate decoration. Five digits and separate thumb/index pinch
+are clearer; awaiting user review before styling. It is not final art, and the
+approved motion remains unchanged. Exact prompt and review notes are in the
+adjacent `.md`. User explicitly requires all work be done here, without hiring
+or outsourcing; do not propose a commissioned artist again.
+
+Reference pack prepared at `docs/bosses/conductor/animation-reference/approved-wrist/`:
+eight direct canvas PNGs (idle 0 ms, wind-up 130 ms, strike 260 ms, recovery 600 ms;
+player and side views), paired `index.html`, and `ARTIST_BRIEF.md` with exact timing,
+source hierarchy, anatomy constraints and delivery/review guidance. The reproducible
+capture script is `scripts/capture-wrist-reference.mjs`. Sandboxed Chrome navigation
+timed out; the approved outside-sandbox run captured all eight successfully.
+Strike and wind-up exports visually inspected; lint passed. No approved motion,
+gameplay or active detailed artwork changed. Next work is artwork based on these
+references, not further changes to the approved timing.
+
+UPDATE: User enthusiastically approved the motion and explicitly praised the
+initial wrist extension. Preserve the wind-up, flick and rebound timing exactly.
+An authorized attempt to transfer the beat to detailed artwork is saved in
+`docs/bosses/conductor/key-poses/ictus-approved-motion-beat-draft-01.md`.
+The image is NOT approved: baton tip/grip remain visually incorrect. The approved
+rough movement and both live preview implementations remain unchanged.
+
+User authorized a separate low-detail motion test before more detailed pose work.
+`wrist-lab.html` is a disposable Three.js study: fixed cuff, one wrist rotation,
+five fixed digit paths and rigid baton grip. Player/side views, Play/Pause,
+quarter speed, beat inspection and scrub are provided. Compact 130 ms preparation,
+130 ms flick, immediate 940 ms recovery; no pointing hold. This is NOT a return
+to a production modular rig, not finished character art, and not integrated into
+combat. Existing detailed preview and assets are unchanged. Reference: user's
+Flo321321ic.mp4, with deliberate suppression of whole-arm travel.
+
+Lint, all 27 unit tests and production build passed. Live browser playback returned
+to idle; side-view beat inspection exposed a framing issue corrected by centering
+the side camera on the depth arc. Await user judgment of motion before art work.
+
+## Previous checkpoint — wrist-led correction needed
+
+User rejected the complete gesture as a whole-hand lunge/pose swap and authorized
+a wrist-led revision, keeping the upright idle. Three generated redraws failed
+visual review: finger/grip changes and baton shortening still do not convey the
+required wrist flexion. No animation code or active frames changed in this pass.
+The final rejected draft and prompt are in
+`docs/bosses/conductor/key-poses/wrist-study-rejected/README.md`.
+Next: obtain a short reference for the specific wrist flick, resolve the bent-wrist
+key pose, then rebuild motion. Do not treat the previous preview as approved.
+
+## Previous checkpoint — complete Ictus gesture review (2026-09-11)
+
+User selected the accepted upright rebound as the new resting idle, then
+authorized completing the missing preparation/strike and joining the recovery.
+The lab now plays upright idle → preparation → fast strike → measured recovery
+→ upright idle. Release cue at 200 ms; total 1000 ms. Nine unique whole-hand
+drawings, including two new preparation/downstroke assets. This is sparse motion
+blocking for review; smoothness and final effects remain unfinished. No projectile
+or music added. See `docs/bosses/conductor/key-poses/ictus-complete-notes.md` for
+prompts and limits. `src/lab/ictus-score.ts` owns phase timing; no uniform playback
+rate is implied by the drawing count. Play/Replay, quarter speed and scrub remain.
+
+Verification: lint, 24 unit tests, TypeScript/build and formatting passed. Two
+browser playback/scrubbing scenarios passed; the missing-image scenario stalled
+on both attempts and was interrupted, so that check remains unverified. In-app
+Play was also exercised successfully, ending at upright idle at 1.00 s.
+
+## Previous checkpoint — short transition review (2026-09-11)
+
+Playback fix: in-app preview threw an undefined-frame error on Play. A first RAF
+timestamp earlier than the click's performance.now() made elapsed time negative.
+Clamp elapsed deltas and lower-bound the frame index. Added a regression scenario
+that supplies a stale initial RAF timestamp; verify playback in the live tab too.
+
+Both strike and rebound draft keys are approved. The user requested the next
+step immediately. The lab now plays a seven-drawing, 0.4-second strike-to-rebound
+excerpt with quarter-speed playback, scrubbing and an original-reference toggle.
+Five in-betweens were generated individually and the whole drawings registered
+by wrist position and uniform scale. See `docs/bosses/conductor/key-poses/transition-01/README.md`
+for exact prompts, source provenance and visual limitations. Review coherence
+before adding more drawings. This is sparse motion blocking, not a finished
+smooth animation. No return or fast pre-strike approach is included yet.
+
+## Previous checkpoint — rebound pose (2026-09-11)
+
+User accepted the strike drawing as a draft (“its okay”) and authorized the
+upright rebound pose. Created `docs/bosses/conductor/key-poses/ictus-rebound-review-01.png`
+with a vertical slender baton and five distinct digits. Its prompts and review
+limits are in `key-poses/rebound-notes.md`. Rebound approval is pending. Next after
+approval: register the two poses and test a short transition. No in-betweens or
+runtime changes made during this pose pass.
+
+## Previous checkpoint — single strike pose (2026-09-11)
+
+Created `docs/bosses/conductor/key-poses/ictus-strike-review-01.png` from the
+original reference, then corrected its upward shaft to an end-on tip. Exact
+prompts and visual limitations are in that folder's README. This is one
+black-background pose for user review. No animation, transition frames, or lab
+replacement were made. Subsequently accepted as a draft, not final production art.
+
+## Previous checkpoint — original-reference reset (2026-09-11)
 
 The user rejected v3's visual result. The lab at `/resonance/conductor-lab.html`
 now displays the original `Conductor_visual_transparent.png` as a static reference,

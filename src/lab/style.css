@@ -66,9 +66,46 @@ h1 span {
   margin: 9px 0 0;
 }
 #stage {
-  aspect-ratio: 1;
+  height: clamp(240px, 46svh, 430px);
+  background: #000;
   position: relative;
   margin: 16px -18px 0;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 12px;
+  min-width: 0;
+}
+.actions.playback {
+  grid-template-columns: 1fr 1fr;
+}
+.actions.playback button,
+#toggle {
+  font-size: 12px;
+}
+button[aria-pressed='true'] {
+  background: #3c2b20;
+}
+button:disabled {
+  opacity: 0.4;
+}
+.scrub-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-top: 12px;
+}
+#scrub {
+  width: 100%;
+  height: 28px;
+  accent-color: #bc8e58;
 }
 #reference {
   position: absolute;

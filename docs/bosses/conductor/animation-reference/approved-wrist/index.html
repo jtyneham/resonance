@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Conductor · Approved wrist reference</title>
+    <style>
+      body {
+        margin: 0;
+        background: #10141b;
+        color: #e6e4de;
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 1100px;
+        margin: auto;
+        padding: 24px;
+      }
+      h1 {
+        font-size: 28px;
+        margin-bottom: 4px;
+      }
+      p {
+        color: #bac4d1;
+      }
+      a {
+        color: #bad7f0;
+      }
+      .pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      figure {
+        margin: 0;
+      }
+      img {
+        width: 100%;
+        display: block;
+      }
+      figcaption {
+        font-size: 14px;
+      }
+      section {
+        margin: 36px 0;
+      }
+      h2 {
+        font-size: 20px;
+      }
+      @media (max-width: 520px) {
+        main {
+          padding: 16px;
+        }
+        .pair {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>The Conductor · approved wrist motion</h1>
+      <p>
+        Key-pose reference pack. Motion approved; rough shapes are not character
+        art.
+      </p>
+      <p>
+        <a href="ARTIST_BRIEF.md">Artist brief & timing</a> ·
+        <a href="http://localhost:4173/resonance/wrist-lab.html"
+          >Live motion (local server required)</a
+        >
+      </p>
+      <section>
+        <h2>01 · Upright idle — 0 ms</h2>
+        <div class="pair">
+          <figure>
+            <figcaption>Player view</figcaption>
+            <img src="player-01-idle.png" alt="Player-facing upright idle" />
+          </figure>
+          <figure>
+            <figcaption>Side view</figcaption>
+            <img src="side-01-idle.png" alt="Side view upright idle" />
+          </figure>
+        </div>
+      </section>
+      <section>
+        <h2>02 · Small wrist extension — 130 ms</h2>
+        <div class="pair">
+          <figure>
+            <figcaption>Player view</figcaption>
+            <img src="player-02-wind-up.png" alt="Player-facing wind-up apex" />
+          </figure>
+          <figure>
+            <figcaption>Side view</figcaption>
+            <img
+              src="side-02-wind-up.png"
+              alt="Side view backward wrist extension"
+            />
+          </figure>
+        </div>
+      </section>
+      <section>
+        <h2>03 · Forward beat — 260 ms</h2>
+        <div class="pair">
+          <figure>
+            <figcaption>Player view</figcaption>
+            <img
+              src="player-03-strike.png"
+              alt="Player-facing foreshortened strike"
+            />
+          </figure>
+          <figure>
+            <figcaption>Side view</figcaption>
+            <img
+              src="side-03-strike.png"
+              alt="Side view shows full wrist bend and rigid baton"
+            />
+          </figure>
+        </div>
+      </section>
+      <section>
+        <h2>04 · Softer recovery — 600 ms</h2>
+        <div class="pair">
+          <figure>
+            <figcaption>Player view</figcaption>
+            <img
+              src="player-04-recovery.png"
+              alt="Player-facing return toward idle"
+            />
+          </figure>
+          <figure>
+            <figcaption>Side view</figcaption>
+            <img src="side-04-recovery.png" alt="Side view recovery angle" />
+          </figure>
+        </div>
+      </section>
+      <p>
+        Returns to the same upright idle at 1200 ms. No hold at the beat. These
+        four keys do not replace the full motion reference.
+      </p>
+    </main>
+  </body>
+</html>
