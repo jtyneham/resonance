@@ -64,8 +64,9 @@ Git. Dependencies, build files and local test screenshots should not be committe
 ### Isolated Conductor motion study
 
 Open `http://localhost:4173/resonance/conductor-lab.html` after building and
-starting the preview. This separate PixiJS study plays a 24-frame whole-hand
-Ictus draft at 24 fps, followed by a ready interval in a two-second loop. A
+starting the preview. This separate PixiJS study plays a 30-frame whole-hand
+Ictus draft at 30 fps, followed by a ready interval in a two-second loop. Live
+baton glow, sparks and trails update at native display refresh. A
 staggered red-arc formation releases with the forward strike. Timing clicks,
 scrubbing, palm registration guides and skipped-frame controls support review.
 The playable prototype is unchanged. The old procedural hand and its atlas were

@@ -10,12 +10,27 @@ test('whole-hand study loads, exposes every motion phase and fits portrait scree
   await page.goto('conductor-lab.html');
   await expect(page.locator('.study')).toHaveAttribute('data-ready', 'true');
   await expect(page.getByRole('slider')).toHaveAttribute('max', '2');
+  // While the hand rests on the identical PNG, magic must still change.
+  await page.getByRole('slider').fill('1.8');
+  await expect(page.locator('.study')).toHaveAttribute(
+    'data-effect-time',
+    '1.80000',
+  );
+  const magicA = await page.locator('canvas').screenshot();
+  await page.getByRole('slider').fill('1.88');
+  await expect(page.locator('.study')).toHaveAttribute('data-frame', '0');
+  await expect(page.locator('.study')).toHaveAttribute(
+    'data-effect-time',
+    '1.88000',
+  );
+  const magicB = await page.locator('canvas').screenshot();
+  expect(magicA.equals(magicB)).toBe(false);
   for (const [seconds, section, frame] of [
-    ['0.25', 'Preparation', '6'],
-    ['0.45', 'Downstroke', '10'],
-    ['0.56', 'Ictus', '13'],
-    ['0.67', 'Rebound', '16'],
-    ['0.88', 'Return', '21'],
+    ['0.25', 'Preparation', '7'],
+    ['0.45', 'Downstroke', '13'],
+    ['0.56', 'Ictus', '16'],
+    ['0.67', 'Rebound', '20'],
+    ['0.88', 'Return', '26'],
   ]) {
     await page.getByRole('slider').fill(seconds);
     await expect(page.locator('#section')).toHaveText(section);
@@ -40,7 +55,7 @@ test('whole-hand study loads, exposes every motion phase and fits portrait scree
   }
   expect(
     requests.some((url) =>
-      url.endsWith('/assets/conductor-lab/ictus-whole-hand-v1.png'),
+      url.endsWith('/assets/conductor-lab/ictus-whole-hand-v2.png'),
     ),
   ).toBe(true);
   expect(requests.some((url) => /\/three-/.test(url))).toBe(false);
@@ -59,7 +74,7 @@ test('audio clock freezes on pause and frame sampling catches up after skipped d
   await page.waitForTimeout(250);
   expect(await page.locator('.study').getAttribute('data-beat')).toBe(paused);
   await page.getByText('INSPECT THE FRAMES').click();
-  await page.getByRole('combobox').selectOption('15');
+  await expect(page.getByRole('combobox')).toHaveCount(0);
   await page.getByRole('checkbox', { name: 'Palm anchor' }).check();
   await page.getByRole('button', { name: 'PLAY STUDY' }).click();
   await page.getByRole('button', { name: 'Skip drawing for 700 ms' }).click();
@@ -99,7 +114,7 @@ test('the two-second clip loops and rotation pauses until explicitly resumed', a
 test('missing atlas reports a visible error without enabling playback', async ({
   page,
 }) => {
-  await page.route('**/assets/conductor-lab/ictus-whole-hand-v1.png', (route) =>
+  await page.route('**/assets/conductor-lab/ictus-whole-hand-v2.png', (route) =>
     route.abort(),
   );
   await page.goto('conductor-lab.html');

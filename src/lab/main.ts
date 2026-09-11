@@ -13,7 +13,7 @@ import { StudyView } from './view';
 document.querySelector<HTMLDivElement>('#lab')!.innerHTML = `
 <main class="study" data-state="loading">
   <header><a href="${import.meta.env.BASE_URL}" aria-label="Back to the game">RESONANCE <span>↗</span></a><span class="edition">WHOLE-HAND STUDY · 02</span></header>
-  <div class="heading"><p class="eyebrow">AUTHORED FRAME ANIMATION</p><h1>The Conductor<span>.</span></h1><p class="subtitle">One complete Ictus. Twenty-four whole-hand drawings.</p></div>
+  <div class="heading"><p class="eyebrow">AUTHORED FRAME ANIMATION</p><h1>The Conductor<span>.</span></h1><p class="subtitle">30 fps character animation · live baton magic.</p></div>
   <section id="stage" aria-label="Conductor animation preview"><div id="loading" role="status">Preparing the hand…</div><div class="stage-caption"><span id="section">Idle</span><span id="beat-label">120 BPM</span></div></section>
   <div class="cue"><i id="beat-light"></i><span id="cue">Ready when you are.</span></div>
   <section class="controls" aria-label="Motion study controls">
@@ -23,7 +23,7 @@ document.querySelector<HTMLDivElement>('#lab')!.innerHTML = `
     <p id="notice" role="status">Loading the whole-hand sprite atlas.</p>
     <details id="diagnostics"><summary>INSPECT THE FRAMES <span>+</span></summary><div class="diagnostic-body">
       <div class="toggles"><label><input type="checkbox" id="guides" /> Palm anchor</label><label><input type="checkbox" id="mute" /> Mute clicks</label></div>
-      <label class="rate-label" for="fps">Display cadence<select id="fps"><option value="0">Native refresh</option><option value="30">30 FPS</option><option value="15">15 FPS</option></select></label>
+      <p class="explanation">Character: 30 drawings/second. Effects and attacks update at the display refresh rate (60 Hz or higher where available).</p>
       <button id="skip">Skip drawing for 700 ms</button>
       <p id="metrics">Waiting for playback.</p><p class="explanation">Skipping drawings leaves the audio running. The hand catches up to the current beat. This tests timing, not a stalled audio engine.</p>
     </div></details>
@@ -157,9 +157,6 @@ $('#mute').addEventListener('change', () =>
 $('#guides').addEventListener('change', () => {
   lastDraw = -Infinity;
 });
-$('#fps').addEventListener('change', () => {
-  lastDraw = -Infinity;
-});
 $('#skip').addEventListener('click', () => {
   if (!playing) {
     $('#notice').textContent = 'Start playback first to test skipped drawings.';
@@ -259,8 +256,7 @@ function frame(now: number) {
     audio.schedule();
     previewTime = Math.max(0, audio.time);
   }
-  const fps = Number($<HTMLSelectElement>('#fps').value);
-  if (now < skipUntil || (fps && now - lastDraw < 1000 / fps - 1)) return;
+  if (now < skipUntil) return;
   if (!playing && lastDraw !== -Infinity) return;
   const started = performance.now();
   const beat = previewTime / LAB_BEAT;
@@ -274,6 +270,7 @@ function frame(now: number) {
   study.dataset.beat = beat.toFixed(5);
   study.dataset.sampledBeat = pose.beat.toFixed(5);
   study.dataset.frame = String(pose.frame);
+  study.dataset.effectTime = previewTime.toFixed(5);
   study.dataset.clip = clip;
   $('#section').textContent = pose.section;
   $('#cue').textContent = pose.cue;

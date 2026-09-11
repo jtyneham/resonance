@@ -9,7 +9,28 @@ implementation in the same turn as the reminder unless the user has already said
 they are using GPT-6 Astra High. Planning, design discussion, research, and review
 can continue on GPT-5.6 Sol Medium.
 
-## Current checkpoint — whole-hand Ictus preview (2026-09-11)
+## Current checkpoint — clean Ictus v2 and live baton magic (2026-09-11)
+
+User rejected v1's white outline noise and rigid baked star. Rebuilt the hand
+sheet on a green key, removed the key with explicit prior authorization, and
+exported 30 PNG drawings plus a PNG/JSON atlas. Current runtime asset is
+`public/assets/conductor-lab/ictus-whole-hand-v2.*`. Metadata now drives frame
+rectangles, palm registration and physical baton-tip attachment.
+
+Character playback: 30 fps. Canvas and effects: native display refresh; removed
+15/30 display throttles. Separate pulse, sparks, trail and release flare animate
+from song time. Release moved to 16/30 seconds with a matching audio accent.
+See `docs/bosses/conductor/animation-drafts/ictus-v2-notes.md` for exact generation
+prompt, extraction details, outputs and remaining visual-review limits.
+
+Build, ESLint and 26 unit tests pass. All four updated browser scenarios passed
+(three together, then the first after fixing its numeric slider input). The first
+checks changing magic on an identical resting hand frame after all attacks have
+left. Final 390x844 ready/strike/rebound screenshots show clean edges and attached
+tip effects. Repository formatting also passes. No remote deployment performed.
+Suggested commit: `Refine Conductor animation and add live baton magic`.
+
+## Previous checkpoint — whole-hand Ictus v1 (2026-09-11)
 
 The approved v4 storyboard has a first animated draft in
 `/resonance/conductor-lab.html`. The user authorized local alpha recovery after

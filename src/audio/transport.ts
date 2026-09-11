@@ -66,7 +66,7 @@ export class Transport {
     this.origin = this.context.currentTime - Math.max(0, seconds);
     const beat = this.previewBpm ? 60 / this.previewBpm : BEAT;
     this.nextTick = Math.ceil(
-      (Math.max(0, seconds) / beat) * (this.previewBpm ? 12 : 4),
+      (Math.max(0, seconds) / beat) * (this.previewBpm ? 60 : 4),
     );
     this.schedule();
   }
@@ -164,20 +164,20 @@ export class Transport {
       // Skip missed ticks after a main-thread stall rather than playing a burst.
       this.nextTick = Math.max(
         this.nextTick,
-        Math.ceil((this.time / beat) * 12),
+        Math.ceil((this.time / beat) * 60),
       );
       while (
-        this.origin + (this.nextTick * beat) / 12 <
+        this.origin + (this.nextTick * beat) / 60 <
         ctx.currentTime + 0.15
       ) {
         const tick = this.nextTick++;
-        const at = this.origin + (tick * beat) / 12;
-        const loopTicks = this.previewLoopBeats * 12;
-        const local = (((tick % loopTicks) + loopTicks) % loopTicks) / 12;
+        const at = this.origin + (tick * beat) / 60;
+        const loopTicks = this.previewLoopBeats * 60;
+        const local = (((tick % loopTicks) + loopTicks) % loopTicks) / 60;
         const ictus = this.previewAccents.some(
           (accent) => Math.abs(accent - local) < 0.001,
         );
-        if (!ictus && tick % 12 !== 0) continue;
+        if (!ictus && tick % 60 !== 0) continue;
         this.tone(
           ictus ? 330 : local % 4 === 0 ? 880 : 660,
           at,

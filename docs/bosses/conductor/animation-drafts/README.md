@@ -1,5 +1,8 @@
 # Ictus animation draft — preview available
 
+**Current revision:** [v2 — clean edges and live baton magic](ictus-v2-notes.md).
+The notes below describe the superseded v1 experiment.
+
 2026-09-10. Generated using the built-in image-generation tool from the original
 transparent Conductor reference and approved `storyboards/ictus-poses-v4.png`.
 

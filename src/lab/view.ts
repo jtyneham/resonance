@@ -6,18 +6,24 @@ import {
   Sprite,
   Texture,
 } from 'pixi.js';
-import { FRAME_COUNT, samplePose, visibleWaves } from './score';
+import { FRAME_COUNT, LAB_BEAT, samplePose, visibleWaves } from './score';
 
-const CELL = 256;
-const PALM_X = [
-  178, 175, 158, 180, 183, 176, 161, 159, 171, 178, 191, 184, 151, 146, 142,
-  138, 154, 154, 146, 152, 167, 172, 171, 173,
-];
+type FrameArt = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  palm: [number, number];
+  tip: [number, number];
+};
+const HAND_SCALE = 1.18;
+const HAND_Y = 215;
 
 export class StudyView {
   readonly app = new Application();
   private sprite!: Sprite;
   private frames: Texture[] = [];
+  private art: FrameArt[] = [];
   private field = new Graphics();
   private effects = new Graphics();
   private observer?: ResizeObserver;
@@ -39,24 +45,32 @@ export class StudyView {
       'Whole-hand Ictus animation above five lanes',
     );
     this.app.canvas.setAttribute('role', 'img');
-    const atlas = await Assets.load<Texture>(
-      `${import.meta.env.BASE_URL}assets/conductor-lab/ictus-whole-hand-v1.png`,
-    );
+    const base = `${import.meta.env.BASE_URL}assets/conductor-lab/`;
+    const response = await fetch(base + 'ictus-whole-hand-v2.json');
+    if (!response.ok) throw new Error('Could not load frame metadata');
+    const metadata = (await response.json()) as {
+      fps: number;
+      frames: FrameArt[];
+    };
+    if (metadata.fps !== 30 || metadata.frames.length !== FRAME_COUNT)
+      throw new Error('Unexpected animation atlas');
+    this.art = metadata.frames;
+    const atlas = await Assets.load<Texture>(base + 'ictus-whole-hand-v2.png');
     atlas.source.scaleMode = 'nearest';
     for (let frame = 0; frame < FRAME_COUNT; frame++)
       this.frames.push(
         new Texture({
           source: atlas.source,
           frame: new Rectangle(
-            (frame % 6) * CELL,
-            Math.floor(frame / 6) * CELL,
-            CELL,
-            CELL,
+            this.art[frame].x,
+            this.art[frame].y,
+            this.art[frame].w,
+            this.art[frame].h,
           ),
         }),
       );
     this.sprite = new Sprite(this.frames[0]);
-    this.sprite.scale.set(1.18);
+    this.sprite.scale.set(HAND_SCALE);
     this.app.stage.addChild(this.field, this.sprite, this.effects);
     this.observer = new ResizeObserver(() => this.resize(host));
     this.observer.observe(host);
@@ -89,8 +103,9 @@ export class StudyView {
   render(beat: number, guides: boolean) {
     const pose = samplePose(beat);
     this.sprite.texture = this.frames[pose.frame];
-    this.sprite.anchor.set(PALM_X[pose.frame] / CELL, 0.66);
-    this.sprite.position.set(240, 210);
+    const art = this.art[pose.frame];
+    this.sprite.anchor.set(art.palm[0] / art.w, art.palm[1] / art.h);
+    this.sprite.position.set(240, HAND_Y);
     const g = this.effects.clear();
     for (const wave of visibleWaves(beat)) {
       const p = wave.progress;
@@ -106,20 +121,69 @@ export class StudyView {
         .quadraticCurveTo(x, y - 3, x + width / 2 - 3, y + 3)
         .stroke({ color: 0x681526, width: 1 });
     }
-    if (pose.release)
-      g.circle(240, 206, 18).stroke({
-        color: 0xffd6a1,
-        alpha: pose.release * 0.75,
-        width: 2,
-      });
+    this.drawMagic(beat);
     if (guides)
-      g.moveTo(230, 210)
-        .lineTo(250, 210)
-        .moveTo(240, 200)
-        .lineTo(240, 220)
+      g.moveTo(230, HAND_Y)
+        .lineTo(250, HAND_Y)
+        .moveTo(240, HAND_Y - 10)
+        .lineTo(240, HAND_Y + 10)
         .stroke({ color: 0x63d8d2, alpha: 0.9, width: 1 });
     this.app.render();
     return pose;
+  }
+
+  private tipAt(beat: number) {
+    const art = this.art[samplePose(beat).frame];
+    return {
+      x: 240 + (art.tip[0] - art.palm[0]) * HAND_SCALE,
+      y: HAND_Y + (art.tip[1] - art.palm[1]) * HAND_SCALE,
+    };
+  }
+
+  private drawMagic(beat: number) {
+    const g = this.effects;
+    const time = beat * LAB_BEAT;
+    const tip = this.tipAt(beat);
+    const release = samplePose(beat).release;
+    // No stateful emitters: pause, seeking and dropped draws sample the same
+    // effect. Its shape changes every display frame, independently of the PNG.
+    for (let i = 5; i > 0; i--) {
+      const a = this.tipAt(beat - i * 0.024);
+      const b = this.tipAt(beat - (i - 1) * 0.024);
+      const distance = Math.hypot(b.x - a.x, b.y - a.y);
+      if (distance > 0.5 && distance < 75)
+        g.moveTo(a.x, a.y)
+          .lineTo(b.x, b.y)
+          .stroke({ color: 0xd52136, width: 1.2, alpha: (6 - i) * 0.07 });
+    }
+    const pulse = 0.5 + 0.5 * Math.sin(time * 13);
+    const radius = 3.5 + pulse * 1.4 + release * 5;
+    for (let layer = 3; layer > 0; layer--)
+      g.circle(tip.x, tip.y, radius * layer).fill({
+        color: 0xff163d,
+        alpha: 0.025 + (4 - layer) * 0.025,
+      });
+    g.circle(tip.x, tip.y, 1.2 + pulse * 0.5 + release).fill({
+      color: 0xffc6b2,
+      alpha: 0.9,
+    });
+    for (let i = 0; i < 4; i++) {
+      const life = (time * (1.1 + i * 0.17) + i * 0.27) % 1;
+      const angle = i * 2.4 + time * 0.6;
+      const distance = 3 + life * (9 + release * 10);
+      const x = tip.x + Math.cos(angle) * distance;
+      const y = tip.y + Math.sin(angle) * distance;
+      g.rect(x, y, 1.2, 1.2).fill({
+        color: 0xf14b57,
+        alpha: (1 - life) * 0.75,
+      });
+    }
+    if (release > 0)
+      g.circle(tip.x, tip.y, 5 + (1 - release) * 20).stroke({
+        color: 0xf35d62,
+        width: 1.5,
+        alpha: release * 0.8,
+      });
   }
 
   destroy() {

@@ -8,19 +8,19 @@ import {
 } from '../src/lab/score';
 
 describe('Conductor whole-hand timeline', () => {
-  it('selects all 24 authored drawings directly from absolute score time', () => {
+  it('selects all 30 authored drawings directly from absolute score time', () => {
     const frames = Array.from(
-      { length: 24 },
-      (_, frame) => samplePose(frame / 12 + 0.0001).frame,
+      { length: 30 },
+      (_, frame) => samplePose(frame / 15 + 0.0001).frame,
     );
     expect(frames).toEqual(Array.from({ length: FRAME_COUNT }, (_, i) => i));
     expect(samplePose(LOOP_BEATS).frame).toBe(0);
   });
 
   it('does not hold the frontal vertical rebound', () => {
-    expect(samplePose(13 / 12).section).toBe('Ictus');
-    expect(samplePose(15 / 12).section).toBe('Rebound');
-    expect(samplePose(20 / 12).section).toBe('Return');
+    expect(samplePose(16 / 15).section).toBe('Ictus');
+    expect(samplePose(18 / 15).section).toBe('Rebound');
+    expect(samplePose(23 / 15).section).toBe('Return');
   });
 
   it('creates no visible attack before the camera-facing release', () => {
