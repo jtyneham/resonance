@@ -3,6 +3,23 @@
 Status: **locked design decision on 2026-09-10**. This supersedes the proposed
 fully modular cutout/joint-rig approach.
 
+## Reset after rejected whole-hand animation (2026-09-11)
+
+The v3 generated sheet failed visual review: identity, anatomy, perspective and
+frame-to-frame consistency were inadequate. Technical test success is not visual
+approval. The lab now shows only the canonical reference as a static baseline.
+
+Proceed through individually reviewed poses: original idle-ready, preparation,
+directly player-facing strike, and frontal upright rebound. Preserve five digits
+(thumb and index gripping the baton, three free fingers), proportions and detail.
+Then review a short transition before expanding into a complete clip. Do not
+generate another entire multi-frame atlas as the next production step.
+
+Approved timing intent: the approach to the strike is fast, almost abrupt, with
+weight conveyed through deliberate motion. Raising the baton and returning to
+ready use a measured pace; the upright rebound has no hold. The previous 0.20 s
+approach / 0.80 s recovery is provisional, pending review of coherent drawings.
+
 ## Source of truth
 
 - Start the production animation work from zero using

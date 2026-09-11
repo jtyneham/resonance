@@ -61,16 +61,14 @@ Git. Dependencies, build files and local test screenshots should not be committe
 
 ## Check the code
 
-### Isolated Conductor motion study
+### Isolated Conductor reference
 
 Open `http://localhost:4173/resonance/conductor-lab.html` after building and
-starting the preview. This separate PixiJS study plays a 30-frame whole-hand
-Ictus draft at 30 fps, followed by a ready interval in a two-second loop. Live
-baton glow, sparks and trails update at native display refresh. A
-staggered red-arc formation releases with the forward strike. Timing clicks,
-scrubbing, palm registration guides and skipped-frame controls support review.
-The playable prototype is unchanged. The old procedural hand and its atlas were
-replaced; Git history retains them. The animation still needs visual approval.
+starting the preview. This page displays the original transparent Conductor
+artwork, centered around the palm, with fullscreen and full-size viewing.
+The generated animation was rejected after visual review and has been removed
+from playback. The next step is individual key-pose approval and a short
+transition study. The playable prototype is unchanged; Git retains earlier code.
 See the [study outcome](docs/bosses/conductor/rig-study.md) and the replacement
 [whole-hand clip direction](docs/bosses/conductor/animation-direction.md).
 

@@ -1,6 +1,9 @@
-# Ictus animation draft — preview available
+# Ictus animation drafts — historical experiments
 
-**Current revision:** [v2 — clean edges and live baton magic](ictus-v2-notes.md).
+The lab now shows the original reference as a static image. V3 was rejected and
+removed; v1/v2 are historical artifacts and are not loaded by the lab. Its passing
+technical tests did not establish acceptable art or animation quality.
+See [the reset and next pose-review steps](../animation-direction.md).
 The notes below describe the superseded v1 experiment.
 
 2026-09-10. Generated using the built-in image-generation tool from the original

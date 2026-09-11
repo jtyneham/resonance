@@ -9,7 +9,32 @@ implementation in the same turn as the reminder unless the user has already said
 they are using GPT-6 Astra High. Planning, design discussion, research, and review
 can continue on GPT-5.6 Sol Medium.
 
-## Current checkpoint — clean Ictus v2 and live baton magic (2026-09-11)
+## Current checkpoint — original-reference reset (2026-09-11)
+
+The user rejected v3's visual result. The lab at `/resonance/conductor-lab.html`
+now displays the original `Conductor_visual_transparent.png` as a static reference,
+registered around the palm, with full-size viewing and fullscreen.
+The v3 generated keys, frames, source sheet, runtime atlas and extraction script
+were removed. Animation-only lab modules and their obsolete score tests were
+removed; Git history retains prior tracked experiments. V1/v2 art remains
+historical and is not loaded by the reference page.
+
+Recovery copy of the rejected v3 work:
+`C:/Users/HAIZAR~1/AppData/Local/Temp/resonance-v3-rejected-ddf3f922-cbf6-41c8-a64d-80bc28df9d11.zip`.
+This temporary local backup is outside the repository and can be cleared by the OS.
+
+Keep the approved motion intent: rapid, almost abrupt approach to a directly
+player-facing baton strike; measured upward rebound and return; no hold at the
+upright pose. The earlier 0.20-second strike / 0.80-second recovery is a provisional
+timing study, not a requirement to retain its drawings or exact frame counts.
+Next: approve each key pose individually against the original reference, then
+validate one short transition before commissioning a full animation. No new poses
+or animation are part of this reset. Full generated atlases failed visual review.
+See `docs/bosses/conductor/animation-direction.md`.
+
+Suggested commit: `Reset Conductor lab to original reference artwork`.
+
+## Previous checkpoint — clean Ictus v2 and live baton magic (2026-09-11)
 
 User rejected v1's white outline noise and rigid baked star. Rebuilt the hand
 sheet on a green key, removed the key with explicit prior authorization, and

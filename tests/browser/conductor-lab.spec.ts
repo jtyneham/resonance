@@ -1,44 +1,18 @@
 import { test, expect } from '@playwright/test';
 
-test('whole-hand study loads, exposes every motion phase and fits portrait screens', async ({
+test('original reference loads under the Pages base path and fits portrait', async ({
   page,
 }) => {
-  const errors: string[] = [],
-    requests: string[] = [];
+  const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  page.on('request', (request) => requests.push(request.url()));
   await page.goto('conductor-lab.html');
-  await expect(page.locator('.study')).toHaveAttribute('data-ready', 'true');
-  await expect(page.getByRole('slider')).toHaveAttribute('max', '2');
-  // While the hand rests on the identical PNG, magic must still change.
-  await page.getByRole('slider').fill('1.8');
-  await expect(page.locator('.study')).toHaveAttribute(
-    'data-effect-time',
-    '1.80000',
-  );
-  const magicA = await page.locator('canvas').screenshot();
-  await page.getByRole('slider').fill('1.88');
-  await expect(page.locator('.study')).toHaveAttribute('data-frame', '0');
-  await expect(page.locator('.study')).toHaveAttribute(
-    'data-effect-time',
-    '1.88000',
-  );
-  const magicB = await page.locator('canvas').screenshot();
-  expect(magicA.equals(magicB)).toBe(false);
-  for (const [seconds, section, frame] of [
-    ['0.25', 'Preparation', '7'],
-    ['0.45', 'Downstroke', '13'],
-    ['0.56', 'Ictus', '16'],
-    ['0.67', 'Rebound', '20'],
-    ['0.88', 'Return', '26'],
-  ]) {
-    await page.getByRole('slider').fill(seconds);
-    await expect(page.locator('#section')).toHaveText(section);
-    await expect(page.locator('.study')).toHaveAttribute('data-frame', frame);
-  }
-  await page.screenshot({
-    path: 'test-results/conductor-whole-hand-ictus.png',
-  });
+  await expect(page.locator('.study')).toHaveAttribute('data-state', 'ready');
+  const image = page.locator('#reference');
+  expect(
+    await image.evaluate((element: HTMLImageElement) => element.naturalWidth),
+  ).toBeGreaterThan(1000);
+  await expect(page.getByRole('slider')).toHaveCount(0);
+  await expect(page.locator('canvas')).toHaveCount(0);
   for (const size of [
     { width: 320, height: 568 },
     { width: 390, height: 844 },
@@ -50,76 +24,18 @@ test('whole-hand study loads, exposes every motion phase and fits portrait scree
       ),
     ).toBe(true);
     await expect(
-      page.getByRole('button', { name: 'PLAY STUDY' }),
+      page.getByRole('button', { name: 'Enter fullscreen' }),
     ).toBeInViewport();
   }
-  expect(
-    requests.some((url) =>
-      url.endsWith('/assets/conductor-lab/ictus-whole-hand-v2.png'),
-    ),
-  ).toBe(true);
-  expect(requests.some((url) => /\/three-/.test(url))).toBe(false);
+  await page.screenshot({ path: 'test-results/conductor-reference-reset.png' });
   expect(errors).toEqual([]);
 });
 
-test('audio clock freezes on pause and frame sampling catches up after skipped drawing', async ({
-  page,
-}) => {
-  await page.goto('conductor-lab.html');
-  await page.getByRole('button', { name: 'PLAY STUDY' }).click();
-  await expect(page.locator('.study')).toHaveAttribute('data-state', 'playing');
-  await page.waitForTimeout(350);
-  await page.getByRole('button', { name: 'PAUSE', exact: true }).click();
-  const paused = await page.locator('.study').getAttribute('data-beat');
-  await page.waitForTimeout(250);
-  expect(await page.locator('.study').getAttribute('data-beat')).toBe(paused);
-  await page.getByText('INSPECT THE FRAMES').click();
-  await expect(page.getByRole('combobox')).toHaveCount(0);
-  await page.getByRole('checkbox', { name: 'Palm anchor' }).check();
-  await page.getByRole('button', { name: 'PLAY STUDY' }).click();
-  await page.getByRole('button', { name: 'Skip drawing for 700 ms' }).click();
-  const before = Number(await page.locator('.study').getAttribute('data-beat'));
-  await page.waitForTimeout(300);
-  expect(Number(await page.locator('.study').getAttribute('data-beat'))).toBe(
-    before,
-  );
-  await page.waitForTimeout(700);
-  const after = Number(await page.locator('.study').getAttribute('data-beat'));
-  expect(after).not.toBe(before);
-  expect(await page.locator('.study').getAttribute('data-sampled-beat')).toBe(
-    after.toFixed(5),
-  );
-});
-
-test('the two-second clip loops and rotation pauses until explicitly resumed', async ({
-  page,
-}) => {
-  await page.goto('conductor-lab.html');
-  await page.getByRole('slider').fill('1.9');
-  await page.getByRole('button', { name: 'PLAY STUDY' }).click();
-  await page.waitForTimeout(400);
-  expect(
-    Number(await page.locator('.study').getAttribute('data-beat')),
-  ).toBeLessThan(2);
-  await page.setViewportSize({ width: 915, height: 412 });
-  await expect(
-    page.getByRole('dialog', { name: 'Rotate your device' }),
-  ).toBeVisible();
-  await expect(page.locator('.study')).toHaveAttribute('data-state', 'paused');
-  await page.setViewportSize({ width: 412, height: 915 });
-  await expect(page.getByRole('dialog')).toBeHidden();
-  await expect(page.locator('.study')).toHaveAttribute('data-state', 'paused');
-});
-
-test('missing atlas reports a visible error without enabling playback', async ({
-  page,
-}) => {
-  await page.route('**/assets/conductor-lab/ictus-whole-hand-v2.png', (route) =>
+test('reference loading failure gives a useful message', async ({ page }) => {
+  await page.route('**/Conductor_visual_transparent*.png', (route) =>
     route.abort(),
   );
   await page.goto('conductor-lab.html');
-  await expect(page.locator('#notice')).toContainText(
-    'Could not run the study',
-  );
-  await expect(page.getByRole('button', { name: 'PLAY STUDY' })).toBeDisabled();
+  await expect(page.locator('.study')).toHaveAttribute('data-state', 'error');
+  await expect(page.getByRole('status')).toContainText('could not load');
 });
