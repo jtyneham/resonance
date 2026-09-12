@@ -117,17 +117,19 @@ No secrets, backend, custom domain, or manually committed build folder are neede
 
 ## Where to change things
 
-| File                       | Responsibility                                        |
-| -------------------------- | ----------------------------------------------------- |
-| `src/game/config.ts`       | Health, timing windows, jump, tempo and shot tuning   |
-| `src/game/chart.ts`        | Original, deterministic 120-beat attack score         |
-| `src/game/battle.ts`       | Combat rules independent of graphics and browser APIs |
-| `src/audio/transport.ts`   | Audio clock, synthesized track, sound effects         |
-| `src/rendering/arena.ts`   | Procedural arena, boss, player, notes and effects     |
-| `src/main.ts`              | Screens, inputs, lifecycle, fullscreen and HUD        |
-| `src/style.css`            | Portrait layout, menus, safe areas and touch controls |
-| `PROTOTYPE_SPEC.md`        | Agreed scope and current tunable defaults             |
-| `IMPLEMENTATION_STATUS.md` | Durable development and verification checkpoint       |
+| File                           | Responsibility                                          |
+| ------------------------------ | ------------------------------------------------------- |
+| `src/game/config.ts`           | Shared player health, lanes, jump and shot tuning       |
+| `src/game/chart.ts`            | Shared attack types and timed-note shape                |
+| `src/game/encounter.ts`        | Encounter definition and timing/display helpers         |
+| `src/game/encounters/dummy.ts` | Original 120-beat Dummy chart, tempo, health and labels |
+| `src/game/battle.ts`           | Combat rules independent of graphics and browser APIs   |
+| `src/audio/transport.ts`       | Audio clock, synthesized track, sound effects           |
+| `src/rendering/arena.ts`       | Procedural arena, boss, player, notes and effects       |
+| `src/main.ts`                  | Screens, inputs, lifecycle, fullscreen and HUD          |
+| `src/style.css`                | Portrait layout, menus, safe areas and touch controls   |
+| `PROTOTYPE_SPEC.md`            | Agreed scope and current tunable defaults               |
+| `IMPLEMENTATION_STATUS.md`     | Durable development and verification checkpoint         |
 
 Attack entries specify **impact beats**, lane, width, kind and travel time. Fast
 notes have advance lane warnings. The seven main phrases use flanking resonant

@@ -13,7 +13,16 @@ The latest conversation takes precedence over the original desktop handoff.
 - User reviews, commits, and pushes with GitHub Desktop. Do not commit or push automatically.
 - Procedural geometry and original synthesized music; no external assets or licensed game content.
 
-## Combat defaults (tunable in config)
+## Encounter configuration
+
+The Dummy score and encounter settings live in `src/game/encounters/dummy.ts`.
+`EncounterDefinition` supplies tempo, length, count-in, boss health, chart and
+phrase labels to battle/audio/UI. Player mechanics stay shared in
+`src/game/config.ts`. The app still selects only Dummy; alternate configurations
+are test fixtures, not additional playable bosses. Art, animation and the
+synthesized score are unchanged. No tempo-map or content-loader framework yet.
+
+## Combat defaults (shared player rules in config)
 
 - Exactly five channel bands, indexed 0–4, with six visible boundaries.
 - Left/right: one lane per touch-down or non-repeated key press.

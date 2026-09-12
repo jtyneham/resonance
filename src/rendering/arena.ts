@@ -1,6 +1,7 @@
 import * as THREE from 'three';
-import { BEAT, RULES } from '../game/config';
+import { RULES } from '../game/config';
 import type { Battle, BattleEvent } from '../game/battle';
+import { beatSeconds, type EncounterDefinition } from '../game/encounter';
 import type { Note } from '../game/chart';
 
 const COLORS = {
@@ -39,7 +40,10 @@ export class Arena {
   private visualLane = 2;
   private lastTime = 0;
 
-  constructor(private host: HTMLElement) {
+  constructor(
+    private host: HTMLElement,
+    private encounter: EncounterDefinition,
+  ) {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
@@ -327,7 +331,14 @@ export class Arena {
     const t = battle?.time ?? now * 0.35;
     const pulse = this.reduced
       ? 0
-      : Math.max(0, 1 - ((Math.max(0, t) / BEAT) % 1) * 3);
+      : Math.max(
+          0,
+          1 -
+            ((Math.max(0, t) /
+              beatSeconds(battle?.encounter ?? this.encounter)) %
+              1) *
+              3,
+        );
     this.boss.position.set(0, this.h * 0.81, 0);
     this.boss.scale.setScalar(0.9 + pulse * 0.025);
     this.rings.forEach((ring, i) => {

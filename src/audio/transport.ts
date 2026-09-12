@@ -1,11 +1,15 @@
-import { CHART } from '../game/chart';
-import { BEAT, DURATION, RULES } from '../game/config';
+import {
+  beatSeconds,
+  countInSeconds,
+  type EncounterDefinition,
+} from '../game/encounter';
 import type { EventKind } from '../game/battle';
 
 export class Transport {
   // The isolated rig study uses this same clock/lifecycle with a simple click
-  // score. Default construction retains the prototype's original score.
+  // score. The selected encounter supplies the combat score and timing.
   constructor(
+    readonly encounter: EncounterDefinition,
     private readonly previewBpm?: number,
     private readonly previewAccents: readonly number[] = [],
     private readonly previewLoopBeats = 24,
@@ -22,7 +26,7 @@ export class Transport {
   get time() {
     return this.context
       ? this.context.currentTime - this.origin
-      : -RULES.countInBeats * BEAT;
+      : -countInSeconds(this.encounter);
   }
   get state() {
     return this.context?.state;
@@ -55,8 +59,9 @@ export class Transport {
   async start() {
     await this.unlock();
     this.stopVoices();
-    this.origin = this.context!.currentTime + RULES.countInBeats * BEAT + 0.06;
-    this.nextTick = -8;
+    this.origin =
+      this.context!.currentTime + countInSeconds(this.encounter) + 0.06;
+    this.nextTick = -Math.ceil(this.encounter.countInBeats * 4);
     this.schedule();
   }
 
@@ -64,7 +69,9 @@ export class Transport {
     if (!this.context) return;
     this.stopVoices();
     this.origin = this.context.currentTime - Math.max(0, seconds);
-    const beat = this.previewBpm ? 60 / this.previewBpm : BEAT;
+    const beat = this.previewBpm
+      ? 60 / this.previewBpm
+      : beatSeconds(this.encounter);
     this.nextTick = Math.ceil(
       (Math.max(0, seconds) / beat) * (this.previewBpm ? 60 : 4),
     );
@@ -190,12 +197,12 @@ export class Transport {
     }
     const ahead = ctx.currentTime + 0.12;
     while (
-      this.origin + (this.nextTick * BEAT) / 4 < ahead &&
-      this.nextTick < RULES.beats * 4
+      this.origin + (this.nextTick * beatSeconds(this.encounter)) / 4 < ahead &&
+      this.nextTick < this.encounter.beats * 4
     ) {
       const tick = this.nextTick++;
       const beat = tick / 4;
-      const at = this.origin + beat * BEAT;
+      const at = this.origin + beat * beatSeconds(this.encounter);
       if (at < ctx.currentTime) continue;
       if (beat < 0) {
         if (tick % 4 === 0) this.tone(660, at, 0.06, 0.16);
@@ -208,7 +215,13 @@ export class Transport {
         this.hat(at, offbeat);
       if (tick % 4 === 0) {
         const root = [49, 58.27, 43.65, 65.41][Math.floor(beat / 8) % 4];
-        this.tone(root, at, BEAT * 0.85, 0.095, 'triangle');
+        this.tone(
+          root,
+          at,
+          beatSeconds(this.encounter) * 0.85,
+          0.095,
+          'triangle',
+        );
       }
       if (tick % 2 === 0) {
         const semitones = [0, 7, 12, 10, 3, 7, 15, 10];
@@ -221,7 +234,9 @@ export class Transport {
         );
       }
       // Chart impact sounds belong to the same clock and score as the music.
-      const attacks = CHART.filter((n) => Math.abs(n.beat - beat) < 0.001);
+      const attacks = this.encounter.chart.filter(
+        (n) => Math.abs(n.beat - beat) < 0.001,
+      );
       if (attacks.length) {
         const n = attacks[0];
         this.tone(
@@ -257,5 +272,3 @@ export class Transport {
     if (s) this.tone(s[0], at, s[1], s[2], s[3], s[4]);
   }
 }
-
-export const TRACK_INFO = `${RULES.bpm} BPM · ${DURATION} SEC`;

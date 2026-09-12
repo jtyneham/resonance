@@ -7,7 +7,7 @@ export interface RecordData {
   clears: number;
 }
 const SETTINGS_KEY = 'resonance.settings.v1';
-const RECORD_KEY = 'resonance.dummy.record.v1';
+const recordKey = (encounterId: string) => `resonance.${encounterId}.record.v1`;
 function read(key: string): unknown {
   try {
     return JSON.parse(localStorage.getItem(key) || 'null');
@@ -38,8 +38,8 @@ export function loadSettings(): Settings {
 export function saveSettings(settings: Settings) {
   write(SETTINGS_KEY, settings);
 }
-export function loadRecord(): RecordData {
-  const v = read(RECORD_KEY) as Partial<RecordData> | null;
+export function loadRecord(encounterId: string): RecordData {
+  const v = read(recordKey(encounterId)) as Partial<RecordData> | null;
   return {
     score:
       typeof v?.score === 'number' && Number.isFinite(v.score)
@@ -51,9 +51,9 @@ export function loadRecord(): RecordData {
         : 0,
   };
 }
-export function saveClear(score: number) {
-  const record = loadRecord();
-  write(RECORD_KEY, {
+export function saveClear(encounterId: string, score: number) {
+  const record = loadRecord(encounterId);
+  write(recordKey(encounterId), {
     score: Math.max(score, record.score),
     clears: record.clears + 1,
   });

@@ -1,5 +1,111 @@
 # Implementation status
 
+## Active direction — back to 2D whole-hand drawings
+
+User accepted the eight-frame wind-up except for the round baton-tip knobs.
+Those were replaced with fine tapered tips in `ictus-windup-fine-tips-02.png`
+using one built-in image edit. Preview uses the versioned sheet; timing and
+registration are unchanged. Original sheet retained. No new attack/rig work.
+
+User rejected further 3D rig development and explicitly chose the upright-baton
+reference and whole-hand 2D frames. Finger studies are preserved only as history.
+New bounded review: `windup-lab.html`, eight generated drawings across only the
+130 ms preparation, normal/quarter speed, scrub/replay. One generation attempt.
+This is a review draft with remaining detail/proportion variation, NOT approved
+production animation. Original reference and earlier previews unchanged.
+See `docs/bosses/conductor/key-poses/ictus-windup-eight-frame-study-01.md` for
+provenance, exact prompt and limitations. Stop for user motion review.
+
+## Latest checkpoint — complete-finger extension
+
+User approved the single joint and authorized one complete finger. Preview:
+`finger-lab.html?mode=full`. Three tapered segments, three connected pivots,
+coordinated continuous curl, original material treatment. Old sample is preserved
+with comparison links. No whole hand, wrist or combat changes. See
+`docs/bosses/conductor/finger-sample.md` for scope and review notes.
+44 unit tests and two focused browser tests pass; production build passes.
+Stop for user judgment of the full-finger motion before any further expansion.
+
+## Latest checkpoint — bounded moving finger sample
+
+User authorized ONLY one continuously bending ivory/brass finger to evaluate a
+constructed-source approach. New `finger-lab.html` is separate from all existing
+labs and combat. Two closed tapered ivory segments, a fixed concentric brass
+hinge, seeded object-space surface wear/cracks, low-resolution nearest-neighbor
+rendering. Continuous 0–72-degree flexion, pause, scrub, front/side views and
+portrait interruption. No generated raster assets, full hand or production rig.
+
+The procedural study follows the scoped material/attachment guidance described
+in `docs/bosses/conductor/finger-sample.md`; it is NOT a certified reference
+reconstruction. Viewed phone screenshots at straight/bent front and bent side.
+One material correction strengthened front-facing fissures and brass-cap light.
+Continuous updates/pause/side-view browser test passed with clean exit; lint,
+43 unit tests, production build and formatting passed. Existing chunk advisory
+remains. No full-game/physical-phone performance claim.
+
+Stop here for user judgment: does this moving sample fit the desired visual
+language? Do not infer approval or expand to a complete hand automatically.
+
+## Latest animation checkpoint — generated in-betweens rejected (2026-09-12)
+
+User rejected the three-pose styled preview as too few frames/a hack job and
+authorized proper in-between work. Two 16-cell sheets, one midpoint redraw and
+one construction-guided midpoint were generated with the built-in image tool.
+All failed visual QA: duplicate poses, baton shortening rather than wrist
+flexion, or changed anatomy/grip. Saved with exact prompts and rejection reasons
+in `docs/bosses/conductor/key-poses/inbetween-attempts-2026-09-12/README.md`.
+No replacement animation was achieved. No runtime code, approved motion or active
+preview changed this turn. Do not describe the three-pose study as approved or
+reopen it as an improvement. A different consistent-source workflow needs user
+discussion before implementation; no production-rig change is authorized.
+
+## Latest art-review checkpoint — styled pose blocking (2026-09-12)
+
+User authorized assembling existing styled artwork around the approved wrist
+timing. New separate `styled-lab.html` shows three whole-image poses (upright idle,
+clean wind-up, clean strike) registered at the wrist core. It samples the unchanged
+`wristMotion` angle and selects the nearest available key drawing; it DOES NOT
+provide smooth in-between motion or a finished Ictus animation. Recovery currently
+reuses the nearest available strike/idle, not a new recovery drawing.
+
+No new raster assets, morphing, crossfades, hand deformations or production rig.
+The idle retains its baked tip sparkle; separate animated tip FX are not done.
+Silhouette/ornament differences between the drawings remain visible and need
+resolving before final animation. Do not treat this assembly as user approval.
+The prior detailed lab, approved low-detail wrist lab, and Dummy remain unchanged.
+
+Lint, 42 unit tests and production build passed. The new phone-emulated browser
+test passed with a clean exit: loading, key inspection, playback to idle, slow
+playback and pause on blur. Three phone screenshots were visually inspected.
+Next: user reviews the assembly; missing in-betweens and consistent silhouette
+remain actual artwork work, not something additional FPS alone will solve.
+
+## Latest engineering checkpoint — encounter separation (2026-09-12)
+
+Completed the user-approved small EncounterDefinition refactor. Dummy content is
+in `src/game/encounters/dummy.ts`; its original chart has a pre-refactor regression
+snapshot. Battle, Transport, arena beat pulse, HUD timing/labels/health and saved
+records now use the selected encounter. The existing Dummy storage key remains
+unchanged. Shared five-lane/player mechanics remain in `src/game/config.ts`.
+
+The app still selects Dummy only. A test-only 90 BPM, 64-second encounter with a
+three-beat count-in and two boss HP checks isolation. No renderer migration,
+animation changes, tempo maps, loaders or broad framework work was performed.
+The approved Conductor wrist-motion/art checkpoint below remains unchanged;
+the styled wind-up still needs review in motion, not isolated-pose approval.
+
+Verification: lint, TypeScript/Vite production build, all 39 unit tests and all
+six gameplay Playwright checks passed (Chrome, phone/desktop emulation). The
+browser suite includes touch/multitouch, pause/orientation, fullscreen, retry,
+small-screen layout and an audio-clock victory with record persistence.
+All six cases reported OK, but the runner hung during cleanup and was interrupted;
+the browser run therefore did not produce a clean process exit.
+The pre-refactor Dummy chart snapshot is unchanged and its winning route passes
+at 5, 30 and 60 updates/second. Full formatting check passes after removing an
+extra trailing blank line from four existing Conductor pose-note files.
+The existing Three.js chunk-size advisory remains; no deployment configuration
+changes were needed. No commit, push or live GitHub deployment was performed.
+
 ## Model workflow preference
 
 Before beginning any development-level implementation for the game—including edits

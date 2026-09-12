@@ -1,5 +1,10 @@
-import { BEAT, DURATION, RULES } from './config';
-import { CHART, type Note } from './chart';
+import { RULES } from './config';
+import type { Note } from './chart';
+import {
+  countInSeconds,
+  durationSeconds,
+  type EncounterDefinition,
+} from './encounter';
 
 export type Action = 'left' | 'right' | 'jump' | 'resonate';
 export type Outcome = 'playing' | 'victory' | 'defeat' | 'timeout';
@@ -36,10 +41,10 @@ export interface Stats {
 }
 
 export class Battle {
-  time: number = -RULES.countInBeats * BEAT;
+  time: number;
   lane = 2;
   hp: number = RULES.playerHp;
-  bossHp: number = RULES.bossHp;
+  bossHp: number;
   charge = 0;
   jumpAt = -Infinity;
   airMoveUsed = false;
@@ -62,7 +67,17 @@ export class Battle {
     score: 0,
   };
 
-  constructor(readonly chart: readonly Note[] = CHART) {}
+  constructor(readonly encounter: EncounterDefinition) {
+    this.time = -countInSeconds(encounter);
+    this.bossHp = encounter.bossHp;
+  }
+
+  get chart() {
+    return this.encounter.chart;
+  }
+  get duration() {
+    return durationSeconds(this.encounter);
+  }
 
   airborne(at = this.time) {
     return at >= this.jumpAt && at < this.jumpAt + RULES.jumpDuration;
@@ -107,7 +122,7 @@ export class Battle {
     due.sort((a, b) => a.time - b.time);
     for (const event of due) {
       if (this.outcome !== 'playing') break;
-      if (event.time > DURATION) break;
+      if (event.time > this.duration) break;
       const { note, shot, bufferedMove } = event;
       if (bufferedMove) {
         this.bufferedMove = 0;
@@ -148,7 +163,8 @@ export class Battle {
         }
       }
     }
-    if (this.outcome === 'playing' && now >= DURATION) this.outcome = 'timeout';
+    if (this.outcome === 'playing' && now >= this.duration)
+      this.outcome = 'timeout';
   }
 
   private applyMove(direction: -1 | 1, airborneMove = false) {

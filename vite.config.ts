@@ -8,6 +8,9 @@ export default defineConfig({
         game: 'index.html',
         conductorLab: 'conductor-lab.html',
         wristLab: 'wrist-lab.html',
+        styledLab: 'styled-lab.html',
+        fingerLab: 'finger-lab.html',
+        windupLab: 'windup-lab.html',
       },
       output: {
         manualChunks: (id) =>

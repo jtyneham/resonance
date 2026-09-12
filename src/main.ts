@@ -1,9 +1,16 @@
 import './style.css';
 import { Arena } from './rendering/arena';
-import { Transport, TRACK_INFO } from './audio/transport';
+import { Transport } from './audio/transport';
 import { Battle, type Action, type EventKind } from './game/battle';
-import { BEAT, DURATION } from './game/config';
-import { PHRASES } from './game/chart';
+import { RULES } from './game/config';
+import { DUMMY_ENCOUNTER } from './game/encounters/dummy';
+import {
+  beatSeconds,
+  durationSeconds,
+  phraseAt,
+  remainingTime,
+  trackInfo,
+} from './game/encounter';
 import {
   loadRecord,
   loadSettings,
@@ -11,15 +18,19 @@ import {
   saveSettings,
 } from './game/storage';
 
+const encounter = DUMMY_ENCOUNTER;
+const BEAT = beatSeconds(encounter);
+const DURATION = durationSeconds(encounter);
+
 const app = document.querySelector<HTMLDivElement>('#app')!;
 app.innerHTML = `
 <main class="game" data-screen="title">
   <div class="edge-label" aria-hidden="true">R / 001 <span>THE BROKEN MACHINE</span></div>
   <div id="arena"></div>
   <header id="hud" hidden>
-    <div class="boss-heading"><div><span class="eyebrow">TEST SUBJECT / 001</span><h2>DUMMY BOSS</h2></div><button id="pause" class="icon-button" aria-label="Pause battle">Ⅱ</button></div>
-    <div class="boss-meter" role="progressbar" aria-label="Boss health" aria-valuemin="0" aria-valuemax="5"><i></i><i></i><i></i><i></i><i></i></div>
-    <div class="hud-row"><span id="health" aria-label="Player health"></span><span id="phrase">01 / SIGNAL</span><span id="timer">0:45</span></div>
+    <div class="boss-heading"><div><span class="eyebrow">TEST SUBJECT / 001</span><h2>${encounter.name}</h2></div><button id="pause" class="icon-button" aria-label="Pause battle">Ⅱ</button></div>
+    <div class="boss-meter" role="progressbar" aria-label="Boss health" aria-valuemin="0" aria-valuemax="${encounter.bossHp}">${'<i></i>'.repeat(encounter.bossHp)}</div>
+    <div class="hud-row"><span id="health" aria-label="Player health"></span><span id="phrase">${phraseAt(encounter, 0)}</span><span id="timer">${remainingTime(encounter, 0)}</span></div>
     <div class="song-progress"><i id="progress"></i></div>
   </header>
   <div id="feedback" aria-live="polite" aria-atomic="true"></div>
@@ -32,7 +43,7 @@ app.innerHTML = `
   </section>
 
   <section id="select" class="screen center-screen" aria-label="Encounter selection" hidden>
-    <div class="panel"><span class="eyebrow lime">CHOOSE YOUR FREQUENCY</span><h2>First contact.</h2><p class="intro">A broken machine. An unstable signal.<br>Make it hear you.</p><div class="encounter-card"><div class="card-top"><span class="tag">NEUTRAL ENCOUNTER</span><span class="card-index">01</span></div><div class="dummy-symbol" aria-hidden="true">◇</div><h3>DUMMY BOSS</h3><p>${TRACK_INFO} · 5 LANES</p><div class="card-rule"></div><p class="card-description">Absorb two notes. Find an opening.<br>Land five counterattacks before time runs out.</p><div class="record" id="best-record">NO SIGNAL RECORDED</div></div><button class="primary" id="fight">ENTER BATTLE <span>↗</span></button><div class="utility-row"><button class="secondary" id="learn">HOW TO PLAY</button><button class="secondary" data-home>BACK</button></div><p class="footer-note">THE CONDUCTOR, PRISM & SILENCE COME LATER.</p></div>
+    <div class="panel"><span class="eyebrow lime">CHOOSE YOUR FREQUENCY</span><h2>First contact.</h2><p class="intro">A broken machine. An unstable signal.<br>Make it hear you.</p><div class="encounter-card"><div class="card-top"><span class="tag">NEUTRAL ENCOUNTER</span><span class="card-index">01</span></div><div class="dummy-symbol" aria-hidden="true">◇</div><h3>${encounter.name}</h3><p>${trackInfo(encounter)} · 5 LANES</p><div class="card-rule"></div><p class="card-description">${encounter.description}</p><div class="record" id="best-record">NO SIGNAL RECORDED</div></div><button class="primary" id="fight">ENTER BATTLE <span>↗</span></button><div class="utility-row"><button class="secondary" id="learn">HOW TO PLAY</button><button class="secondary" data-home>BACK</button></div><p class="footer-note">THE CONDUCTOR, PRISM & SILENCE COME LATER.</p></div>
   </section>
 
   <section id="options" class="screen center-screen" aria-label="Options and controls" hidden>
@@ -59,11 +70,11 @@ const $ = <T extends HTMLElement = HTMLElement>(selector: string) =>
 const game = $('.game');
 let arena: Arena | null = null;
 try {
-  arena = new Arena($('#arena'));
+  arena = new Arena($('#arena'), encounter);
 } catch {
   $('#arena').classList.add('unavailable');
 }
-const audio = new Transport();
+const audio = new Transport(encounter);
 const settings = loadSettings();
 audio.setVolume(settings.volume);
 arena?.setReducedMotion(settings.reducedMotion);
@@ -107,7 +118,7 @@ function show(next: Screen) {
     target?.focus({ preventScroll: true });
   }
   if (next === 'select') {
-    const record = loadRecord();
+    const record = loadRecord(encounter.id);
     $('#best-record').textContent = record.clears
       ? `BEST ${record.score.toLocaleString()} / ${record.clears} CLEAR${record.clears === 1 ? '' : 'S'}`
       : 'NO SIGNAL RECORDED';
@@ -130,7 +141,7 @@ async function startBattle() {
       await audio.pause();
       return;
     }
-    battle = new Battle();
+    battle = new Battle(encounter);
     eventIndex = 0;
     feedbackUntil = 0;
     $('#feedback').textContent = '';
@@ -179,7 +190,7 @@ async function resume() {
 function finish() {
   if (!battle) return;
   const won = battle.outcome === 'victory';
-  if (won) saveClear(battle.stats.score);
+  if (won) saveClear(encounter.id, battle.stats.score);
   $('#result-kicker').textContent = won ? 'SIGNAL RESTORED' : 'SIGNAL LOST';
   $('#result-kicker').classList.toggle('lime', won);
   $('#result-title').textContent = won
@@ -424,7 +435,9 @@ function frame(ms: number) {
     if (now > feedbackUntil) $('#feedback').textContent = '';
     const count =
       battle.time < 0
-        ? String(Math.min(2, Math.ceil(-battle.time / BEAT)))
+        ? String(
+            Math.min(encounter.countInBeats, Math.ceil(-battle.time / BEAT)),
+          )
         : battle.time < 0.3
           ? 'GO'
           : '';
@@ -435,17 +448,17 @@ function frame(ms: number) {
     const health = `${battle.hp}`;
     if (health !== lastHealth) {
       $('#health').innerHTML = Array.from(
-        { length: 3 },
+        { length: RULES.playerHp },
         (_, i) => `<i class="${i < battle!.hp ? 'alive' : ''}">◆</i>`,
       ).join('');
-      $('#health').setAttribute('aria-label', `${battle.hp} of 3 health`);
+      $('#health').setAttribute(
+        'aria-label',
+        `${battle.hp} of ${RULES.playerHp} health`,
+      );
       lastHealth = health;
     }
-    const remaining = Math.max(0, Math.ceil(DURATION - battle.time));
-    $('#timer').textContent =
-      `0:${Math.min(45, remaining).toString().padStart(2, '0')}`;
-    $('#phrase').textContent =
-      PHRASES[Math.min(7, Math.floor(Math.max(0, battle.time) / BEAT / 16))];
+    $('#timer').textContent = remainingTime(encounter, battle.time);
+    $('#phrase').textContent = phraseAt(encounter, battle.time);
     $('#progress').style.width =
       `${(Math.max(0, battle.time) / DURATION) * 100}%`;
     $('.boss-meter').setAttribute('aria-valuenow', String(battle.bossHp));
