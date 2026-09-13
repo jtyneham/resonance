@@ -1,5 +1,48 @@
 # Implementation status
 
+## Latest — Ictus attack release ready for review (2026-09-13)
+
+`windup-lab.html?mode=attack` keeps the approved whole-character Ictus drawings
+unchanged and adds a separate tracked baton charge, release flash and six-event
+red-arc phrase over a faint five-lane field. Release occurs on the forward-pointing
+drawing at 244 ms; the character rebounds immediately. The sample demonstrates
+one-, two- and three-lane widths but is not a locked boss chart or final music
+sync. See `ictus-attack-release-review-01.md`. Unit tests and production build
+pass; the focused attack browser check passes and its phone screenshots were
+visually inspected. Await user review of the gesture-to-release connection.
+
+## Latest — complete Ictus recovery ready for review (2026-09-13)
+
+User approved corrected 2D wind-up + stroke. `windup-lab.html?mode=ictus` now
+adds the established 940 ms recovery for a 1200 ms complete motion. It rebounds
+immediately from pointing (no endpoint hold), traverses approved whole-hand
+drawings in reverse anatomical order, and settles on upright idle. Full and
+recovery-only playback, quarter speed and scrub are available. No new generated
+frames or combat integration. See `ictus-recovery-review-01.md`. 46 unit tests,
+build and three focused browser tests pass. Await user motion review.
+
+## Latest — corrected stroke connected for review (2026-09-13)
+
+User preferred second stroke sheet and requested frame7 baton correction.
+`ictus-stroke-baton-fixed-03.png` removes extra upright spike, retains forward
+baton. `windup-lab.html?mode=stroke` joins approved wind-up (130 ms) and corrected
+stroke (130 ms). Normal/quarter speed, scrub, endpoint inspection. Build and
+two browser tests pass. Motion approval pending; recovery not included.
+Earlier rejection records below describe prior alternatives, not this correction.
+
+## Latest checkpoint — fast stroke unsuccessful (2026-09-13)
+
+User approved fine-tip wind-up and authorized stroke into pointing at player.
+Two generated sheets failed visual review: insufficient wrist bend, abrupt late
+pose changes and conflicting baton geometry. Saved rejected sheets and exact
+prompts in `docs/bosses/conductor/key-poses/stroke-attempts-2026-09-13/`.
+No runtime changes or combined preview. Stroke remains incomplete. Next targeted
+work: resolve one intermediate wrist/grip pose before expanding to a sequence.
+Continue whole-character 2D frames. No 3D rig work.
+
+Reference footage informs expressive movement quality; timing follows conducting
+technique, personality and our music/combat, not reference boss pauses/rhythms.
+
 ## Active direction — back to 2D whole-hand drawings
 
 User accepted the eight-frame wind-up except for the round baton-tip knobs.
