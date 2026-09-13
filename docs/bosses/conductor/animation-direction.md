@@ -48,10 +48,16 @@ clusters, loose threads and the baton grip are resolved inside every authored
 frame.
 
 Modularity exists at the **animation-clip level**, not the body-part level. Likely
-clips include idle, small and broad Ictus, changing-meter phrases, sectional
-entrances, Fermata hold/release, resonant invitation, cutoff, re-entry and the
-Cadenza signal/execution. This list describes asset organization; it does not
+clips include idle, small and broad Ictus, continuous conducting phrases used by
+changing-meter passages, sectional entrances, Fermata hold/release, cutoff,
+re-entry and the Cadenza signal/execution. Changing Meter is an encounter/music
+structure, not one animation by definition; it may select one or more purpose-made
+continuous phrase clips. This list describes asset organization; it does not
 require every musical phrase to be one monolithic file.
+
+There is no Resonant Invitation or other boss animation for absorbables.
+Absorbable resonance events belong to the stage/encounter timeline independently
+of the boss's gestures and attacks.
 
 This decision favors authored character performance and consistent pixel art over
 the ability to synthesize arbitrary poses at runtime. A procedural joint rig may

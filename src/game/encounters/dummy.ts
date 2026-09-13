@@ -1,4 +1,4 @@
-import type { Note, AttackKind } from '../chart';
+import type { Note, ChartEventKind } from '../chart';
 import type { EncounterDefinition } from '../encounter';
 
 const BPM = 160;
@@ -11,7 +11,7 @@ export function makeDummyChart(): Note[] {
     beat: number,
     lane: number,
     width = 1,
-    kind: AttackKind = 'dark',
+    kind: ChartEventKind = 'dark',
     travel = 2.5,
   ) => {
     notes.push({

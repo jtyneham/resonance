@@ -4,6 +4,8 @@ import type { Note } from './chart';
 // Constant tempo for now; no loaders, tempo maps or renderer framework.
 // Authored definitions use positive bpm/beats/bossHp and nonnegative count-in.
 // Chart hit/travel are seconds, beat is musical position; phrases are beat-sorted.
+// Boss hazards and stage opportunities share this prototype timeline, but a
+// resonant event is stage-authored—not a boss attack or boss-animation event.
 export interface EncounterDefinition {
   readonly id: string;
   readonly name: string;

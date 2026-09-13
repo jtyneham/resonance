@@ -32,7 +32,7 @@ joint precision, crimson energy, and exaggerated poses may extend the authentic
 foundation. The result should resemble a real conductor transformed into a boss,
 not generic magical baton waving.
 
-## Six core phrases
+## Five core phrases
 
 ### 1. Ictus
 
@@ -52,7 +52,10 @@ The smallest and most reusable statement.
 
 ### 2. Changing Meter
 
-An authored sequence built from real conducting paths.
+An authored musical/encounter passage built from real conducting paths. Changing
+Meter is not itself one animation or one reusable attack. The scored passage uses
+continuous whole-hand conducting clips whose beat points align with its authored
+releases.
 
 - **Gesture:** the baton traces recognizable three-, four-, or five-beat patterns.
   Direction changes and beat points remain clean at gameplay scale.
@@ -95,26 +98,7 @@ Timing pressure created through deliberate suspension.
 - **Character:** it controls not only what arrives, but whether musical time itself
   seems permitted to continue.
 
-### 5. Resonant Invitation
-
-The boss appears to offer the player something worth absorbing, but the invitation
-is baited with genuine danger.
-
-- **Gesture:** the fingers open and the baton is presented forward as a formal cue,
-  invitation, or taunt.
-- **Attack:** hollow pale resonance waves are embedded within damaging low arcs,
-  pipe barriers, or a rapidly changing route. They never arrive as isolated, safely
-  collected charge.
-- **Player demand:** dodge or jump through the surrounding formation, reach the
-  offered lane, and remain grounded at the correct moment to absorb. Pursuing the
-  wave is optional, valuable, and meaningfully more dangerous than declining it.
-- **Variations:** successive offerings change lane, a safe absorption lane becomes
-  a poor counterattack lane because of an organ pipe, or the firing opening arrives
-  after the next cutoff.
-- **Character:** The Conductor treats the player's power as something that must be
-  won by accepting its terms.
-
-### 6. Cutoff and Re-entry
+### 5. Cutoff and Re-entry
 
 A phrase transition weaponized as a false ending.
 
@@ -124,8 +108,8 @@ A phrase transition weaponized as a false ending.
   re-entry immediately establishes a different lane demand, meter, or safe region.
 - **Player demand:** release the old movement plan, read the preparation, and avoid
   treating the silence as safety.
-- **Variations:** change articulation, reverse the previous lane order, place a
-  resonance wave on the re-entry, or create a brief clean counterattack window.
+- **Variations:** change articulation, reverse the previous lane order, or create a
+  brief clean counterattack window.
 - **Character:** it ends and restarts the battlefield with complete authority.
 
 ## Special phrase: Cadenza
@@ -139,7 +123,7 @@ rules.
    the rest of the fight.
 3. The hand locks into a poised configuration.
 4. It performs the signaled sequence at high speed using Ictus strokes, pipe ranks,
-   resonance waves, held releases, and one decisive cutoff.
+   held releases, and one decisive cutoff.
 
 The difficulty is memory plus execution. The signaling must be readable enough
 that failure feels attributable to the player rather than hidden information.
@@ -163,9 +147,19 @@ poses, transitions, anchoring, timing and export requirements.
 - The source handoff's proposed disruptive hit reaction is superseded by the
   accepted non-interruption rule.
 
+## Stage-authored resonance opportunities
+
+Absorbable resonance events are not part of The Conductor's move pool. The stage
+places them independently on the encounter timeline. They have no corresponding
+boss gesture, cue, attack animation, or implied gift from the boss.
+
+Their placement may still overlap dangerous boss patterns, making collection
+valuable and high-risk, but that relationship is authored by the stage chart and
+will be designed later.
+
 ## Still needed before an authored chart
 
-- Accept, revise, or reject the six phrases and Cadenza structure.
+- Accept, revise, or reject the five phrases and Cadenza structure.
 - Develop the accepted mechanical-chamber-orchestra/deconstructed-club direction
   into a composition brief: approximate duration, meter map, tempo regions,
   instrumentation, and musical motif.

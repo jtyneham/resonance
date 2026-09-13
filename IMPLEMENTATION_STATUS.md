@@ -1,5 +1,15 @@
 # Implementation status
 
+## Latest design correction — resonance ownership (2026-09-13)
+
+Absorbable resonance events are stage-authored opportunities, never boss attacks
+and never spawned, promised or telegraphed by boss animations. The shared
+prototype chart remains a timing/collision container only; its TypeScript naming
+and comments now encode that ownership boundary. Removed the obsolete Resonant
+Invitation from The Conductor's authoritative animation/move-pool direction.
+Changing Meter is an encounter/music structure realized through continuous
+conducting phrase clips, not one animation type.
+
 ## Latest — Ictus attack release ready for review (2026-09-13)
 
 `windup-lab.html?mode=attack` keeps the approved whole-character Ictus drawings
