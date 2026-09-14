@@ -1,5 +1,15 @@
 # Implementation status
 
+## Latest — Idle-to-Ictus continuity loop ready for review (2026-09-14)
+
+Added isolated `continuity-lab.html`: one approved idle cycle now flows into the
+complete approved Ictus body motion and recovery, then directly into another idle
+cycle. A shared animated baton-tip effect follows both sprite sets. No hazards,
+gameplay or source artwork changed. Idle matte isolation was extracted into a
+shared helper so the idle-only and continuity labs use identical cleaned frames.
+See `idle-ictus-continuity-review-01.md`. Await user judgment of palm position,
+scale, grip and motion at both seams before authoring any bridge drawings.
+
 ## Latest — Conductor upright idle loop ready for review (2026-09-14)
 
 Added isolated `idle-lab.html`: sixteen generated whole-hand drawings form a
