@@ -1,4 +1,5 @@
 import './style.css';
+import { titleAmbience } from './rendering/title-ambience';
 import { Arena } from './rendering/arena';
 import { Transport } from './audio/transport';
 import { Battle, type Action, type EventKind } from './game/battle';
@@ -38,8 +39,27 @@ app.innerHTML = `
   <div id="telegraphs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 
   <section id="title" class="screen title-screen" aria-label="Title">
-    <div class="title-copy"><span class="eyebrow lime">A SIGNAL IN THE NOISE</span><h1>RESONANCE<span class="title-dot">.</span></h1><p>Strike the rhythm back.</p></div>
-    <div class="title-actions"><div class="micro-line"><span>FIVE LANES</span><span>ONE SPARK</span><span>NO SECOND CHANCES</span></div><button class="primary" id="start">START <span>↗</span></button><div class="utility-row"><button id="options-button" class="secondary">OPTIONS + CONTROLS</button><button id="fullscreen" class="secondary" aria-label="Enter fullscreen">⛶ FULLSCREEN</button></div><p class="footer-note">HEADPHONES RECOMMENDED <span>PROTOTYPE 0.1</span></p></div>
+    <div class="title-masthead" aria-label="Resonance">
+      <h1>RESONANCE</h1>
+      <span class="brass-light" aria-hidden="true"></span>
+    </div>
+    <div class="artwork-stage" aria-label="Ornamental music box artwork">
+      <span class="vertical-signal" aria-hidden="true"></span>
+      <div class="artwork-ring artwork-ring-outer" aria-hidden="true"></div>
+      <div class="artwork-ring artwork-ring-inner" aria-hidden="true"></div>
+      <svg class="musical-notes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <span class="ring-star ring-star-top" aria-hidden="true">✦</span>
+      <span class="ring-star ring-star-left" aria-hidden="true">✦</span>
+      <span class="ring-star ring-star-right" aria-hidden="true">✦</span>
+      <span class="ring-star ring-star-bottom" aria-hidden="true">✦</span>
+      <img class="music-box-art" src="/resonance/assets/title/musicbox.png" alt="An open antique music box" />
+    </div>
+    <div class="title-actions">
+      <button class="primary" id="start">START</button>
+      <div class="utility-row"><button id="options-button" class="secondary">OPTIONS + CONTROLS</button><button id="fullscreen" class="secondary" aria-label="Enter fullscreen">⛶ FULLSCREEN</button></div>
+    </div>
+    <p class="footer-note"><span>HEADPHONES RECOMMENDED</span><span>PROTOTYPE</span></p>
+    <div class="footer-ornament" aria-hidden="true">✦</div>
   </section>
 
   <section id="select" class="screen center-screen" aria-label="Encounter selection" hidden>
@@ -47,14 +67,13 @@ app.innerHTML = `
   </section>
 
   <section id="options" class="screen center-screen" aria-label="Options and controls" hidden>
-    <div class="panel options-panel"><span class="eyebrow lime">TUNE YOUR SIGNAL</span><h2>Options + controls.</h2>
+    <div class="panel options-panel"><span class="eyebrow lime">TUNE THE MECHANISM</span><h2>Options + controls.</h2>
     <label class="setting" for="volume"><span>Volume</span><output id="volume-value"></output></label><input id="volume" type="range" min="0" max="100" step="5" />
     <label class="setting toggle"><span>Reduced motion<small>Calmer rings and no impact particles.</small></span><input id="reduced-motion" type="checkbox" /></label>
     <div class="legend"><div><span class="legend-wave dark"></span><p><strong>Coral / low wave</strong>Jump over it or change lanes.</p></div><div><span class="legend-wave resonant">◆</span><p><strong>Muted lime / resonance wave</strong>Stand grounded in its lane to absorb automatically.</p></div><div><span class="legend-wall">╱╱</span><p><strong>Ivory / tall barrier</strong>Move aside. Blocks jumps and your shots.</p></div></div>
     <p class="instructions">Stand your ground to <strong>automatically absorb</strong> resonance waves. Two absorbs charge one shot. Tap <strong>Resonate</strong> in an opening to fire. Getting hit empties your charge.</p>
     <div class="key-guide"><span>MOVE <kbd>←</kbd><kbd>→</kbd> / A D</span><span>JUMP <kbd>SPACE</kbd></span><span>FIRE <kbd>J</kbd> / F</span><span>PAUSE <kbd>ESC</kbd></span></div>
-    <p class="small-note">Touch: left thumb moves, right thumb jumps and fires stored resonance. One lane change per jump; a late second move is buffered for landing. Tap each move; holding does not repeat. Use speaker audio or wired headphones for the tightest timing.</p>
-    <button class="primary" id="options-back">GOT IT <span>↗</span></button></div>
+    <button class="secondary full-width" id="options-back">BACK <span>←</span></button></div>
   </section>
 
   <section id="paused" class="screen center-screen scrim" aria-label="Paused" hidden><div class="panel"><span class="eyebrow lime">SIGNAL HELD</span><h2>Take a breath.</h2><p class="intro" id="pause-reason">Your place in the music is saved.</p><button class="primary" id="resume">RESUME <span>↗</span></button><div class="utility-row"><button class="secondary" id="pause-retry">RETRY</button><button class="secondary" data-home>TITLE</button></div></div></section>
@@ -80,7 +99,6 @@ audio.setVolume(settings.volume);
 arena?.setReducedMotion(settings.reducedMotion);
 type Screen = 'title' | 'select' | 'options' | 'battle' | 'paused' | 'result';
 let screen: Screen = 'title';
-let previousScreen: Screen = 'title';
 let battle: Battle | null = null;
 let busy = false;
 let operation = 0;
@@ -284,14 +302,12 @@ for (const button of app.querySelectorAll('[data-home]'))
     show('title');
   });
 $('#options-button').addEventListener('click', () => {
-  previousScreen = 'title';
   show('options');
 });
 $('#learn').addEventListener('click', () => {
-  previousScreen = 'select';
   show('options');
 });
-$('#options-back').addEventListener('click', () => show(previousScreen));
+$('#options-back').addEventListener('click', () => show('title'));
 const volume = $<HTMLInputElement>('#volume');
 const reduced = $<HTMLInputElement>('#reduced-motion');
 volume.value = String(settings.volume * 100);
@@ -310,6 +326,8 @@ reduced.addEventListener('change', () => {
   saveSettings(settings);
 });
 game.classList.toggle('reduced-motion', settings.reducedMotion);
+const disposeTitleAmbience = titleAmbience(game, $('#title'));
+if (import.meta.hot) import.meta.hot.dispose(disposeTitleAmbience);
 
 type WebkitElement = HTMLElement & {
   webkitRequestFullscreen?: () => Promise<void> | void;

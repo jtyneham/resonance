@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="941" height="1672" viewBox="0 0 941 1672">
+  <defs>
+    <!-- Broad, non-repeating stains. No fine grain or bright noise pixels. -->
+    <filter id="stains" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.007 0.004" numOctaves="3" seed="37" stitchTiles="noStitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="0.075" intercept="0.015"/>
+        <feFuncG type="linear" slope="0.067" intercept="0.014"/>
+        <feFuncB type="linear" slope="0.042" intercept="0.010"/>
+        <feFuncA type="linear" slope="0" intercept="1"/>
+      </feComponentTransfer>
+      <feGaussianBlur stdDeviation="2.5"/>
+    </filter>
+  </defs>
+  <path fill="#0c0b08" d="M0 0h941v1672H0z" filter="url(#stains)"/>
+</svg>
