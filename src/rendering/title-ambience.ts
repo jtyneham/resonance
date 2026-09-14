@@ -32,7 +32,8 @@ export function titleAmbience(game: HTMLElement, title: HTMLElement) {
   let noteSpawnTimer: ReturnType<typeof setTimeout> | undefined;
   let running = false;
 
-  const random = (min: number, max: number) => min + Math.random() * (max - min);
+  const random = (min: number, max: number) =>
+    min + Math.random() * (max - min);
   const noteLimits = () =>
     smallScreen.matches ? { min: 7, max: 12 } : { min: 10, max: 18 };
 
@@ -55,7 +56,10 @@ export function titleAmbience(game: HTMLElement, title: HTMLElement) {
     const path = NOTE_PATHS[Math.floor(Math.random() * NOTE_PATHS.length)];
     const art = NOTE_ART[Math.floor(Math.random() * NOTE_ART.length)];
     const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    group.classList.add('ambient-note', near ? 'ambient-note-near' : 'ambient-note-distant');
+    group.classList.add(
+      'ambient-note',
+      near ? 'ambient-note-near' : 'ambient-note-distant',
+    );
     group.innerHTML = `
       <animateMotion dur="${duration}ms" begin="indefinite" path="${path}" rotate="0" fill="freeze"${reverse ? ' keyPoints="1;0" keyTimes="0;1" calcMode="linear"' : ''}/>
       <animate attributeName="opacity" dur="${duration}ms" begin="indefinite" values="0;${peakOpacity * 0.72};${peakOpacity};${peakOpacity * 0.66};0" keyTimes="0;.16;.48;.78;1" fill="freeze"/>
@@ -89,7 +93,11 @@ export function titleAmbience(game: HTMLElement, title: HTMLElement) {
       noteSpawnTimer = undefined;
       timers.delete(timer);
       const limits = noteLimits();
-      if (running && notes.size < limits.max && (notes.size < limits.min || Math.random() < 0.96)) {
+      if (
+        running &&
+        notes.size < limits.max &&
+        (notes.size < limits.min || Math.random() < 0.96)
+      ) {
         spawnNote();
       }
       scheduleNoteSpawn();
