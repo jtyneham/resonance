@@ -1,5 +1,36 @@
 # Implementation status
 
+## Latest — Conductor upright idle loop ready for review (2026-09-14)
+
+Added isolated `idle-lab.html`: sixteen generated whole-hand drawings form a
+provisional two-second upright idle loop based on the user-approved final Ictus
+pose. The palm stays centered, the baton remains vertical and the five-digit
+thumb/index grip is preserved. Baton-tip magic is a separate live effect rather
+than a baked static star. Because the generated review sheet returned a painted
+checkerboard, the lab removes only bright neutral matte pixels in memory; a true-
+alpha extraction that introduced colored edge noise was rejected. Follow-up
+review removed residual white fringe with edge-connected matte flooding and made
+the live sparkle track each drawing's detected baton tip instead of a fixed
+screen coordinate. A second review correction darkens one exposed pixel of
+remaining pale edge contamination and plays drawings 1→16→1, eliminating the generated
+sheet's progressive rise followed by an abrupt low reset. A third correction
+replaces fractional sprite-sheet crops with shared integer cell bounds, removing
+the next row's baton-tip pixel that appeared below drawings 9–12 in both playback
+directions. A four-pixel bottom gutter also excludes paint that the generated
+sheet placed across its own row boundary. Existing approved Ictus art and gameplay
+remain untouched. See
+`conductor-idle-sheet-review-01.md`. Await user motion and consistency review.
+
+## Latest — Changing Meter timing lab ready for review (2026-09-14)
+
+Added isolated `meter-lab.html`: a twelve-second, 120 BPM Web Audio click study
+for the provisional 16–28 second encounter passage. It presents two five-pulse
+bars grouped `3+2`, then two grouped `2+3`, with strong/weak clicks, deliberate
+rests and placeholder red arcs on a five-lane field. Music time is authoritative
+for playback; the timeline can also be inspected without audio. No Conductor art,
+production encounter, HP variant, absorbable, title or Options change. See
+`changing-meter-timing-sketch-01.md`. Await user judgment before animation work.
+
 ## Latest design correction — resonance ownership (2026-09-13)
 
 Absorbable resonance events are stage-authored opportunities, never boss attacks

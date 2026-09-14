@@ -11,6 +11,8 @@ export default defineConfig({
         styledLab: 'styled-lab.html',
         fingerLab: 'finger-lab.html',
         windupLab: 'windup-lab.html',
+        meterLab: 'meter-lab.html',
+        idleLab: 'idle-lab.html',
       },
       output: {
         manualChunks: (id) =>
