@@ -52,6 +52,30 @@
   text-align: center;
 }
 
+#meter-phrase-lab .row.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#meter-phrase-lab .row.three button {
+  min-width: 0;
+  padding-inline: 5px;
+  font-size: 10px;
+}
+
+#meter-phrase-lab .compare-switch {
+  margin-top: 7px;
+}
+
+#meter-phrase-lab .compare-switch[hidden] {
+  display: none;
+}
+
+#meter-phrase-lab .compare-switch button[aria-pressed='true'] {
+  border-color: #d39a52;
+  background: #382619;
+  color: #f2d7aa;
+}
+
 @media (max-height: 720px) {
   #meter-phrase-lab #sample {
     height: 48svh;

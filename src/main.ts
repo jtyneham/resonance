@@ -83,21 +83,21 @@ app.innerHTML = `
       <p class="dev-intro">Playable animation and timing studies. These links are intentionally available in the deployed prototype for remote playtesting.</p>
       <h3>Current Conductor work</h3>
       <nav class="dev-list" aria-label="Current Conductor studies">
-        <a href="${import.meta.env.BASE_URL}meter-phrase-lab.html"><span><strong>Changing Meter · 3+2 phrase</strong><small>Five-beat whole-hand motion with staged attacks.</small></span><b>↗</b></a>
-        <a href="${import.meta.env.BASE_URL}continuity-lab.html"><span><strong>Stillness → command → stillness</strong><small>Approved idle-to-Ictus continuity.</small></span><b>↗</b></a>
-        <a href="${import.meta.env.BASE_URL}idle-lab.html"><span><strong>Upright, watchful, restrained</strong><small>Seamless floating idle loop.</small></span><b>↗</b></a>
-        <a href="${import.meta.env.BASE_URL}windup-lab.html?mode=attack"><span><strong>Ictus · attack release</strong><small>Complete gesture, crimson arc phrase and recovery.</small></span><b>↗</b></a>
-        <a href="${import.meta.env.BASE_URL}meter-lab.html"><span><strong>Changing Meter · timing</strong><small>Original 3+2 → 2+3 pulse study.</small></span><b>↗</b></a>
+        <a href="${import.meta.env.BASE_URL}meter-phrase-lab.html"><span><strong>Changing Meter Animation</strong><small>Approved 3+2 conducting phrase with staged attacks.</small></span><b>↗</b></a>
+        <a href="${import.meta.env.BASE_URL}continuity-lab.html"><span><strong>Idle-to-Ictus Transition</strong><small>Continuity between the idle and attack animations.</small></span><b>↗</b></a>
+        <a href="${import.meta.env.BASE_URL}idle-lab.html"><span><strong>Idle Animation</strong><small>Seamless floating idle loop.</small></span><b>↗</b></a>
+        <a href="${import.meta.env.BASE_URL}windup-lab.html?mode=attack"><span><strong>Ictus Attack Animation</strong><small>Complete gesture, crimson arc release and recovery.</small></span><b>↗</b></a>
+        <a href="${import.meta.env.BASE_URL}meter-lab.html"><span><strong>Changing Meter Timing Study</strong><small>Original 3+2 → 2+3 rhythm experiment.</small></span><b>↗</b></a>
       </nav>
       <details class="dev-archive">
         <summary>Earlier experiments</summary>
         <nav class="dev-list" aria-label="Earlier development studies">
-          <a href="${import.meta.env.BASE_URL}windup-lab.html?mode=ictus"><span><strong>Complete Ictus body motion</strong><small>Wind-up, strike and recovery without attacks.</small></span><b>↗</b></a>
-          <a href="${import.meta.env.BASE_URL}windup-lab.html"><span><strong>2D wind-up drawings</strong><small>Focused eight-drawing preparation study.</small></span><b>↗</b></a>
-          <a href="${import.meta.env.BASE_URL}wrist-lab.html"><span><strong>Wrist motion reference</strong><small>Approved low-detail movement study.</small></span><b>↗</b></a>
-          <a href="${import.meta.env.BASE_URL}styled-lab.html"><span><strong>Styled pose blocking</strong><small>Historical three-pose assembly.</small></span><b>↗</b></a>
-          <a href="${import.meta.env.BASE_URL}finger-lab.html?mode=full"><span><strong>Finger articulation</strong><small>Historical constructed-finger experiment.</small></span><b>↗</b></a>
-          <a href="${import.meta.env.BASE_URL}conductor-lab.html"><span><strong>Original layered rig study</strong><small>Archived modular animation experiment.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}windup-lab.html?mode=ictus"><span><strong>Ictus Motion Animation</strong><small>Wind-up, strike and recovery without attacks.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}windup-lab.html"><span><strong>Ictus Wind-up Animation</strong><small>Focused eight-drawing preparation study.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}wrist-lab.html"><span><strong>Wrist Motion Study</strong><small>Approved low-detail movement reference.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}styled-lab.html"><span><strong>Pose Blocking Study</strong><small>Historical three-pose assembly.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}finger-lab.html?mode=full"><span><strong>Finger Animation Study</strong><small>Historical constructed-finger experiment.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}conductor-lab.html"><span><strong>Layered Rig Experiment</strong><small>Archived modular animation approach.</small></span><b>↗</b></a>
         </nav>
       </details>
       <button class="secondary full-width" id="dev-back">BACK <span>←</span></button>

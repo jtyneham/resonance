@@ -10,11 +10,24 @@ organ-pipe barrier, then one-lane arc. Attacks are separate Canvas effects;
 absorbables remain stage-owned and absent. This is an animation review, not a
 final encounter chart.
 
+The focused second pass now uses authored frame holds instead of uniform timing,
+synchronizes attacks and tip flashes to exact beat releases, preserves active
+attacks across the loop boundary, and resolves through two dedicated return
+drawings into the exact opening pose. A paused Ictus comparison mode exposes
+scale, wrist-core registration, brightness and palette through same-position
+Phrase, Ictus and Overlay views at their actual playback scales.
+The comparison exposed an 8–10% undersized phrase silhouette, so phrase playback
+now uses scale `1.96` and its return bridge uses the proportional scale `0.76`.
+The fixed wrist-core anchor is unchanged.
+
 The title screen now includes `DEV PROGRESSION`. Its in-game index links to the
 current Changing Meter, continuity, idle, Ictus and timing studies, plus a clearly
 collapsed archive of earlier rig/finger/pose experiments. Every route uses the
 Vite/GitHub Pages base path so the index remains usable after deployment. This is
 temporary development UI intended for the user's remote GitHub Pages testing.
+The index uses plain animation-focused names such as `Idle Animation`,
+`Ictus Attack Animation` and `Changing Meter Animation` rather than internal
+review phrases.
 
 ## Latest — Conductor idle simplified to a floating hand (2026-09-19)
 

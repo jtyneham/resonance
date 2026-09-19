@@ -46,6 +46,29 @@ and a seamless upright endpoint. The generated project asset is
 This sheet still requires user review in motion. Approval of the timing sketch or
 Ictus does not automatically approve these new drawings.
 
+## Focused motion revision
+
+The second review pass keeps the original twenty drawings but no longer gives
+them equal screen time. Beats now land on authored wrist accents at 250, 750,
+1250, 1750 and 2250 ms. Beats one and four receive the clearest tip-impact flash
+and still release their attacks at that exact instant. Attack travel is circular
+across the bar boundary so the stage does not visibly empty when the character
+loop wraps.
+
+Two selected return drawings from
+`changing-meter-return-bridge-review-01.png` connect the final rebound to the
+exact opening pose. The first two generated bridge candidates remain in the
+source strip for provenance but are intentionally unused: their diagonal motion
+would move backward relative to the approved final phrase pose. The review page
+also includes a paused actual-scale calibration against the approved Ictus pose.
+Phrase, Ictus and translucent overlay views occupy the identical wrist-core
+anchor and never resize for comparison.
+
+Actual-scale review showed that the phrase silhouette was approximately 8–10%
+smaller than the approved Ictus presentation. Phrase playback is therefore
+calibrated from `1.80` to `1.96`; the return bridge is increased proportionally
+from `0.70` to `0.76`. Wrist-core registration remains unchanged.
+
 ### Selected built-in generation prompt
 
 ```text
@@ -60,4 +83,18 @@ Lighting/mood: dark restrained theatrical lighting identical to the approved Ict
 Color palette: match reference ivory, aged brass, deep crimson and black exactly; identical brightness and contrast across all twenty cells.
 Constraints: preserve exactly five digits including thumb; preserve identical anatomy, proportions, ornament count, central wrist-core, grip, baton length and silhouette identity in every frame. Start and final frame must be the exact upright baton pose and match seamlessly. The palm stays spatially stable; motion is mainly wrist flexion/rotation with subtle physically plausible secondary follow-through in free fingers, cloth strips and hanging ornaments. Baton tip is plain and tapered because the live red magical sparkle is added separately in code. Transparent background if possible; otherwise pure uniform black.
 Avoid: text, labels, borders, numbers, checkerboard painted into the image, extra fingers, missing fingers, duplicated batons, short batons, round knobs at the baton tip, white edge noise, palette drift, brightness drift, scale drift, moving the whole character around the frame, 3D rendering, skeletal rig appearance, motion trails, attack projectiles, lanes, scenery, crossfades or morphing.
+```
+
+### Return bridge generation prompt
+
+```text
+Use case: stylized-concept
+Asset type: four-frame return bridge for an existing 2D whole-character pixel-art animation
+Primary request: Create exactly four sequential in-between drawings that transition The Conductor smoothly from the bottom-right final pose of Image 1 back into the top-left opening upright-baton pose of Image 1. This is the final 300 milliseconds of a seamless looping five-beat conducting phrase. The wrist gently completes its rebound and settles into the exact upright orientation without a visible reset.
+Input images: Image 1 is the active twenty-frame phrase sheet; its bottom-right cell is the starting pose for this bridge and its top-left cell is the ending pose. Image 2 is the authoritative identity, scale, palette, brightness, upright endpoint and five-digit anatomy reference.
+Subject: the exact same ornate supernatural five-digit hand called The Conductor, with ivory segmented fingers, aged-brass joints and wrist ornament, deep crimson cloth/energy, one tapered baton pinched between thumb and index finger, central red wrist-core eye and hanging ornaments.
+Style/medium: detailed semi-pixel-art raster matching both references exactly; crisp controlled pixels; no smoothing blur.
+Composition/framing: one horizontal strip of four equal square cells read left-to-right. One complete whole-hand drawing per cell. Identical wrist-core registration, character scale, lighting and proportions in all four cells. Generous empty margins. Transparent background.
+Constraints: these four drawings are only the missing bridge between the existing final and opening poses; preserve exactly five digits, identical anatomy, grip, baton length, core size, ornament count, palette and brightness. Motion comes mainly from the wrist; free fingers, cloth and hanging ornaments show subtle natural follow-through. The fourth drawing should arrive immediately before the exact upright opening drawing, not replace it. Baton tip remains plain and tapered because live magic is separate.
+Avoid: text, labels, borders, numbers, checkerboard, black background, extra/missing fingers, duplicated baton, round baton-tip knob, pose reset, scale drift, center drift, white or green edge noise, baked glow, attacks, lanes, scenery, motion trails, 3D rendering, skeletal rigging, crossfades or morphing.
 ```

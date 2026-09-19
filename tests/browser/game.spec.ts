@@ -16,8 +16,11 @@ test('portrait title, all five lanes, options and saved settings', async ({
   ).toBeVisible();
   await page.screenshot({ path: 'test-results/dev-progression-phone.png' });
   await expect(
-    page.getByRole('link', { name: /Changing Meter · 3\+2 phrase/ }),
+    page.getByRole('link', { name: /Changing Meter Animation/ }),
   ).toHaveAttribute('href', '/resonance/meter-phrase-lab.html');
+  await expect(
+    page.getByRole('link', { name: /Idle Animation/ }),
+  ).toHaveAttribute('href', '/resonance/idle-lab.html');
   await page.getByRole('button', { name: 'BACK' }).click();
   await page.getByRole('button', { name: 'OPTIONS + CONTROLS' }).click();
   await page.locator('#volume').fill('35');

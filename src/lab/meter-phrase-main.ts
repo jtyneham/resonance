@@ -1,10 +1,12 @@
 import './idle.css';
 import './meter-phrase.css';
 import sheetUrl from '../../docs/bosses/conductor/key-poses/changing-meter-3plus2-phrase-review-01.png?url';
+import bridgeUrl from '../../docs/bosses/conductor/key-poses/changing-meter-return-bridge-review-01.png?url';
+import ictusUrl from '../../docs/bosses/conductor/key-poses/ictus-windup-fine-tips-02.png?url';
 import {
   METER_PHRASE_FRAMES,
   METER_PHRASE_MS,
-  meterPhraseFrame,
+  meterPhrasePose,
   meterPhraseTime,
   phraseBeatAt,
   visiblePhraseAttacks,
@@ -13,10 +15,11 @@ import {
 document.querySelector('main')!.innerHTML = `
 <p class="eyebrow">CHANGING METER · WHOLE-HAND PHRASE 01</p>
 <h1>ONE-two-three, FOUR-five.</h1>
-<p>A continuous five-beat conducting phrase grouped <strong>3+2</strong>. The first and fourth beats carry the strongest wrist accents.</p>
-<div class="phrase-summary"><div><strong>120 BPM</strong><span>PROVISIONAL</span></div><div><strong>20</strong><span>WHOLE-HAND DRAWINGS</span></div><div><strong>3 + 2</strong><span>ACCENT GROUPS</span></div></div>
+<p>A five-beat conducting phrase grouped <strong>3+2</strong>. Drawings are deliberately retimed so beats one and four land on the clearest wrist accents.</p>
+<div class="phrase-summary"><div><strong>120 BPM</strong><span>PROVISIONAL</span></div><div><strong>20 + 2</strong><span>PHRASE + BRIDGE</span></div><div><strong>3 + 2</strong><span>ACCENT GROUPS</span></div></div>
 <div id="sample" data-state="loading"><canvas width="600" height="900" aria-label="The Conductor performing a five-beat 3 plus 2 phrase"></canvas></div>
-<div class="row"><button id="play" disabled>Play phrase</button><button id="slow" aria-pressed="false">Slow · ¼ speed</button></div>
+<div class="row three"><button id="play" disabled>Play phrase</button><button id="slow" aria-pressed="false">Slow · ¼ speed</button><button id="compare" aria-pressed="false" disabled>Compare Ictus</button></div>
+<div id="comparison-controls" class="row three compare-switch" hidden><button data-view="phrase" aria-pressed="false">Phrase</button><button data-view="ictus" aria-pressed="false">Approved Ictus</button><button data-view="overlay" aria-pressed="true">Overlay</button></div>
 <label for="timeline">Inspect drawing <output id="frame">1 / ${METER_PHRASE_FRAMES}</output></label>
 <input id="timeline" type="range" min="0" max="${METER_PHRASE_MS - 1}" value="0" step="1" />
 <p class="phrase-legend">Beat 1 arc · Beat 2 rest · Beat 3 wide arc · Beat 4 pipe rank · Beat 5 arc</p>
@@ -30,12 +33,25 @@ const canvas = document.querySelector<HTMLCanvasElement>('canvas')!;
 const ctx = canvas.getContext('2d')!;
 const play = document.querySelector<HTMLButtonElement>('#play')!;
 const slow = document.querySelector<HTMLButtonElement>('#slow')!;
+const compare = document.querySelector<HTMLButtonElement>('#compare')!;
+const comparisonControls = document.querySelector<HTMLElement>(
+  '#comparison-controls',
+)!;
+const comparisonButtons = Array.from(
+  comparisonControls.querySelectorAll<HTMLButtonElement>('[data-view]'),
+);
 const slider = document.querySelector<HTMLInputElement>('#timeline')!;
 const frameOutput = document.querySelector<HTMLOutputElement>('#frame')!;
 const status = document.querySelector<HTMLElement>('#status')!;
 const source = new Image();
+const bridgeSource = new Image();
+const ictusSource = new Image();
 const cleaned = document.createElement('canvas');
 const cleanedContext = cleaned.getContext('2d', { willReadFrequently: true })!;
+const bridgeCleaned = document.createElement('canvas');
+const bridgeContext = bridgeCleaned.getContext('2d', {
+  willReadFrequently: true,
+})!;
 
 let ready = false;
 let playing = false;
@@ -43,20 +59,32 @@ let elapsed = 0;
 let previous = 0;
 let rate = 1;
 let raf = 0;
+let loadedAssets = 0;
+let comparing = false;
+let comparisonReturnTime = 0;
+let comparisonView: 'phrase' | 'ictus' | 'overlay' = 'overlay';
 let tips: { x: number; y: number }[] = [];
+let bridgeTips: { x: number; y: number }[] = [];
 
-function cellBounds(frame: number) {
-  const column = frame % 5;
-  const row = Math.floor(frame / 5);
-  const left = Math.floor((column * cleaned.width) / 5);
-  const right = Math.floor(((column + 1) * cleaned.width) / 5);
-  const top = Math.floor((row * cleaned.height) / 4);
-  const bottom = Math.floor(((row + 1) * cleaned.height) / 4);
+function cellBounds(
+  sheet: HTMLCanvasElement,
+  frame: number,
+  columns: number,
+  rows: number,
+) {
+  const column = frame % columns;
+  const row = Math.floor(frame / columns);
+  const left = Math.floor((column * sheet.width) / columns);
+  const right = Math.floor(((column + 1) * sheet.width) / columns);
+  const top = Math.floor((row * sheet.height) / rows);
+  const bottom = Math.floor(((row + 1) * sheet.height) / rows);
   return { left, top, width: right - left, height: bottom - top };
 }
 
-function keepLargestCellComponent(pixels: ImageData, frame: number) {
-  const cell = cellBounds(frame);
+function keepLargestCellComponent(
+  pixels: ImageData,
+  cell: ReturnType<typeof cellBounds>,
+) {
   const visited = new Uint8Array(cell.width * cell.height);
   const components: number[][] = [];
   const stack: number[] = [];
@@ -109,27 +137,30 @@ function keepLargestCellComponent(pixels: ImageData, frame: number) {
   }
 }
 
-function prepareSheet() {
-  cleaned.width = source.naturalWidth;
-  cleaned.height = source.naturalHeight;
-  cleanedContext.drawImage(source, 0, 0);
-  const pixels = cleanedContext.getImageData(
-    0,
-    0,
-    cleaned.width,
-    cleaned.height,
-  );
+function prepareSheet(
+  sourceImage: HTMLImageElement,
+  target: HTMLCanvasElement,
+  targetContext: CanvasRenderingContext2D,
+  frameCount: number,
+  columns: number,
+  rows: number,
+  anchorYRatio: number,
+) {
+  target.width = sourceImage.naturalWidth;
+  target.height = sourceImage.naturalHeight;
+  targetContext.drawImage(sourceImage, 0, 0);
+  const pixels = targetContext.getImageData(0, 0, target.width, target.height);
   for (let pixel = 0; pixel < pixels.data.length; pixel += 4) {
     if (pixels.data[pixel + 3] < 72) pixels.data[pixel + 3] = 0;
   }
-  for (let frame = 0; frame < METER_PHRASE_FRAMES; frame++)
-    keepLargestCellComponent(pixels, frame);
-  cleanedContext.putImageData(pixels, 0, 0);
+  for (let frame = 0; frame < frameCount; frame++)
+    keepLargestCellComponent(pixels, cellBounds(target, frame, columns, rows));
+  targetContext.putImageData(pixels, 0, 0);
 
-  tips = Array.from({ length: METER_PHRASE_FRAMES }, (_, frame) => {
-    const cell = cellBounds(frame);
+  return Array.from({ length: frameCount }, (_, frame) => {
+    const cell = cellBounds(target, frame, columns, rows);
     const anchorX = cell.left + cell.width * 0.5;
-    const anchorY = cell.top + cell.height * 0.72;
+    const anchorY = cell.top + cell.height * anchorYRatio;
     let bestDistance = -1;
     let bestX = anchorX;
     let bestY = cell.top;
@@ -268,7 +299,8 @@ function drawAttacks() {
 
 function drawTip(x: number, y: number) {
   const beat = phraseBeatAt(elapsed);
-  const sinceBeat = meterPhraseTime(elapsed) - beat.at;
+  const sinceBeat =
+    (meterPhraseTime(elapsed) - beat.at + METER_PHRASE_MS) % METER_PHRASE_MS;
   const pulse = Math.max(0, 1 - sinceBeat / 180);
   const energy = 0.42 + pulse * (beat.accent === 'strong' ? 0.58 : 0.3);
   const radius = 9 + energy * 15;
@@ -291,6 +323,14 @@ function drawTip(x: number, y: number) {
   ctx.moveTo(0, -ray);
   ctx.lineTo(0, ray);
   ctx.stroke();
+  if (beat.attack && sinceBeat < 105) {
+    const release = sinceBeat / 105;
+    ctx.strokeStyle = `rgba(255, 231, 190, ${1 - release})`;
+    ctx.lineWidth = 3 - release * 1.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, 10 + release * 28, 0, Math.PI * 2);
+    ctx.stroke();
+  }
   ctx.restore();
 }
 
@@ -316,16 +356,103 @@ function drawBeatStrip() {
   ctx.restore();
 }
 
+function drawComparison() {
+  drawStage();
+  const phraseCell = cellBounds(cleaned, 0, 5, 4);
+  const phraseScale = 1.96;
+  const phraseAnchorX = phraseCell.width * 0.5;
+  const phraseAnchorY = phraseCell.height * 0.72;
+  const ictusCell = {
+    left: 0,
+    top: 0,
+    width: Math.floor(ictusSource.naturalWidth / 4),
+    height: Math.floor(ictusSource.naturalHeight / 2),
+  };
+  const ictusScale = 1.25;
+
+  const drawPhrase = (alpha = 1) => {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.imageSmoothingEnabled = false;
+    ctx.filter = 'brightness(1.12) saturate(0.96)';
+    ctx.drawImage(
+      cleaned,
+      phraseCell.left,
+      phraseCell.top,
+      phraseCell.width,
+      phraseCell.height,
+      300 - phraseAnchorX * phraseScale,
+      450 - phraseAnchorY * phraseScale,
+      phraseCell.width * phraseScale,
+      phraseCell.height * phraseScale,
+    );
+    ctx.restore();
+  };
+
+  const drawIctus = (alpha = 1) => {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.imageSmoothingEnabled = false;
+    ctx.globalCompositeOperation = 'screen';
+    ctx.drawImage(
+      ictusSource,
+      ictusCell.left,
+      ictusCell.top,
+      ictusCell.width,
+      ictusCell.height,
+      300 - 246 * ictusScale,
+      450 - 327 * ictusScale,
+      ictusCell.width * ictusScale,
+      ictusCell.height * ictusScale,
+    );
+    ctx.restore();
+  };
+
+  if (comparisonView === 'phrase') drawPhrase();
+  if (comparisonView === 'ictus') drawIctus();
+  if (comparisonView === 'overlay') {
+    drawPhrase(0.58);
+    drawIctus(0.58);
+  }
+
+  ctx.textAlign = 'center';
+  ctx.font = '700 12px Arial';
+  ctx.fillStyle = '#d6b071';
+  ctx.fillText(
+    comparisonView === 'phrase'
+      ? 'CURRENT PHRASE · ACTUAL SCALE'
+      : comparisonView === 'ictus'
+        ? 'APPROVED ICTUS · ACTUAL SCALE'
+        : 'PHRASE + APPROVED ICTUS · OVERLAY',
+    300,
+    95,
+  );
+  ctx.font = '10px Arial';
+  ctx.fillStyle = '#817565';
+  ctx.fillText('fixed wrist-core anchor · no comparison resizing', 300, 825);
+
+  host.dataset.mode = 'compare';
+  host.dataset.sheet = comparisonView;
+  host.dataset.comparison = comparisonView;
+  host.dataset.state = 'paused';
+  frameOutput.value = `${comparisonView} · actual scale`;
+}
+
 function render() {
   if (!ready) return;
-  const frame = meterPhraseFrame(elapsed);
-  const cell = cellBounds(frame);
-  // Match the approved Ictus palm width rather than filling the review canvas.
-  // The generated cells are smaller than the Ictus source cells, so this is a
-  // measured presentation scale, shared unchanged by all twenty drawings.
-  const scale = 1.8;
+  if (comparing) {
+    drawComparison();
+    return;
+  }
+  const pose = meterPhrasePose(elapsed);
+  const poseSheet = pose.sheet === 'phrase' ? cleaned : bridgeCleaned;
+  const cell =
+    pose.sheet === 'phrase'
+      ? cellBounds(poseSheet, pose.frame, 5, 4)
+      : cellBounds(poseSheet, pose.frame, 4, 1);
+  const scale = pose.sheet === 'phrase' ? 1.96 : 0.76;
   const anchorX = cell.width * 0.5;
-  const anchorY = cell.height * 0.72;
+  const anchorY = cell.height * (pose.sheet === 'phrase' ? 0.72 : 0.66);
   const destinationX = 300 - anchorX * scale;
   const destinationY = 450 - anchorY * scale;
 
@@ -333,9 +460,12 @@ function render() {
   drawBeatStrip();
   ctx.save();
   ctx.imageSmoothingEnabled = false;
-  ctx.filter = 'brightness(1.12) saturate(0.96)';
+  ctx.filter =
+    pose.sheet === 'phrase'
+      ? 'brightness(1.12) saturate(0.96)'
+      : 'brightness(0.9) saturate(0.9)';
   ctx.drawImage(
-    cleaned,
+    poseSheet,
     cell.left,
     cell.top,
     cell.width,
@@ -346,18 +476,21 @@ function render() {
     cell.height * scale,
   );
   ctx.restore();
-  const tip = tips[frame];
+  const tip =
+    pose.sheet === 'phrase' ? tips[pose.frame] : bridgeTips[pose.frame];
   drawTip(destinationX + tip.x * scale, destinationY + tip.y * scale);
   drawAttacks();
 
   const beat = phraseBeatAt(elapsed);
-  host.dataset.frame = String(frame);
+  host.dataset.mode = 'phrase';
+  host.dataset.sheet = pose.sheet;
+  host.dataset.frame = String(pose.frame);
   host.dataset.beat = String(beat.beat);
   host.dataset.accent = beat.accent;
   host.dataset.time = String(Math.round(meterPhraseTime(elapsed)));
   host.dataset.state = playing ? 'playing' : 'paused';
   slider.value = String(Math.round(meterPhraseTime(elapsed)));
-  frameOutput.value = `${frame + 1} / ${METER_PHRASE_FRAMES} · beat ${beat.beat}`;
+  frameOutput.value = `${pose.sheet === 'phrase' ? pose.frame + 1 : `bridge ${pose.frame - 1}`} · beat ${beat.beat}`;
 }
 
 function pause() {
@@ -376,7 +509,7 @@ function tick(now: number) {
 }
 
 function resume() {
-  if (!ready || playing) return;
+  if (!ready || playing || comparing) return;
   previous = performance.now();
   playing = true;
   play.textContent = 'Pause phrase';
@@ -385,7 +518,17 @@ function resume() {
   raf = requestAnimationFrame(tick);
 }
 
-play.onclick = () => (playing ? pause() : resume());
+play.onclick = () => {
+  if (comparing) {
+    comparing = false;
+    elapsed = comparisonReturnTime;
+    compare.setAttribute('aria-pressed', 'false');
+    compare.textContent = 'Compare Ictus';
+    comparisonControls.hidden = true;
+  }
+  if (playing) pause();
+  else resume();
+};
 slow.onclick = () => {
   rate = rate === 1 ? 0.25 : 1;
   previous = performance.now();
@@ -396,23 +539,100 @@ slow.onclick = () => {
       : 'Normal phrase speed enabled.';
 };
 slider.oninput = () => {
+  comparing = false;
+  compare.setAttribute('aria-pressed', 'false');
+  compare.textContent = 'Compare Ictus';
+  comparisonControls.hidden = true;
   elapsed = Number(slider.value);
   pause();
   render();
 };
 
-source.onload = () => {
-  prepareSheet();
+compare.onclick = () => {
+  if (!ready) return;
+  if (!comparing) {
+    comparisonReturnTime = elapsed;
+    pause();
+    comparing = true;
+    comparisonView = 'overlay';
+    compare.setAttribute('aria-pressed', 'true');
+    compare.textContent = 'Exit compare';
+    comparisonControls.hidden = false;
+    for (const button of comparisonButtons)
+      button.setAttribute(
+        'aria-pressed',
+        String(button.dataset.view === comparisonView),
+      );
+    status.textContent =
+      'Overlaying both animations at their actual playback scale and one fixed wrist-core anchor.';
+  } else {
+    comparing = false;
+    elapsed = comparisonReturnTime;
+    compare.setAttribute('aria-pressed', 'false');
+    compare.textContent = 'Compare Ictus';
+    comparisonControls.hidden = true;
+    status.textContent = 'Returned to the retimed five-beat phrase.';
+  }
+  render();
+};
+
+for (const button of comparisonButtons) {
+  button.onclick = () => {
+    const view = button.dataset.view;
+    if (view !== 'phrase' && view !== 'ictus' && view !== 'overlay') return;
+    comparisonView = view;
+    for (const candidate of comparisonButtons)
+      candidate.setAttribute('aria-pressed', String(candidate === button));
+    status.textContent =
+      view === 'overlay'
+        ? 'Overlaying both animations at the same wrist-core anchor.'
+        : `Showing ${view === 'phrase' ? 'the current phrase' : 'the approved Ictus'} at actual playback scale.`;
+    render();
+  };
+}
+
+function assetLoaded() {
+  loadedAssets += 1;
+  if (loadedAssets < 3) return;
+  tips = prepareSheet(
+    source,
+    cleaned,
+    cleanedContext,
+    METER_PHRASE_FRAMES,
+    5,
+    4,
+    0.72,
+  );
+  bridgeTips = prepareSheet(
+    bridgeSource,
+    bridgeCleaned,
+    bridgeContext,
+    4,
+    4,
+    1,
+    0.66,
+  );
   ready = true;
   play.disabled = false;
+  compare.disabled = false;
   host.dataset.asset = 'whole-hand-frames';
   resume();
-};
-source.onerror = () => {
+}
+
+function assetError() {
   host.dataset.state = 'error';
   status.textContent = 'Could not load the phrase drawings. Reload to retry.';
-};
+}
+
+source.onload = assetLoaded;
+bridgeSource.onload = assetLoaded;
+ictusSource.onload = assetLoaded;
+source.onerror = assetError;
+bridgeSource.onerror = assetError;
+ictusSource.onerror = assetError;
 source.src = sheetUrl;
+bridgeSource.src = bridgeUrl;
+ictusSource.src = ictusUrl;
 
 function orientation() {
   const landscape =
