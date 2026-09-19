@@ -409,6 +409,8 @@ h1 {
   outline-offset: 4px;
 }
 .title-screen .utility-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: 18px;
   gap: 14px;
 }
@@ -420,6 +422,10 @@ h1 {
   font-family: Consolas, 'Courier New', monospace;
   letter-spacing: 1.7px;
   font-size: 9px;
+}
+.title-screen .utility-row .secondary {
+  min-width: 0;
+  padding-inline: 7px;
 }
 .title-screen .secondary:hover {
   background: #24180c;
@@ -646,6 +652,100 @@ h1 {
     radial-gradient(ellipse 60% 77% at 105% 28%, #0008, transparent 89%),
     radial-gradient(ellipse 91% 45% at 68% 105%, #000a, transparent 90%);
 }
+#dev {
+  background:
+    radial-gradient(ellipse 110% 72% at 39% 44%, #302a1915, transparent 86%),
+    #0b0a07;
+}
+#dev::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: url('/assets/title/charcoal-mottling.svg') 63% 37% / 112% 106%
+    no-repeat;
+  opacity: 0.6;
+}
+.dev-panel {
+  margin-block: 12px;
+}
+.dev-panel h3 {
+  margin: 20px 0 8px;
+  color: #ba9156;
+  font:
+    10px Consolas,
+    'Courier New',
+    monospace;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+.dev-intro {
+  margin: 0 0 15px;
+  color: #998b76;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.dev-list {
+  display: grid;
+  gap: 7px;
+}
+.dev-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 54px;
+  padding: 9px 11px;
+  border: 1px solid #564124;
+  background: #100d09d9;
+  color: #d7b47a;
+  text-decoration: none;
+}
+.dev-list a:hover,
+.dev-list a:focus-visible {
+  border-color: #b47e3d;
+  background: #21170d;
+  outline: none;
+}
+.dev-list span,
+.dev-list strong,
+.dev-list small {
+  display: block;
+}
+.dev-list strong {
+  font:
+    11px Consolas,
+    'Courier New',
+    monospace;
+  letter-spacing: 0.4px;
+}
+.dev-list small {
+  margin-top: 4px;
+  color: #807565;
+  font-size: 10px;
+  line-height: 1.25;
+}
+.dev-list b {
+  color: #bd8846;
+  font-size: 18px;
+}
+.dev-archive {
+  margin: 12px 0 17px;
+}
+.dev-archive summary {
+  padding: 10px 2px;
+  color: #9e8563;
+  cursor: pointer;
+  font:
+    10px Consolas,
+    'Courier New',
+    monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.dev-archive[open] summary {
+  color: #d0a86c;
+}
 .options-panel::before {
   content: '✦';
   position: absolute;
@@ -790,7 +890,8 @@ h1 {
   padding: 2px 4px;
   margin-left: 3px;
 }
-#options .secondary {
+#options .secondary,
+#dev .secondary {
   min-height: 53px;
   border-color: #a86b25;
   background: #090805d9;
@@ -799,7 +900,8 @@ h1 {
   font-size: 10px;
   letter-spacing: 1.7px;
 }
-#options .secondary:hover {
+#options .secondary:hover,
+#dev .secondary:hover {
   border-color: #c78a43;
   background: #24180c;
   color: #f2c37c;
@@ -1320,6 +1422,7 @@ h1 {
   }
   .title-screen .utility-row {
     margin-top: 10px;
+    gap: 7px;
   }
   .title-screen > .footer-note {
     bottom: 22px;
@@ -1361,6 +1464,11 @@ h1 {
   }
   .center-screen {
     padding-inline: 17px;
+  }
+  .title-screen .secondary {
+    padding-inline: 4px;
+    font-size: 7px;
+    letter-spacing: 0.7px;
   }
   .buttons {
     gap: 12px;

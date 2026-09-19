@@ -10,6 +10,15 @@ test('portrait title, all five lanes, options and saved settings', async ({
   await expect(page.locator('.ambient-note')).toHaveCount(7);
   await expect(page.locator('#arena')).toBeHidden();
   await page.screenshot({ path: 'test-results/title-phone.png' });
+  await page.getByRole('button', { name: 'DEV PROGRESSION' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Dev progression.' }),
+  ).toBeVisible();
+  await page.screenshot({ path: 'test-results/dev-progression-phone.png' });
+  await expect(
+    page.getByRole('link', { name: /Changing Meter · 3\+2 phrase/ }),
+  ).toHaveAttribute('href', '/resonance/meter-phrase-lab.html');
+  await page.getByRole('button', { name: 'BACK' }).click();
   await page.getByRole('button', { name: 'OPTIONS + CONTROLS' }).click();
   await page.locator('#volume').fill('35');
   await page.getByRole('checkbox').check();

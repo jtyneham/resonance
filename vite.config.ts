@@ -14,6 +14,7 @@ export default defineConfig({
         meterLab: 'meter-lab.html',
         idleLab: 'idle-lab.html',
         continuityLab: 'continuity-lab.html',
+        meterPhraseLab: 'meter-phrase-lab.html',
       },
       output: {
         manualChunks: (id) =>

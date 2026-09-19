@@ -1,0 +1,60 @@
+#meter-phrase-lab {
+  max-width: 460px;
+}
+
+#meter-phrase-lab #sample {
+  position: relative;
+  height: min(57svh, 515px);
+  min-height: 360px;
+  border: 1px solid #352619;
+}
+
+#meter-phrase-lab #sample canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.phrase-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin: 10px 0;
+}
+
+.phrase-summary div {
+  padding: 7px 5px;
+  border: 1px solid #46331f;
+  background: #100d0a;
+  text-align: center;
+}
+
+.phrase-summary strong,
+.phrase-summary span {
+  display: block;
+}
+
+.phrase-summary strong {
+  color: #e0b775;
+  font-size: 12px;
+}
+
+.phrase-summary span {
+  margin-top: 3px;
+  color: #796d5d;
+  font-size: 8px;
+  letter-spacing: 0.8px;
+}
+
+.phrase-legend {
+  margin: 8px 0 0;
+  color: #817565;
+  font-size: 9px;
+  text-align: center;
+}
+
+@media (max-height: 720px) {
+  #meter-phrase-lab #sample {
+    height: 48svh;
+    min-height: 290px;
+  }
+}

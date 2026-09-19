@@ -56,7 +56,7 @@ app.innerHTML = `
     </div>
     <div class="title-actions">
       <button class="primary" id="start">START</button>
-      <div class="utility-row"><button id="options-button" class="secondary">OPTIONS + CONTROLS</button><button id="fullscreen" class="secondary" aria-label="Enter fullscreen">⛶ FULLSCREEN</button></div>
+      <div class="utility-row"><button id="options-button" class="secondary">OPTIONS + CONTROLS</button><button id="dev-button" class="secondary">DEV PROGRESSION</button><button id="fullscreen" class="secondary" aria-label="Enter fullscreen">⛶ FULLSCREEN</button></div>
     </div>
     <p class="footer-note"><span>HEADPHONES RECOMMENDED</span><span>PROTOTYPE</span></p>
     <div class="footer-ornament" aria-hidden="true">✦</div>
@@ -74,6 +74,34 @@ app.innerHTML = `
     <p class="instructions">Stand your ground to <strong>automatically absorb</strong> resonance waves. Two absorbs charge one shot. Tap <strong>Resonate</strong> in an opening to fire. Getting hit empties your charge.</p>
     <div class="key-guide"><span>MOVE <kbd>←</kbd><kbd>→</kbd> / A D</span><span>JUMP <kbd>SPACE</kbd></span><span>FIRE <kbd>J</kbd> / F</span><span>PAUSE <kbd>ESC</kbd></span></div>
     <button class="secondary full-width" id="options-back">BACK <span>←</span></button></div>
+  </section>
+
+  <section id="dev" class="screen center-screen" aria-label="Development progression" hidden>
+    <div class="panel options-panel dev-panel">
+      <span class="eyebrow">TEMPORARY DEVELOPMENT ARCHIVE</span>
+      <h2>Dev progression.</h2>
+      <p class="dev-intro">Playable animation and timing studies. These links are intentionally available in the deployed prototype for remote playtesting.</p>
+      <h3>Current Conductor work</h3>
+      <nav class="dev-list" aria-label="Current Conductor studies">
+        <a href="${import.meta.env.BASE_URL}meter-phrase-lab.html"><span><strong>Changing Meter · 3+2 phrase</strong><small>Five-beat whole-hand motion with staged attacks.</small></span><b>↗</b></a>
+        <a href="${import.meta.env.BASE_URL}continuity-lab.html"><span><strong>Stillness → command → stillness</strong><small>Approved idle-to-Ictus continuity.</small></span><b>↗</b></a>
+        <a href="${import.meta.env.BASE_URL}idle-lab.html"><span><strong>Upright, watchful, restrained</strong><small>Seamless floating idle loop.</small></span><b>↗</b></a>
+        <a href="${import.meta.env.BASE_URL}windup-lab.html?mode=attack"><span><strong>Ictus · attack release</strong><small>Complete gesture, crimson arc phrase and recovery.</small></span><b>↗</b></a>
+        <a href="${import.meta.env.BASE_URL}meter-lab.html"><span><strong>Changing Meter · timing</strong><small>Original 3+2 → 2+3 pulse study.</small></span><b>↗</b></a>
+      </nav>
+      <details class="dev-archive">
+        <summary>Earlier experiments</summary>
+        <nav class="dev-list" aria-label="Earlier development studies">
+          <a href="${import.meta.env.BASE_URL}windup-lab.html?mode=ictus"><span><strong>Complete Ictus body motion</strong><small>Wind-up, strike and recovery without attacks.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}windup-lab.html"><span><strong>2D wind-up drawings</strong><small>Focused eight-drawing preparation study.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}wrist-lab.html"><span><strong>Wrist motion reference</strong><small>Approved low-detail movement study.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}styled-lab.html"><span><strong>Styled pose blocking</strong><small>Historical three-pose assembly.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}finger-lab.html?mode=full"><span><strong>Finger articulation</strong><small>Historical constructed-finger experiment.</small></span><b>↗</b></a>
+          <a href="${import.meta.env.BASE_URL}conductor-lab.html"><span><strong>Original layered rig study</strong><small>Archived modular animation experiment.</small></span><b>↗</b></a>
+        </nav>
+      </details>
+      <button class="secondary full-width" id="dev-back">BACK <span>←</span></button>
+    </div>
   </section>
 
   <section id="paused" class="screen center-screen scrim" aria-label="Paused" hidden><div class="panel"><span class="eyebrow lime">SIGNAL HELD</span><h2>Take a breath.</h2><p class="intro" id="pause-reason">Your place in the music is saved.</p><button class="primary" id="resume">RESUME <span>↗</span></button><div class="utility-row"><button class="secondary" id="pause-retry">RETRY</button><button class="secondary" data-home>TITLE</button></div></div></section>
@@ -97,7 +125,8 @@ const audio = new Transport(encounter);
 const settings = loadSettings();
 audio.setVolume(settings.volume);
 arena?.setReducedMotion(settings.reducedMotion);
-type Screen = 'title' | 'select' | 'options' | 'battle' | 'paused' | 'result';
+type Screen =
+  'title' | 'select' | 'options' | 'dev' | 'battle' | 'paused' | 'result';
 let screen: Screen = 'title';
 let battle: Battle | null = null;
 let busy = false;
@@ -304,10 +333,14 @@ for (const button of app.querySelectorAll('[data-home]'))
 $('#options-button').addEventListener('click', () => {
   show('options');
 });
+$('#dev-button').addEventListener('click', () => {
+  show('dev');
+});
 $('#learn').addEventListener('click', () => {
   show('options');
 });
 $('#options-back').addEventListener('click', () => show('title'));
+$('#dev-back').addEventListener('click', () => show('title'));
 const volume = $<HTMLInputElement>('#volume');
 const reduced = $<HTMLInputElement>('#reduced-motion');
 volume.value = String(settings.volume * 100);

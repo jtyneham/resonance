@@ -1,5 +1,21 @@
 # Implementation status
 
+## Latest — Changing Meter phrase and deployed dev archive (2026-09-19)
+
+Added `meter-phrase-lab.html`, the first continuous whole-hand five-beat phrase
+grouped `3+2`. Twenty true-alpha raster drawings retain one fixed wrist-core
+registration and constant scale, with a live tracked baton-tip effect. The
+approved review mapping is one-lane arc, rest, two-lane arc, two-lane abstract
+organ-pipe barrier, then one-lane arc. Attacks are separate Canvas effects;
+absorbables remain stage-owned and absent. This is an animation review, not a
+final encounter chart.
+
+The title screen now includes `DEV PROGRESSION`. Its in-game index links to the
+current Changing Meter, continuity, idle, Ictus and timing studies, plus a clearly
+collapsed archive of earlier rig/finger/pose experiments. Every route uses the
+Vite/GitHub Pages base path so the index remains usable after deployment. This is
+temporary development UI intended for the user's remote GitHub Pages testing.
+
 ## Latest — Conductor idle simplified to a floating hand (2026-09-19)
 
 User clarified that the idle's primary motion is a simple whole-character hover,
