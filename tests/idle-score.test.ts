@@ -2,12 +2,16 @@ import { expect, it } from 'vitest';
 import {
   IDLE_CELL_BOTTOM_GUTTER_PX,
   IDLE_CYCLE_MS,
+  IDLE_FLOAT_DISTANCE_PX,
   IDLE_FRAME_COUNT,
   idleCellBounds,
+  idleFloatOffset,
   idleFrame,
   idleTime,
   idleTipEnergy,
   isBrightEdgeFringe,
+  isInsideIdleGripVoid,
+  isNeutralMatteArtifact,
   isPaintedMatteCandidate,
   isPaintedMatteSeed,
 } from '../src/lab/idle-score';
@@ -36,6 +40,23 @@ it('loops sixteen bounded drawings over two seconds', () => {
   ).toBe(IDLE_FRAME_COUNT);
 });
 
+it('floats upward and returns to the exact Ictus anchor without a reset', () => {
+  expect(idleFloatOffset(0)).toBeCloseTo(0, 8);
+  expect(idleFloatOffset(IDLE_CYCLE_MS / 4)).toBeCloseTo(
+    -IDLE_FLOAT_DISTANCE_PX / 2,
+    8,
+  );
+  expect(idleFloatOffset(IDLE_CYCLE_MS / 2)).toBeCloseTo(
+    -IDLE_FLOAT_DISTANCE_PX,
+    8,
+  );
+  expect(idleFloatOffset((IDLE_CYCLE_MS * 3) / 4)).toBeCloseTo(
+    -IDLE_FLOAT_DISTANCE_PX / 2,
+    8,
+  );
+  expect(idleFloatOffset(IDLE_CYCLE_MS)).toBeCloseTo(0, 8);
+});
+
 it('keeps the independent tip light within a restrained range', () => {
   const energies = Array.from({ length: 101 }, (_, index) =>
     idleTipEnergy((index / 100) * IDLE_CYCLE_MS),
@@ -51,6 +72,12 @@ it('floods neutral matte edges but stops at the warm character palette', () => {
   expect(isPaintedMatteCandidate(208, 190, 184)).toBe(true);
   expect(isPaintedMatteCandidate(238, 209, 164)).toBe(false);
   expect(isPaintedMatteCandidate(10, 10, 10)).toBe(false);
+  expect(isNeutralMatteArtifact(138, 138, 138)).toBe(true);
+  expect(isNeutralMatteArtifact(208, 190, 184)).toBe(false);
+  expect(isNeutralMatteArtifact(238, 209, 164)).toBe(false);
+  expect(isInsideIdleGripVoid(141, 130, 313, 313)).toBe(true);
+  expect(isInsideIdleGripVoid(141, 80, 313, 313)).toBe(false);
+  expect(isInsideIdleGripVoid(190, 130, 313, 313)).toBe(false);
   expect(isBrightEdgeFringe(215, 208, 205)).toBe(true);
   expect(isBrightEdgeFringe(238, 209, 164)).toBe(true);
   expect(isBrightEdgeFringe(238, 150, 60)).toBe(false);

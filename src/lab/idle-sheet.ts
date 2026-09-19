@@ -2,12 +2,11 @@ import {
   IDLE_FRAME_COUNT,
   idleCellBounds,
   isBrightEdgeFringe,
+  isInsideIdleGripVoid,
+  isNeutralMatteArtifact,
   isPaintedMatteCandidate,
   isPaintedMatteSeed,
 } from './idle-score';
-
-const COLUMNS = 4;
-const ROWS = 4;
 
 function floodPaintedMatte(pixels: ImageData) {
   const { width, height } = pixels;
@@ -153,23 +152,27 @@ export function isolateIdleSheet(
   context.drawImage(source, 0, 0);
   const pixels = context.getImageData(0, 0, target.width, target.height);
   floodPaintedMatte(pixels);
-  for (let offset = 0; offset < pixels.data.length; offset += 4) {
-    const pixel = offset / 4;
-    const x = pixel % target.width;
-    const y = Math.floor(pixel / target.width);
-    const cellWidth = target.width / COLUMNS;
-    const cellHeight = target.height / ROWS;
-    const localX = x % cellWidth;
-    const localY = y % cellHeight;
-    const outsideUpperBaton =
-      localY < cellHeight * 0.27 &&
-      Math.abs(localX - cellWidth * 0.49) > cellWidth * 0.052;
-    const unmistakableChecker = isPaintedMatteSeed(
-      pixels.data[offset],
-      pixels.data[offset + 1],
-      pixels.data[offset + 2],
-    );
-    if (outsideUpperBaton || unmistakableChecker) pixels.data[offset + 3] = 0;
+  for (let frame = 0; frame < IDLE_FRAME_COUNT; frame++) {
+    const cell = idleCellBounds(frame, pixels.width, pixels.height);
+    for (let y = 0; y < cell.height; y++) {
+      for (let x = 0; x < cell.width; x++) {
+        const offset = ((cell.top + y) * pixels.width + cell.left + x) * 4;
+        const unmistakableChecker = isPaintedMatteSeed(
+          pixels.data[offset],
+          pixels.data[offset + 1],
+          pixels.data[offset + 2],
+        );
+        const enclosedGripMatte =
+          isInsideIdleGripVoid(x, y, cell.width, cell.height) &&
+          isNeutralMatteArtifact(
+            pixels.data[offset],
+            pixels.data[offset + 1],
+            pixels.data[offset + 2],
+          );
+        if (unmistakableChecker || enclosedGripMatte)
+          pixels.data[offset + 3] = 0;
+      }
+    }
   }
   neutralizeBrightEdgeFringe(pixels);
   const tipPositions = locateBatonTips(pixels);

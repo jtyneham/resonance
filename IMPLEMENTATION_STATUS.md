@@ -1,5 +1,18 @@
 # Implementation status
 
+## Latest — Conductor idle simplified to a floating hand (2026-09-19)
+
+User clarified that the idle's primary motion is a simple whole-character hover,
+not near-still mechanical breathing. The active two-second loop now moves the
+complete hand twelve canvas pixels upward and back to its exact baseline using a
+smooth rise-and-fall curve. The existing sixteen whole-hand drawings remain only
+for restrained secondary follow-through in the free fingers, cloth strips and
+hanging ornaments. Runtime still plays those drawings 1→16→1, so their motion and
+the vertical float reverse together without a reset. No lateral displacement,
+scale change or progressive climb is applied. Both ends have zero vertical offset,
+preserving the approved wrist-core registration at the idle/Ictus seams. The live
+baton-tip effect follows the translated drawing.
+
 ## Latest — Idle-to-Ictus continuity loop ready for review (2026-09-14)
 
 Added isolated `continuity-lab.html`: one approved idle cycle now flows into the
@@ -7,8 +20,16 @@ complete approved Ictus body motion and recovery, then directly into another idl
 cycle. A shared animated baton-tip effect follows both sprite sets. No hazards,
 gameplay or source artwork changed. Idle matte isolation was extracted into a
 shared helper so the idle-only and continuity labs use identical cleaned frames.
-See `idle-ictus-continuity-review-01.md`. Await user judgment of palm position,
-scale, grip and motion at both seams before authoring any bridge drawings.
+The first continuity review exposed an oversized, off-center and overly bright
+idle sheet. An intermediate correction fixed the direction but still
+reconstructed the hand-to-baton proportions. Active
+`conductor-idle-sheet-review-03.png` instead
+derives from sixteen exact copies of the approved first Ictus cell, then adds only
+idle micro-movement. Both renderers register its measured wrist-core anchor to
+the same canvas coordinate and retain Ictus's approved presentation scale. See
+`idle-ictus-continuity-review-01.md` and `conductor-idle-sheet-review-03.md`.
+Await user judgment of visual identity and motion at both seams before authoring
+any bridge drawings.
 
 ## Latest — Conductor upright idle loop ready for review (2026-09-14)
 

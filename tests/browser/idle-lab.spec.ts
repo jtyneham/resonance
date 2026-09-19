@@ -12,6 +12,7 @@ test('idle sheet loads, loops, pauses and supports drawing inspection', async ({
   await page.getByRole('button', { name: 'Pause idle' }).click();
   await expect(host).toHaveAttribute('data-state', 'paused');
   const tipPositions = new Set<string>();
+  const floatOffsets: number[] = [];
   for (const [time, frame, label] of [
     ['0', '0', 'start'],
     ['500', '7', 'rise'],
@@ -24,8 +25,10 @@ test('idle sheet loads, loops, pauses and supports drawing inspection', async ({
       path: `test-results/conductor-idle-${label}.png`,
     });
     tipPositions.add((await host.getAttribute('data-tip-position')) ?? '');
+    floatOffsets.push(Number(await host.getAttribute('data-float-offset')));
   }
   expect(tipPositions.size).toBeGreaterThan(1);
+  expect(floatOffsets).toEqual([0, -6, -12, -6]);
   await expect(host).toHaveAttribute('data-tip-energy', /0\.[0-9]+/);
   await page.getByRole('button', { name: 'Play idle' }).click();
   await expect(host).toHaveAttribute('data-state', 'playing');

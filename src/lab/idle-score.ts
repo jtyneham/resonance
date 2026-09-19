@@ -1,6 +1,7 @@
 export const IDLE_FRAME_COUNT = 16;
 export const IDLE_CYCLE_MS = 2_000;
 export const IDLE_CELL_BOTTOM_GUTTER_PX = 4;
+export const IDLE_FLOAT_DISTANCE_PX = 12;
 const IDLE_EXPOSURE_COUNT = (IDLE_FRAME_COUNT - 1) * 2;
 const IDLE_SHEET_COLUMNS = 4;
 const IDLE_SHEET_ROWS = 4;
@@ -39,6 +40,12 @@ export function idleFrame(ms: number) {
     : IDLE_EXPOSURE_COUNT - exposure;
 }
 
+export function idleFloatOffset(ms: number) {
+  const phase = idleTime(ms) / IDLE_CYCLE_MS;
+  const riseAndFall = Math.sin(phase * Math.PI) ** 2;
+  return -IDLE_FLOAT_DISTANCE_PX * riseAndFall;
+}
+
 export function idleTipEnergy(ms: number) {
   const phase = idleTime(ms) / IDLE_CYCLE_MS;
   const slowPulse = (Math.sin(phase * Math.PI * 2 - Math.PI / 2) + 1) / 2;
@@ -50,6 +57,29 @@ export function isPaintedMatteSeed(red: number, green: number, blue: number) {
   const brightest = Math.max(red, green, blue);
   const darkest = Math.min(red, green, blue);
   return darkest >= 176 && brightest - darkest <= 13;
+}
+
+export function isNeutralMatteArtifact(
+  red: number,
+  green: number,
+  blue: number,
+) {
+  const brightest = Math.max(red, green, blue);
+  const darkest = Math.min(red, green, blue);
+  return darkest >= 65 && brightest - darkest <= 20;
+}
+
+export function isInsideIdleGripVoid(
+  x: number,
+  y: number,
+  cellWidth: number,
+  cellHeight: number,
+) {
+  const normalizedX = x / cellWidth;
+  const normalizedY = y / cellHeight;
+  const dx = (normalizedX - 0.45) / 0.065;
+  const dy = (normalizedY - 0.425) / 0.095;
+  return dx * dx + dy * dy <= 1;
 }
 
 export function isPaintedMatteCandidate(

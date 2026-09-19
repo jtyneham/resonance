@@ -1,10 +1,11 @@
 import './idle.css';
-import sheetUrl from '../../docs/bosses/conductor/key-poses/conductor-idle-sheet-review-01.png?url';
+import sheetUrl from '../../docs/bosses/conductor/key-poses/conductor-idle-sheet-review-03.png?url';
 import {
   IDLE_CELL_BOTTOM_GUTTER_PX,
   IDLE_CYCLE_MS,
   IDLE_FRAME_COUNT,
   idleCellBounds,
+  idleFloatOffset,
   idleFrame,
   idleTime,
   idleTipEnergy,
@@ -14,7 +15,7 @@ import { isolateIdleSheet } from './idle-sheet';
 document.querySelector('main')!.innerHTML = `
 <p class="eyebrow">2D WHOLE-HAND DRAWINGS · IDLE REVIEW</p>
 <h1>Upright, watchful, restrained.</h1>
-<p>Sixteen complete drawings form a two-second loop. The character stays centered; only its mechanical tension and hanging details breathe.</p>
+<p>The whole hand floats through a seamless two-second rise and fall. Sixteen complete drawings add restrained finger, cloth and ornament follow-through as gravity changes direction.</p>
 <div id="sample"><canvas width="600" height="760" aria-label="The Conductor's upright idle animation"></canvas></div>
 <div class="row"><button id="play" disabled>Pause idle</button><button id="slow" aria-pressed="false">Slow · ¼ speed</button></div>
 <label for="timeline">Inspect drawing <output id="frame">1 / ${IDLE_FRAME_COUNT}</output></label>
@@ -126,25 +127,14 @@ function render() {
   const destinationSize = 540;
   const destinationHeight =
     destinationSize * (visibleSourceHeight / sourceHeight);
-  const destinationX = (canvas.width - destinationSize) / 2;
-  const destinationY = 88;
+  const floatOffset = idleFloatOffset(elapsed);
+  // Frame 1 is derived from the approved Ictus cell. Register both previews to
+  // that cell's measured wrist-core anchor rather than centering the full cell.
+  const destinationX = 300 - (246 / 443.5) * destinationSize;
+  const destinationY = 500 - (327 / 443.5) * destinationSize + floatOffset;
 
   drawBackdrop();
   ctx.save();
-  ctx.beginPath();
-  ctx.rect(
-    destinationX,
-    destinationY + destinationSize * 0.27,
-    destinationSize,
-    destinationSize * 0.73,
-  );
-  ctx.rect(
-    canvas.width / 2 - destinationSize * 0.052,
-    destinationY,
-    destinationSize * 0.104,
-    destinationSize * 0.28,
-  );
-  ctx.clip();
   ctx.imageSmoothingEnabled = false;
   ctx.drawImage(
     isolatedSheet,
@@ -168,6 +158,7 @@ function render() {
     destinationY + (tip.y / sourceHeight) * destinationSize,
   );
   host.dataset.frame = String(frame);
+  host.dataset.floatOffset = floatOffset.toFixed(3);
   host.dataset.time = String(Math.round(elapsed));
   host.dataset.state = playing ? 'playing' : 'paused';
   slider.value = String(Math.round(idleTime(elapsed)));

@@ -22,6 +22,8 @@ test('continuity lab crosses both idle-Ictus seams without runtime errors', asyn
   ] as const) {
     await page.getByRole('slider').fill(String(time));
     await expect(host).toHaveAttribute('data-phase', phase);
+    if (phase === 'lead-idle' || phase === 'settle-idle')
+      await expect(host).toHaveAttribute('data-float-offset', /^-?0\.000$/);
     await page.screenshot({ path: `test-results/${name}.png` });
   }
 

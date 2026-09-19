@@ -1,5 +1,5 @@
 import './idle.css';
-import idleUrl from '../../docs/bosses/conductor/key-poses/conductor-idle-sheet-review-01.png?url';
+import idleUrl from '../../docs/bosses/conductor/key-poses/conductor-idle-sheet-review-03.png?url';
 import strokeUrl from '../../docs/bosses/conductor/key-poses/ictus-stroke-baton-fixed-03.png?url';
 import windupUrl from '../../docs/bosses/conductor/key-poses/ictus-windup-fine-tips-02.png?url';
 import {
@@ -12,6 +12,7 @@ import { tipEnergy } from './ictus-effects';
 import {
   IDLE_CELL_BOTTOM_GUTTER_PX,
   idleCellBounds,
+  idleFloatOffset,
   idleTipEnergy,
 } from './idle-score';
 import { isolateIdleSheet } from './idle-sheet';
@@ -135,8 +136,9 @@ function drawIdle(frame: number, localTime: number) {
   const visibleHeight = Math.max(1, cell.height - IDLE_CELL_BOTTOM_GUTTER_PX);
   const destinationSize = 540;
   const destinationHeight = destinationSize * (visibleHeight / cell.height);
-  const destinationX = 30;
-  const destinationY = 85;
+  const floatOffset = idleFloatOffset(localTime);
+  const destinationX = 300 - (246 / 443.5) * destinationSize;
+  const destinationY = 500 - (327 / 443.5) * destinationSize + floatOffset;
   ctx.save();
   ctx.imageSmoothingEnabled = false;
   ctx.drawImage(
@@ -171,9 +173,7 @@ function drawIctus(
   const height = source.naturalHeight / 2;
   const sourceX = (frame % 4) * width;
   const sourceY = Math.floor(frame / 4) * height;
-  // Match the approved body-motion review's whole-character presentation scale;
-  // a smaller attack-preview scale would create an artificial shrink at the seam.
-  const scale = 1.65;
+  const scale = 1.25;
   const drawX = 300 - (anchors[frame][0] - sourceX) * scale;
   const drawY = 500 - (anchors[frame][1] - sourceY) * scale;
   ctx.save();
@@ -216,6 +216,8 @@ function render() {
 
   host.dataset.phase = moment.phase;
   host.dataset.frame = String(moment.frame);
+  host.dataset.floatOffset =
+    'sheet' in moment ? '0.000' : idleFloatOffset(moment.localTime).toFixed(3);
   host.dataset.time = String(Math.round(elapsed));
   host.dataset.state = playing ? 'playing' : 'paused';
   slider.value = String(Math.round(elapsed));
